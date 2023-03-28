@@ -1,0 +1,1405 @@
+
+START---------------
+current dir:  /pool/condor/dir_21658
+current dir:  /afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis
+> CfgManager --- INFO: parsing /afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_C25_LYSO813_Vov0.80.cfg
+/eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/disc_calibration.tsv
+0 - 0 - 0 - 0 - 0 - 0 - 24.2657469521 - 20.9208758604 - 2.82620359965 - 0.555178200126 - 0.544496417451 - 0.246206360766 - 
+0 0 24.2657 20.9209 2.8262
+0 - 0 - 0 - 1 - 0 - 0 - 30.8437177187 - 17.1977065693 - 1.92333530188 - 0.582561818433 - 0.515934831998 - 0.0510435294139 - 
+0 1 30.8437 17.1977 1.92334
+0 - 0 - 0 - 2 - 0 - 0 - 15.4914466829 - 13.4363155276 - 2.75486637472 - 0.553948956849 - 0.473894525992 - 0.245548491728 - 
+0 2 15.4914 13.4363 2.75487
+0 - 0 - 0 - 3 - 0 - 0 - 33.3504919096 - 21.8951066833 - 4.86740960571 - 0.546334817196 - 0.513040044995 - 0.251809607708 - 
+0 3 33.3505 21.8951 4.86741
+0 - 0 - 0 - 4 - 0 - 0 - 24.3519018197 - 23.9984432883 - 3.55770801451 - 0.475652691075 - 0.486439728045 - 0.0500003756327 - 
+0 4 24.3519 23.9984 3.55771
+0 - 0 - 0 - 5 - 0 - 0 - 21.5076419321 - 13.0464087976 - 2.64996757028 - 0.514304190621 - 0.517949968518 - 0.24508461332 - 
+0 5 21.5076 13.0464 2.64997
+0 - 0 - 0 - 6 - 0 - 0 - 21.2040716259 - 9.63697426633 - 3.98860080381 - 0.495116995907 - 0.45390645985 - 0.0554683405718 - 
+0 6 21.2041 9.63697 3.9886
+0 - 0 - 0 - 7 - 0 - 0 - 30.7519436755 - 23.9667939676 - 1.49892988093 - 0.531176273916 - 0.501839278213 - 0.0797278336545 - 
+0 7 30.7519 23.9668 1.49893
+0 - 0 - 0 - 8 - 0 - 0 - 23.4788349765 - 15.6400999012 - 3.21621118356 - 0.510487138274 - 0.459488018878 - 0.240339395979 - 
+0 8 23.4788 15.6401 3.21621
+0 - 0 - 0 - 9 - 0 - 0 - 13.6775981536 - 13.5946476042 - 3.87594973181 - 0.462593028384 - 0.493887412987 - 0.22073511886 - 
+0 9 13.6776 13.5946 3.87595
+0 - 0 - 0 - 10 - 0 - 0 - 8.94449193992 - 12.0936533956 - 2.0 - 0.424122882189 - 0.491240198891 - 0.168702555321 - 
+0 10 8.94449 12.0937 2
+0 - 0 - 0 - 11 - 0 - 0 - 8.01231094773 - 10.9761409969 - 5.0 - 0.418439213809 - 0.516321934546 - 0.207370813262 - 
+0 11 8.01231 10.9761 5
+0 - 0 - 0 - 12 - 0 - 0 - 29.0607800534 - 18.0231412119 - 5.99749582245 - 0.560939884837 - 0.493703385121 - 0.0538003519839 - 
+0 12 29.0608 18.0231 5.9975
+0 - 0 - 0 - 13 - 0 - 0 - 21.5578091326 - 19.7195245619 - 1.54412596696 - 0.504241510479 - 0.504752857031 - 0.230453990115 - 
+0 13 21.5578 19.7195 1.54413
+0 - 0 - 0 - 14 - 0 - 0 - 30.6320103506 - 28.8851677502 - 3.77299691597 - 0.55382857942 - 0.561514674972 - 0.232856640581 - 
+0 14 30.632 28.8852 3.773
+0 - 0 - 0 - 15 - 0 - 0 - 24.6461406807 - 23.6329707424 - 1.26803548533 - 0.447266986297 - 0.474325037416 - 0.225228095342 - 
+0 15 24.6461 23.633 1.26804
+0 - 0 - 0 - 16 - 0 - 0 - 28.0073139217 - 20.268090428 - 3.52809997241 - 0.539752095062 - 0.532564200838 - 0.0503944402327 - 
+0 16 28.0073 20.2681 3.5281
+0 - 0 - 0 - 17 - 0 - 0 - 20.852512847 - 20.7969658442 - 2.57781630355 - 0.495917327701 - 0.471570137352 - 0.25031869917 - 
+0 17 20.8525 20.797 2.57782
+0 - 0 - 0 - 18 - 0 - 0 - 21.9174054645 - 17.3076618905 - 2.37966390528 - 0.498253343147 - 0.504004913809 - 0.2335654406 - 
+0 18 21.9174 17.3077 2.37966
+0 - 0 - 0 - 19 - 0 - 0 - 24.162737006 - 18.9480287591 - 3.0 - 0.540398608859 - 0.524501906933 - 0.210585645104 - 
+0 19 24.1627 18.948 3
+0 - 0 - 0 - 20 - 0 - 0 - 19.0622958568 - 17.444349771 - 1.84598702952 - 0.466696398724 - 0.494816186155 - 0.242484808946 - 
+0 20 19.0623 17.4443 1.84599
+0 - 0 - 0 - 21 - 0 - 0 - 28.7519796521 - 26.289324583 - 0.859627400888 - 0.52193490096 - 0.524378674207 - 0.268539801648 - 
+0 21 28.752 26.2893 0.859627
+0 - 0 - 0 - 22 - 0 - 0 - 18.7531014731 - 19.7140271416 - 1.21655122723 - 0.50148785881 - 0.467738066395 - 0.234666973706 - 
+0 22 18.7531 19.714 1.21655
+0 - 0 - 0 - 23 - 0 - 0 - 27.6756340266 - 18.2694711577 - 4.22541731154 - 0.557691811935 - 0.519223521691 - 0.232999681895 - 
+0 23 27.6756 18.2695 4.22542
+0 - 0 - 0 - 24 - 0 - 0 - 21.5575657623 - 16.804959111 - 4.21864914271 - 0.484388098327 - 0.423041015272 - 0.240056790534 - 
+0 24 21.5576 16.805 4.21865
+0 - 0 - 0 - 25 - 0 - 0 - 17.334837916 - 12.1322796954 - 4.98890847615 - 0.142013231842 - 0.500831330431 - 0.255491100506 - 
+0 25 17.3348 12.1323 4.98891
+0 - 0 - 0 - 26 - 0 - 0 - 22.4330857233 - 17.2533609748 - 5.0 - 0.498939446005 - 0.487368510194 - 0.207450210316 - 
+0 26 22.4331 17.2534 5
+0 - 0 - 0 - 27 - 0 - 0 - 30.5923402679 - 24.1183763325 - 2.68582643883 - 0.550642254923 - 0.497344329907 - 0.0617673695152 - 
+0 27 30.5923 24.1184 2.68583
+0 - 0 - 0 - 28 - 0 - 0 - 27.3268540441 - 21.6424278053 - 0.999999999975 - 0.530841029917 - 0.504247967532 - 0.192152839226 - 
+0 28 27.3269 21.6424 1
+0 - 0 - 0 - 29 - 0 - 0 - 26.8720887785 - 23.7717642139 - 2.24224666206 - 0.520587696162 - 0.483544171369 - 0.258839053692 - 
+0 29 26.8721 23.7718 2.24225
+0 - 0 - 0 - 30 - 0 - 0 - 18.1848121192 - 6.08880940855 - 6.26899080386 - 0.490183590372 - 0.457635730075 - 0.242825167462 - 
+0 30 18.1848 6.08881 6.26899
+0 - 0 - 0 - 31 - 0 - 0 - 21.6462639388 - 18.1165861818 - 2.0 - 0.507993550308 - 0.516336817011 - 0.213521926131 - 
+0 31 21.6463 18.1166 2
+0 - 0 - 2 - 0 - 0 - 0 - 24.0619497676 - 21.2713732249 - 3.99999999998 - 0.519127900006 - 0.473480667502 - 0.157895869882 - 
+2 0 24.062 21.2714 4
+0 - 0 - 2 - 1 - 0 - 0 - 19.1682917244 - 14.6872645644 - 3.44453411698 - 0.559818246708 - 0.496063548146 - 0.260011001824 - 
+2 1 19.1683 14.6873 3.44453
+0 - 0 - 2 - 2 - 0 - 0 - 23.5595035162 - 23.983824444 - 0.917030681952 - 0.419752560387 - 0.478867261077 - 0.238521159855 - 
+2 2 23.5595 23.9838 0.917031
+0 - 0 - 2 - 3 - 0 - 0 - 28.0624920766 - 19.259359841 - 3.0 - 0.505877539083 - 0.533689771616 - 0.199952164491 - 
+2 3 28.0625 19.2594 3
+0 - 0 - 2 - 4 - 0 - 0 - 21.2788031739 - 18.3483503068 - 5.40975451263 - 0.516182174714 - 0.4939945977 - 0.137371998867 - 
+2 4 21.2788 18.3484 5.40975
+0 - 0 - 2 - 5 - 0 - 0 - 10.1831984837 - 4.62845180008 - 1.58362315675 - 0.526133449526 - 0.123930253177 - 0.236185908639 - 
+2 5 10.1832 4.62845 1.58362
+0 - 0 - 2 - 6 - 0 - 0 - 28.3117608467 - 24.4295938177 - -0.624446053403 - 0.517197508136 - 0.495809443271 - 0.882440809021 - 
+2 6 28.3118 24.4296 -0.624446
+0 - 0 - 2 - 7 - 0 - 0 - 30.5389286147 - 22.9023254444 - 2.99188898344 - 0.551058019607 - 0.509184707906 - 0.247138741363 - 
+2 7 30.5389 22.9023 2.99189
+0 - 0 - 2 - 8 - 0 - 0 - 23.9550459006 - 21.7059277562 - 6.30290871603 - 0.455948166938 - 0.484359890717 - 0.273228179906 - 
+2 8 23.955 21.7059 6.30291
+0 - 0 - 2 - 9 - 0 - 0 - 15.5164268811 - 13.0572035501 - 3.49660174693 - 0.576899776318 - 0.504348242901 - 0.262151775496 - 
+2 9 15.5164 13.0572 3.4966
+0 - 0 - 2 - 10 - 0 - 0 - 19.4226154857 - 25.366510051 - 1.98634784482 - 0.49487250766 - 0.49527532008 - 0.0700608980529 - 
+2 10 19.4226 25.3665 1.98635
+0 - 0 - 2 - 11 - 0 - 0 - 13.6873938235 - 17.8488632121 - 2.90191831892 - 0.488439806345 - 0.472265039962 - 0.240077059406 - 
+2 11 13.6874 17.8489 2.90192
+0 - 0 - 2 - 12 - 0 - 0 - 36.9516458168 - 25.0059948295 - -1.5 - 0.564266553561 - 0.469242071955 - 0.05 - 
+2 12 36.9516 25.006 -1.5
+0 - 0 - 2 - 13 - 0 - 0 - 35.1226991349 - 34.035882965 - 0.544488663618 - 0.524436959013 - 0.501008843968 - 0.119171788149 - 
+2 13 35.1227 34.0359 0.544489
+0 - 0 - 2 - 14 - 0 - 0 - 19.2565289985 - 25.9991867264 - 5.0 - 0.556768186512 - 0.508122111382 - 0.226728088718 - 
+2 14 19.2565 25.9992 5
+0 - 0 - 2 - 15 - 0 - 0 - 22.6970802645 - 14.6154605733 - 5.22052504009 - 0.480055251154 - 0.459260252967 - 0.237276656575 - 
+2 15 22.6971 14.6155 5.22053
+0 - 0 - 2 - 16 - 0 - 0 - 16.1262029695 - 16.5399303779 - 1.68427413005 - 0.509854853091 - 0.563132664653 - 0.237865136637 - 
+2 16 16.1262 16.5399 1.68427
+0 - 0 - 2 - 17 - 0 - 0 - 28.0881517474 - 20.5118397876 - 6.22375743672 - 0.510435506737 - 0.050000000785 - 0.244795062321 - 
+2 17 28.0882 20.5118 6.22376
+0 - 0 - 2 - 18 - 0 - 0 - 35.7136633506 - 27.0891992689 - 1.98140606793 - 0.540463778925 - 0.508256988761 - 0.0547768629349 - 
+2 18 35.7137 27.0892 1.98141
+0 - 0 - 2 - 19 - 0 - 0 - 19.2285474706 - 16.2333849914 - 3.39575342432 - 0.537942146174 - 0.541151440505 - 0.251283126045 - 
+2 19 19.2285 16.2334 3.39575
+0 - 0 - 2 - 20 - 0 - 0 - 29.2714559655 - 21.0086681645 - 2.97830121346 - 0.505558013965 - 0.506643752274 - 0.249685359947 - 
+2 20 29.2715 21.0087 2.9783
+0 - 0 - 2 - 21 - 0 - 0 - 26.1733577054 - 16.725291938 - -1.5 - 0.49742251771 - 0.508296679373 - 0.05 - 
+2 21 26.1734 16.7253 -1.5
+0 - 0 - 2 - 22 - 0 - 0 - 25.5561767024 - 25.5834922392 - 6.0 - 0.0543021197182 - 0.522078513915 - 0.219424604157 - 
+2 22 25.5562 25.5835 6
+0 - 0 - 2 - 23 - 0 - 0 - 30.5098997899 - 20.5849036736 - 2.37335263373 - 0.563345362457 - 0.573765994357 - 0.237595506851 - 
+2 23 30.5099 20.5849 2.37335
+0 - 0 - 2 - 24 - 0 - 0 - 28.5251854276 - 23.825834955 - 2.87573838563 - 0.538801342662 - 0.511740709702 - 0.230008504461 - 
+2 24 28.5252 23.8258 2.87574
+0 - 0 - 2 - 25 - 0 - 0 - 21.0043650992 - 20.1053759212 - 7.2873484693 - 0.534076233377 - 0.487512723279 - 0.242588287979 - 
+2 25 21.0044 20.1054 7.28735
+0 - 0 - 2 - 26 - 0 - 0 - 10.1058858903 - 9.11551840092 - 2.26465875135 - 0.463416821514 - 0.467881044559 - 0.243917594288 - 
+2 26 10.1059 9.11552 2.26466
+0 - 0 - 2 - 27 - 0 - 0 - 22.7714937811 - 15.4678441409 - 3.47323829033 - 0.514383808289 - 0.539822674963 - 0.251882124506 - 
+2 27 22.7715 15.4678 3.47324
+0 - 0 - 2 - 28 - 0 - 0 - 13.4740754593 - 13.3119143429 - 3.24510252359 - 0.0529566150512 - 0.475482999577 - 0.224214977401 - 
+2 28 13.4741 13.3119 3.2451
+0 - 0 - 2 - 29 - 0 - 0 - 26.1710113482 - 20.2479480246 - 1.30625180736 - 0.519586046441 - 0.484885270951 - 0.232171415467 - 
+2 29 26.171 20.2479 1.30625
+0 - 0 - 2 - 30 - 0 - 0 - 29.0534572462 - 23.1118963029 - 1.47696523995 - 0.526589039374 - 0.534460051342 - 0.125943170221 - 
+2 30 29.0535 23.1119 1.47697
+0 - 0 - 2 - 31 - 0 - 0 - 27.3695165297 - 10.9027334646 - 4.99614085592 - 0.564643358819 - 0.500892461074 - 0.0571770958626 - 
+2 31 27.3695 10.9027 4.99614
+0 - 0 - 3 - 0 - 0 - 0 - 26.2721884301 - 22.7001366772 - 2.51948224466 - 0.511201428122 - 0.506076539871 - 0.0982731880099 - 
+3 0 26.2722 22.7001 2.51948
+0 - 0 - 3 - 1 - 0 - 0 - 21.6250801777 - 15.793476359 - 0.911961539731 - 0.499253996304 - 0.516423831572 - 0.0572580577144 - 
+3 1 21.6251 15.7935 0.911962
+0 - 0 - 3 - 2 - 0 - 0 - 22.6861002844 - 25.6143787066 - 1.73251176538 - 0.515829528016 - 0.498445385839 - 0.239183903707 - 
+3 2 22.6861 25.6144 1.73251
+0 - 0 - 3 - 3 - 0 - 0 - 21.1308195147 - 17.7054667722 - 4.25297190493 - 0.548214274045 - 0.506231777967 - 0.232161643022 - 
+3 3 21.1308 17.7055 4.25297
+0 - 0 - 3 - 4 - 0 - 0 - 31.6357126557 - 28.7999945986 - 4.81136184221 - 0.64545107934 - 0.499336305273 - 0.240471126907 - 
+3 4 31.6357 28.8 4.81136
+0 - 0 - 3 - 5 - 0 - 0 - 24.2418448472 - 11.8168155788 - 6.43467693674 - 0.441589954038 - 0.483588242376 - 0.272900798964 - 
+3 5 24.2418 11.8168 6.43468
+0 - 0 - 3 - 6 - 0 - 0 - 27.4627151202 - 22.5626752432 - 0.889877398183 - 0.472873315917 - 0.502928516472 - 0.0592898166487 - 
+3 6 27.4627 22.5627 0.889877
+0 - 0 - 3 - 7 - 0 - 0 - 16.8733312974 - 18.4697430532 - 0.398032768633 - 0.510747044267 - 0.503874804663 - 0.2475136954 - 
+3 7 16.8733 18.4697 0.398033
+0 - 0 - 3 - 8 - 0 - 0 - 19.1142958694 - 14.4045890929 - 0.743168557793 - 0.508782833413 - 0.504030340109 - 0.24054645307 - 
+3 8 19.1143 14.4046 0.743169
+0 - 0 - 3 - 9 - 0 - 0 - 24.8687867698 - 27.7023059487 - 3.99721641148 - 0.501778558053 - 0.541412928188 - 0.27010204537 - 
+3 9 24.8688 27.7023 3.99722
+0 - 0 - 3 - 10 - 0 - 0 - 25.5426170011 - 16.4449381615 - 5.0 - 0.501506435417 - 0.518237935574 - 0.18874264122 - 
+3 10 25.5426 16.4449 5
+0 - 0 - 3 - 11 - 0 - 0 - 35.9373129835 - 23.8586448425 - 3.51842939105 - 0.55203510091 - 0.492052531638 - 0.126333463539 - 
+3 11 35.9373 23.8586 3.51843
+0 - 0 - 3 - 12 - 0 - 0 - 29.4363899579 - 22.5463227802 - 2.32607986942 - 0.542719879042 - 0.502050845947 - 0.231040690225 - 
+3 12 29.4364 22.5463 2.32608
+0 - 0 - 3 - 13 - 0 - 0 - 29.3619136044 - 23.832079997 - 0.988298983284 - 0.543081250612 - 0.487189015706 - 0.0502895869446 - 
+3 13 29.3619 23.8321 0.988299
+0 - 0 - 3 - 14 - 0 - 0 - 28.517510663 - 21.2216030159 - 4.0 - 0.458628685727 - 0.484325473141 - 0.181912963508 - 
+3 14 28.5175 21.2216 4
+0 - 0 - 3 - 15 - 0 - 0 - 24.9680509725 - 23.1017350889 - 2.87385494165 - 0.512981935666 - 0.503952712103 - 0.236044038961 - 
+3 15 24.9681 23.1017 2.87385
+0 - 0 - 3 - 16 - 0 - 0 - 24.0865279038 - 25.9367378993 - 5.96959331636 - 0.489887588402 - 0.507665844254 - 0.257061718906 - 
+3 16 24.0865 25.9367 5.96959
+0 - 0 - 3 - 17 - 0 - 0 - 26.0570462107 - 22.4811693398 - 5.18554071994 - 0.559322654853 - 0.504656108828 - 0.250970251424 - 
+3 17 26.057 22.4812 5.18554
+0 - 0 - 3 - 18 - 0 - 0 - 27.689840769 - 20.5634077689 - 5.0 - 0.486486461128 - 0.548892068063 - 0.296563316259 - 
+3 18 27.6898 20.5634 5
+0 - 0 - 3 - 19 - 0 - 0 - 14.7248390154 - 10.8530089899 - -1.85344241173 - 0.507732115175 - 0.46097110228 - 0.918480508768 - 
+3 19 14.7248 10.853 -1.85344
+0 - 0 - 3 - 20 - 0 - 0 - 26.5595613276 - 12.7105591954 - 2.87164536095 - 0.50021263837 - 0.443134114428 - 0.242466386497 - 
+3 20 26.5596 12.7106 2.87165
+0 - 0 - 3 - 21 - 0 - 0 - 25.1445649206 - 15.1604790464 - 3.30538161517 - 0.502206918222 - 0.489991998416 - 0.242237697824 - 
+3 21 25.1446 15.1605 3.30538
+0 - 0 - 3 - 22 - 0 - 0 - 22.2220195524 - 18.9853201962 - 6.19551186799 - 0.49504331131 - 0.477223243393 - 0.28632673932 - 
+3 22 22.222 18.9853 6.19551
+0 - 0 - 3 - 23 - 0 - 0 - 27.8833044876 - 24.3842070786 - 3.0 - 0.524613708598 - 0.481626217818 - 0.216877421567 - 
+3 23 27.8833 24.3842 3
+0 - 0 - 3 - 24 - 0 - 0 - 23.7844353951 - 16.0295945409 - 7.0 - 0.534133877271 - 0.56793623405 - 0.23266663603 - 
+3 24 23.7844 16.0296 7
+0 - 0 - 3 - 25 - 0 - 0 - 18.9824648346 - 22.9803756625 - 0.931242429671 - 0.49483165623 - 0.466466706388 - 0.229454923168 - 
+3 25 18.9825 22.9804 0.931242
+0 - 0 - 3 - 26 - 0 - 0 - 19.3715812935 - 18.2962225775 - 10.4652865944 - 0.505494285118 - 0.43370140405 - 0.280927200145 - 
+3 26 19.3716 18.2962 10.4653
+0 - 0 - 3 - 27 - 0 - 0 - 26.3507922841 - 25.1461345289 - 3.34072207089 - 0.537986041579 - 0.524846291453 - 0.270819813443 - 
+3 27 26.3508 25.1461 3.34072
+0 - 0 - 3 - 28 - 0 - 0 - 28.8160665823 - 21.8464398209 - 2.61429707806 - 0.521721495857 - 0.503427868842 - 0.128314652876 - 
+3 28 28.8161 21.8464 2.6143
+0 - 0 - 3 - 29 - 0 - 0 - 17.9498748849 - 18.2115887541 - 3.56871636623 - 0.455907075158 - 0.463741359108 - 0.221134800215 - 
+3 29 17.9499 18.2116 3.56872
+0 - 0 - 3 - 30 - 0 - 0 - 24.3733602351 - 11.121307867 - 1.39259708134 - 0.534404916856 - 0.477815014565 - 0.252825381184 - 
+3 30 24.3734 11.1213 1.3926
+0 - 0 - 3 - 31 - 0 - 0 - 28.7086145955 - 25.9736104144 - 4.27106446489 - 0.525153299166 - 0.528336299327 - 0.261570941508 - 
+3 31 28.7086 25.9736 4.27106
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67124_*e.root
+Time and date of raw file of run67124: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67125_*e.root
+Time and date of raw file of run67125: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67126_*e.root
+Time and date of raw file of run67126: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67127_*e.root
+Time and date of raw file of run67127: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67128_*e.root
+Time and date of raw file of run67128: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67129_*e.root
+Time and date of raw file of run67129: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67130_*e.root
+Time and date of raw file of run67130: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67131_*e.root
+Time and date of raw file of run67131: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67132_*e.root
+Time and date of raw file of run67132: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67133_*e.root
+Time and date of raw file of run67133: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67134_*e.root
+Time and date of raw file of run67134: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67135_*e.root
+Time and date of raw file of run67135: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67136_*e.root
+Time and date of raw file of run67136: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67137_*e.root
+Time and date of raw file of run67137: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67138_*e.root
+Time and date of raw file of run67138: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67139_*e.root
+Time and date of raw file of run67139: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67140_*e.root
+Time and date of raw file of run67140: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67141_*e.root
+Time and date of raw file of run67141: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67142_*e.root
+Time and date of raw file of run67142: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67143_*e.root
+Time and date of raw file of run67143: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67144_*e.root
+Time and date of raw file of run67144: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67145_*e.root
+Time and date of raw file of run67145: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67146_*e.root
+Time and date of raw file of run67146: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67147_*e.root
+Time and date of raw file of run67147: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67148_*e.root
+Time and date of raw file of run67148: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67149_*e.root
+Time and date of raw file of run67149: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67150_*e.root
+Time and date of raw file of run67150: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67151_*e.root
+Time and date of raw file of run67151: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67152_*e.root
+Time and date of raw file of run67152: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67153_*e.root
+Time and date of raw file of run67153: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67154_*e.root
+Time and date of raw file of run67154: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67155_*e.root
+Time and date of raw file of run67155: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67156_*e.root
+Time and date of raw file of run67156: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67157_*e.root
+Time and date of raw file of run67157: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67158_*e.root
+Time and date of raw file of run67158: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67159_*e.root
+Time and date of raw file of run67159: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67160_*e.root
+Time and date of raw file of run67160: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67161_*e.root
+Time and date of raw file of run67161: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67162_*e.root
+Time and date of raw file of run67162: Thu Jan  1 01:00:00 1970
+>>> Adding file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData//run67163_*e.root
+Time and date of raw file of run67163: Thu Jan  1 01:00:00 1970
+Bar: 0   chL: 78    chR: 81
+Bar: 1   chL: 76    chR: 83
+Bar: 2   chL: 74    chR: 85
+Bar: 3   chL: 72    chR: 87
+Bar: 4   chL: 70    chR: 89
+Bar: 5   chL: 68    chR: 91
+Bar: 6   chL: 66    chR: 93
+Bar: 7   chL: 64    chR: 95
+Bar: 8   chL: 65    chR: 94
+Bar: 9   chL: 67    chR: 92
+Bar: 10   chL: 69    chR: 90
+Bar: 11   chL: 71    chR: 88
+Bar: 12   chL: 73    chR: 86
+Bar: 13   chL: 75    chR: 84
+Bar: 14   chL: 77    chR: 82
+Bar: 15   chL: 79    chR: 80
+0   0.5  10
+1   0.5  1
+2   0.5  1
+3   0.5  5
+4   0.5  10
+5   0.5  10
+6   0.5  1
+7   0.5  10
+8   0.5  5
+9   0.5  2
+10   0.5  1
+11   0.5  1
+12   0.5  5
+13   0.5  5
+14   0.5  1
+15   0.5  1
+0   0.8  100
+1   0.8  1
+2   0.8  10
+3   0.8  50
+4   0.8  100
+5   0.8  100
+6   0.8  1
+7   0.8  100
+8   0.8  100
+9   0.8  50
+10   0.8  20
+11   0.8  20
+12   0.8  100
+13   0.8  50
+14   0.8  1
+15   0.8  10
+0   1  100
+1   1  5
+2   1  20
+3   1  100
+4   1  100
+5   1  100
+6   1  1
+7   1  100
+8   1  100
+9   1  100
+10   1  50
+11   1  50
+12   1  100
+13   1  100
+14   1  1
+15   1  10
+0   1.5  100
+1   1.5  5
+2   1.5  20
+3   1.5  100
+4   1.5  100
+5   1.5  100
+6   1.5  1
+7   1.5  100
+8   1.5  100
+9   1.5  100
+10   1.5  50
+11   1.5  50
+12   1.5  100
+13   1.5  100
+14   1.5  1
+15   1.5  100
+0   2  100
+1   2  5
+2   2  20
+3   2  100
+4   2  100
+5   2  100
+6   2  1
+7   2  100
+8   2  100
+9   2  100
+10   2  50
+11   2  50
+12   2  100
+13   2  100
+14   2  1
+15   2  100
+0   3.5  100
+1   3.5  5
+2   3.5  20
+3   3.5  100
+4   3.5  100
+5   3.5  100
+6   3.5  1
+7   3.5  100
+8   3.5  100
+9   3.5  50
+10   3.5  40
+11   3.5  50
+12   3.5  100
+13   3.5  100
+14   3.5  1
+15   3.5  50
+15   3.5  50
+
+>>> external bar loop: reading entry 0 / 4853052 (0%)
+[0m-----Machine stats---current/max-----
+CPU(%): 6.7/6.7
+MEM(%): 0/0
+VSZ(M): 442.724/442.724
+RSS(M): 119.9/119.9
+time lasted: 0:00
+
+>>> external bar loop: reading entry 200000 / 4853052 (4.12112%)
+[0m-----Machine stats---current/max-----
+CPU(%): 17.8/17.8
+MEM(%): 0/0
+VSZ(M): 452.232/452.232
+RSS(M): 144.052/144.052
+time lasted: 0:01
+
+>>> external bar loop: reading entry 400000 / 4853052 (8.24224%)
+[0m-----Machine stats---current/max-----
+CPU(%): 20.9/20.9
+MEM(%): 0/0
+VSZ(M): 461.832/461.832
+RSS(M): 154.668/154.668
+time lasted: 0:02
+
+>>> external bar loop: reading entry 600000 / 4853052 (12.3634%)
+[0m-----Machine stats---current/max-----
+CPU(%): 28/28
+MEM(%): 0/0
+VSZ(M): 471.372/471.372
+RSS(M): 164.056/164.056
+time lasted: 0:03
+
+>>> external bar loop: reading entry 800000 / 4853052 (16.4845%)
+[0m-----Machine stats---current/max-----
+CPU(%): 34.1/34.1
+MEM(%): 0/0
+VSZ(M): 480.992/480.992
+RSS(M): 173.956/173.956
+time lasted: 0:04
+
+>>> external bar loop: reading entry 1000000 / 4853052 (20.6056%)
+[0m-----Machine stats---current/max-----
+CPU(%): 37.6/37.6
+MEM(%): 0/0
+VSZ(M): 490.54/490.54
+RSS(M): 183.672/183.672
+time lasted: 0:06
+
+>>> external bar loop: reading entry 1200000 / 4853052 (24.7267%)
+[0m-----Machine stats---current/max-----
+CPU(%): 41.4/41.4
+MEM(%): 0/0
+VSZ(M): 500.04/500.04
+RSS(M): 193.376/193.376
+time lasted: 0:07
+
+>>> external bar loop: reading entry 1400000 / 4853052 (28.8478%)
+[0m-----Machine stats---current/max-----
+CPU(%): 45.8/45.8
+MEM(%): 0/0
+VSZ(M): 509.58/509.58
+RSS(M): 202.836/202.836
+time lasted: 0:08
+
+>>> external bar loop: reading entry 1600000 / 4853052 (32.9689%)
+[0m-----Machine stats---current/max-----
+CPU(%): 46.7/46.7
+MEM(%): 0/0
+VSZ(M): 519.144/519.144
+RSS(M): 212.204/212.204
+time lasted: 0:09
+
+>>> external bar loop: reading entry 1800000 / 4853052 (37.0901%)
+[0m-----Machine stats---current/max-----
+CPU(%): 50.8/50.8
+MEM(%): 0/0
+VSZ(M): 528.696/528.696
+RSS(M): 221.836/221.836
+time lasted: 0:10
+
+>>> external bar loop: reading entry 2000000 / 4853052 (41.2112%)
+[0m-----Machine stats---current/max-----
+CPU(%): 51/51
+MEM(%): 0/0
+VSZ(M): 538.28/538.28
+RSS(M): 231.492/231.492
+time lasted: 0:11
+
+>>> external bar loop: reading entry 2200000 / 4853052 (45.3323%)
+[0m-----Machine stats---current/max-----
+CPU(%): 53.5/53.5
+MEM(%): 0/0
+VSZ(M): 547.8/547.8
+RSS(M): 241.128/241.128
+time lasted: 0:12
+
+>>> external bar loop: reading entry 2400000 / 4853052 (49.4534%)
+[0m-----Machine stats---current/max-----
+CPU(%): 55.8/55.8
+MEM(%): 0/0
+VSZ(M): 557.38/557.38
+RSS(M): 250.676/250.676
+time lasted: 0:13
+
+>>> external bar loop: reading entry 2600000 / 4853052 (53.5745%)
+[0m-----Machine stats---current/max-----
+CPU(%): 55.5/55.8
+MEM(%): 0/0
+VSZ(M): 566.868/566.868
+RSS(M): 260.22/260.22
+time lasted: 0:15
+
+>>> external bar loop: reading entry 2800000 / 4853052 (57.6957%)
+[0m-----Machine stats---current/max-----
+CPU(%): 57.4/57.4
+MEM(%): 0.1/0.1
+VSZ(M): 576.496/576.496
+RSS(M): 269.796/269.796
+time lasted: 0:16
+
+>>> external bar loop: reading entry 3000000 / 4853052 (61.8168%)
+[0m-----Machine stats---current/max-----
+CPU(%): 59.6/59.6
+MEM(%): 0.1/0.1
+VSZ(M): 586.1/586.1
+RSS(M): 279.328/279.328
+time lasted: 0:17
+
+>>> external bar loop: reading entry 3200000 / 4853052 (65.9379%)
+[0m-----Machine stats---current/max-----
+CPU(%): 59.6/59.6
+MEM(%): 0.1/0.1
+VSZ(M): 595.612/595.612
+RSS(M): 288.848/288.848
+time lasted: 0:18
+
+>>> external bar loop: reading entry 3400000 / 4853052 (70.059%)
+[0m-----Machine stats---current/max-----
+CPU(%): 61.4/61.4
+MEM(%): 0.1/0.1
+VSZ(M): 605.152/605.152
+RSS(M): 298.436/298.436
+time lasted: 0:19
+
+>>> external bar loop: reading entry 3600000 / 4853052 (74.1801%)
+[0m-----Machine stats---current/max-----
+CPU(%): 61/61.4
+MEM(%): 0.1/0.1
+VSZ(M): 614.748/614.748
+RSS(M): 307.932/307.932
+time lasted: 0:20
+
+>>> external bar loop: reading entry 3800000 / 4853052 (78.3012%)
+[0m-----Machine stats---current/max-----
+CPU(%): 62.6/62.6
+MEM(%): 0.1/0.1
+VSZ(M): 624.268/624.268
+RSS(M): 317.34/317.34
+time lasted: 0:21
+
+>>> external bar loop: reading entry 4000000 / 4853052 (82.4224%)
+[0m-----Machine stats---current/max-----
+CPU(%): 62.7/62.7
+MEM(%): 0.1/0.1
+VSZ(M): 633.748/633.748
+RSS(M): 327.124/327.124
+time lasted: 0:23
+
+>>> external bar loop: reading entry 4200000 / 4853052 (86.5435%)
+[0m-----Machine stats---current/max-----
+CPU(%): 63.9/63.9
+MEM(%): 0.1/0.1
+VSZ(M): 643.388/643.388
+RSS(M): 336.476/336.476
+time lasted: 0:24
+
+>>> external bar loop: reading entry 4400000 / 4853052 (90.6646%)
+[0m-----Machine stats---current/max-----
+CPU(%): 65/65
+MEM(%): 0.1/0.1
+VSZ(M): 652.824/652.824
+RSS(M): 346.22/346.22
+time lasted: 0:25
+
+>>> external bar loop: reading entry 4600000 / 4853052 (94.7857%)
+[0m-----Machine stats---current/max-----
+CPU(%): 64.8/65
+MEM(%): 0.1/0.1
+VSZ(M): 662.504/662.504
+RSS(M): 355.636/355.636
+time lasted: 0:26
+
+>>> external bar loop: reading entry 4800000 / 4853052 (98.9068%)
+[0m-----Machine stats---current/max-----
+CPU(%): 66.2/66.2
+MEM(%): 0.1/0.1
+VSZ(M): 671.996/671.996
+RSS(M): 365.3/365.3
+time lasted: 0:27
+
+Vov = 0.8  vth1 = 2   vth2 = 1320    Coincidence bar - energy range:  202.411 - 950
+Vov = 0.8  vth1 = 5   vth2 = 1020    Coincidence bar - energy range:  202.688 - 950
+Vov = 0.8  vth1 = 7   vth2 = 820    Coincidence bar - energy range:  202.936 - 950
+Vov = 0.8  vth1 = 10   vth2 = 520    Coincidence bar - energy range:  202.862 - 950
+Vov = 0.8  vth1 = 15   vth2 = 20    Coincidence bar - energy range:  202.028 - 950
+
+>>> 1st loop: reading entry 0 / 4853052 (0%)
+[0m-----Machine stats---current/max-----
+CPU(%): 65.4/66.2
+MEM(%): 0.1/0.1
+VSZ(M): 676.508/676.508
+RSS(M): 373.2/373.2
+time lasted: 0:28
+
+>>> 1st loop: reading entry 200000 / 4853052 (4.12112%)
+[0m-----Machine stats---current/max-----
+CPU(%): 67/67
+MEM(%): 0.1/0.1
+VSZ(M): 678.16/678.16
+RSS(M): 374.776/374.776
+time lasted: 0:29
+
+>>> 1st loop: reading entry 400000 / 4853052 (8.24224%)
+[0m-----Machine stats---current/max-----
+CPU(%): 67.6/67.6
+MEM(%): 0.1/0.1
+VSZ(M): 678.16/678.16
+RSS(M): 374.896/374.896
+time lasted: 0:31
+
+>>> 1st loop: reading entry 600000 / 4853052 (12.3634%)
+[0m-----Machine stats---current/max-----
+CPU(%): 69.5/69.5
+MEM(%): 0.1/0.1
+VSZ(M): 678.16/678.16
+RSS(M): 374.916/374.916
+time lasted: 0:32
+
+>>> 1st loop: reading entry 800000 / 4853052 (16.4845%)
+[0m-----Machine stats---current/max-----
+CPU(%): 69.8/69.8
+MEM(%): 0.1/0.1
+VSZ(M): 678.16/678.16
+RSS(M): 374.924/374.924
+time lasted: 0:34
+
+>>> 1st loop: reading entry 1000000 / 4853052 (20.6056%)
+[0m-----Machine stats---current/max-----
+CPU(%): 71.4/71.4
+MEM(%): 0.1/0.1
+VSZ(M): 678.16/678.16
+RSS(M): 374.932/374.932
+time lasted: 0:35
+
+>>> 1st loop: reading entry 1200000 / 4853052 (24.7267%)
+[0m-----Machine stats---current/max-----
+CPU(%): 71.5/71.5
+MEM(%): 0.1/0.1
+VSZ(M): 679.74/679.74
+RSS(M): 376.22/376.22
+time lasted: 0:37
+
+>>> 1st loop: reading entry 1400000 / 4853052 (28.8478%)
+[0m-----Machine stats---current/max-----
+CPU(%): 72.8/72.8
+MEM(%): 0.1/0.1
+VSZ(M): 679.74/679.74
+RSS(M): 376.276/376.276
+time lasted: 0:38
+
+>>> 1st loop: reading entry 1600000 / 4853052 (32.9689%)
+[0m-----Machine stats---current/max-----
+CPU(%): 45/72.8
+MEM(%): 0.1/0.1
+VSZ(M): 757.812/757.812
+RSS(M): 439.552/439.552
+time lasted: 0:24
+
+>>> 1st loop: reading entry 1800000 / 4853052 (37.0901%)
+[0m-----Machine stats---current/max-----
+CPU(%): 74/74
+MEM(%): 0.1/0.1
+VSZ(M): 679.74/757.812
+RSS(M): 376.34/439.552
+time lasted: 0:41
+
+>>> 1st loop: reading entry 2000000 / 4853052 (41.2112%)
+[0m-----Machine stats---current/max-----
+CPU(%): 74.1/74.1
+MEM(%): 0.1/0.1
+VSZ(M): 679.74/757.812
+RSS(M): 376.348/439.552
+time lasted: 0:42
+
+>>> 1st loop: reading entry 2200000 / 4853052 (45.3323%)
+[0m-----Machine stats---current/max-----
+CPU(%): 75.3/75.3
+MEM(%): 0.1/0.1
+VSZ(M): 681.48/757.812
+RSS(M): 377.756/439.552
+time lasted: 0:44
+
+>>> 1st loop: reading entry 2400000 / 4853052 (49.4534%)
+[0m-----Machine stats---current/max-----
+CPU(%): 75.7/75.7
+MEM(%): 0.1/0.1
+VSZ(M): 681.48/757.812
+RSS(M): 377.776/439.552
+time lasted: 0:46
+
+>>> 1st loop: reading entry 2600000 / 4853052 (53.5745%)
+[0m-----Machine stats---current/max-----
+CPU(%): 75.4/75.7
+MEM(%): 0.1/0.1
+VSZ(M): 681.48/757.812
+RSS(M): 377.796/439.552
+time lasted: 0:47
+
+>>> 1st loop: reading entry 2800000 / 4853052 (57.6957%)
+[0m-----Machine stats---current/max-----
+CPU(%): 76.4/76.4
+MEM(%): 0.1/0.1
+VSZ(M): 681.48/757.812
+RSS(M): 377.812/439.552
+time lasted: 0:48
+
+>>> 1st loop: reading entry 3000000 / 4853052 (61.8168%)
+[0m-----Machine stats---current/max-----
+CPU(%): 76.5/76.5
+MEM(%): 0.1/0.1
+VSZ(M): 683.044/757.812
+RSS(M): 379.036/439.552
+time lasted: 0:50
+
+>>> 1st loop: reading entry 3200000 / 4853052 (65.9379%)
+[0m-----Machine stats---current/max-----
+CPU(%): 77.6/77.6
+MEM(%): 0.1/0.1
+VSZ(M): 683.228/757.812
+RSS(M): 379.216/439.552
+time lasted: 0:52
+
+>>> 1st loop: reading entry 3400000 / 4853052 (70.059%)
+[0m-----Machine stats---current/max-----
+CPU(%): 77.6/77.6
+MEM(%): 0.1/0.1
+VSZ(M): 683.228/757.812
+RSS(M): 379.248/439.552
+time lasted: 0:53
+
+>>> 1st loop: reading entry 3600000 / 4853052 (74.1801%)
+[0m-----Machine stats---current/max-----
+CPU(%): 78.7/78.7
+MEM(%): 0.1/0.1
+VSZ(M): 683.228/757.812
+RSS(M): 379.256/439.552
+time lasted: 0:55
+
+>>> 1st loop: reading entry 3800000 / 4853052 (78.3012%)
+[0m-----Machine stats---current/max-----
+CPU(%): 78.7/78.7
+MEM(%): 0.1/0.1
+VSZ(M): 683.228/757.812
+RSS(M): 379.272/439.552
+time lasted: 0:56
+
+>>> 1st loop: reading entry 4000000 / 4853052 (82.4224%)
+[0m-----Machine stats---current/max-----
+CPU(%): 79.7/79.7
+MEM(%): 0.1/0.1
+VSZ(M): 684.864/757.812
+RSS(M): 380.524/439.552
+time lasted: 0:58
+
+>>> 1st loop: reading entry 4200000 / 4853052 (86.5435%)
+[0m-----Machine stats---current/max-----
+CPU(%): 79.6/79.7
+MEM(%): 0.1/0.1
+VSZ(M): 684.864/757.812
+RSS(M): 380.668/439.552
+time lasted: 0:59
+
+>>> 1st loop: reading entry 4400000 / 4853052 (90.6646%)
+[0m-----Machine stats---current/max-----
+CPU(%): 80.4/80.4
+MEM(%): 0.1/0.1
+VSZ(M): 684.864/757.812
+RSS(M): 380.704/439.552
+time lasted: 1:01
+
+>>> 1st loop: reading entry 4600000 / 4853052 (94.7857%)
+[0m-----Machine stats---current/max-----
+CPU(%): 80.5/80.5
+MEM(%): 0.1/0.1
+VSZ(M): 684.864/757.812
+RSS(M): 380.728/439.552
+time lasted: 1:02
+
+>>> 1st loop: reading entry 4800000 / 4853052 (98.9068%)
+[0m-----Machine stats---current/max-----
+CPU(%): 80.4/80.5
+MEM(%): 0.1/0.1
+VSZ(M): 684.864/757.812
+RSS(M): 380.732/439.552
+time lasted: 1:04
+============================================
+nr of  B written:  437015
+nr of KB written:  426
+nr of MB written:  0
+============================================
+> CfgManager --- INFO: parsing /afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_C25_LYSO813_Vov0.80.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/cfg/minEnergies_HPK_nonIrr_C25_LYSO813.txt
+minEnergies:   bar 0   Vov 0.5   E 10
+minEnergies:   bar 1   Vov 0.5   E 1
+minEnergies:   bar 2   Vov 0.5   E 1
+minEnergies:   bar 3   Vov 0.5   E 5
+minEnergies:   bar 4   Vov 0.5   E 10
+minEnergies:   bar 5   Vov 0.5   E 10
+minEnergies:   bar 6   Vov 0.5   E 1
+minEnergies:   bar 7   Vov 0.5   E 10
+minEnergies:   bar 8   Vov 0.5   E 5
+minEnergies:   bar 9   Vov 0.5   E 2
+minEnergies:   bar 10   Vov 0.5   E 1
+minEnergies:   bar 11   Vov 0.5   E 1
+minEnergies:   bar 12   Vov 0.5   E 5
+minEnergies:   bar 13   Vov 0.5   E 5
+minEnergies:   bar 14   Vov 0.5   E 1
+minEnergies:   bar 15   Vov 0.5   E 1
+minEnergies:   bar 0   Vov 0.80000001192092896   E 100
+minEnergies:   bar 1   Vov 0.80000001192092896   E 1
+minEnergies:   bar 2   Vov 0.80000001192092896   E 10
+minEnergies:   bar 3   Vov 0.80000001192092896   E 50
+minEnergies:   bar 4   Vov 0.80000001192092896   E 100
+minEnergies:   bar 5   Vov 0.80000001192092896   E 100
+minEnergies:   bar 6   Vov 0.80000001192092896   E 1
+minEnergies:   bar 7   Vov 0.80000001192092896   E 100
+minEnergies:   bar 8   Vov 0.80000001192092896   E 100
+minEnergies:   bar 9   Vov 0.80000001192092896   E 50
+minEnergies:   bar 10   Vov 0.80000001192092896   E 20
+minEnergies:   bar 11   Vov 0.80000001192092896   E 20
+minEnergies:   bar 12   Vov 0.80000001192092896   E 100
+minEnergies:   bar 13   Vov 0.80000001192092896   E 50
+minEnergies:   bar 14   Vov 0.80000001192092896   E 1
+minEnergies:   bar 15   Vov 0.80000001192092896   E 10
+minEnergies:   bar 0   Vov 1   E 100
+minEnergies:   bar 1   Vov 1   E 5
+minEnergies:   bar 2   Vov 1   E 20
+minEnergies:   bar 3   Vov 1   E 100
+minEnergies:   bar 4   Vov 1   E 100
+minEnergies:   bar 5   Vov 1   E 100
+minEnergies:   bar 6   Vov 1   E 1
+minEnergies:   bar 7   Vov 1   E 100
+minEnergies:   bar 8   Vov 1   E 100
+minEnergies:   bar 9   Vov 1   E 100
+minEnergies:   bar 10   Vov 1   E 50
+minEnergies:   bar 11   Vov 1   E 50
+minEnergies:   bar 12   Vov 1   E 100
+minEnergies:   bar 13   Vov 1   E 100
+minEnergies:   bar 14   Vov 1   E 1
+minEnergies:   bar 15   Vov 1   E 10
+minEnergies:   bar 0   Vov 1.5   E 100
+minEnergies:   bar 1   Vov 1.5   E 5
+minEnergies:   bar 2   Vov 1.5   E 20
+minEnergies:   bar 3   Vov 1.5   E 100
+minEnergies:   bar 4   Vov 1.5   E 100
+minEnergies:   bar 5   Vov 1.5   E 100
+minEnergies:   bar 6   Vov 1.5   E 1
+minEnergies:   bar 7   Vov 1.5   E 100
+minEnergies:   bar 8   Vov 1.5   E 100
+minEnergies:   bar 9   Vov 1.5   E 100
+minEnergies:   bar 10   Vov 1.5   E 50
+minEnergies:   bar 11   Vov 1.5   E 50
+minEnergies:   bar 12   Vov 1.5   E 100
+minEnergies:   bar 13   Vov 1.5   E 100
+minEnergies:   bar 14   Vov 1.5   E 1
+minEnergies:   bar 15   Vov 1.5   E 100
+minEnergies:   bar 0   Vov 2   E 100
+minEnergies:   bar 1   Vov 2   E 5
+minEnergies:   bar 2   Vov 2   E 20
+minEnergies:   bar 3   Vov 2   E 100
+minEnergies:   bar 4   Vov 2   E 100
+minEnergies:   bar 5   Vov 2   E 100
+minEnergies:   bar 6   Vov 2   E 1
+minEnergies:   bar 7   Vov 2   E 100
+minEnergies:   bar 8   Vov 2   E 100
+minEnergies:   bar 9   Vov 2   E 100
+minEnergies:   bar 10   Vov 2   E 50
+minEnergies:   bar 11   Vov 2   E 50
+minEnergies:   bar 12   Vov 2   E 100
+minEnergies:   bar 13   Vov 2   E 100
+minEnergies:   bar 14   Vov 2   E 1
+minEnergies:   bar 15   Vov 2   E 100
+minEnergies:   bar 0   Vov 3.5   E 100
+minEnergies:   bar 1   Vov 3.5   E 5
+minEnergies:   bar 2   Vov 3.5   E 20
+minEnergies:   bar 3   Vov 3.5   E 100
+minEnergies:   bar 4   Vov 3.5   E 100
+minEnergies:   bar 5   Vov 3.5   E 100
+minEnergies:   bar 6   Vov 3.5   E 1
+minEnergies:   bar 7   Vov 3.5   E 100
+minEnergies:   bar 8   Vov 3.5   E 100
+minEnergies:   bar 9   Vov 3.5   E 50
+minEnergies:   bar 10   Vov 3.5   E 40
+minEnergies:   bar 11   Vov 3.5   E 50
+minEnergies:   bar 12   Vov 3.5   E 100
+minEnergies:   bar 13   Vov 3.5   E 100
+minEnergies:   bar 14   Vov 3.5   E 1
+minEnergies:   bar 15   Vov 3.5   E 50
+minEnergies:   bar 15   Vov 3.5   E 50
+0  0.80000001192092896  127.30073547363281
+1  0.80000001192092896  3.2910666465759277
+2  0.80000001192092896  15.376407623291016
+3  0.80000001192092896  98.295249938964844
+4  0.80000001192092896  138.12553405761719
+5  0.80000001192092896  125.55755615234375
+6  0.80000001192092896  1
+7  0.80000001192092896  166.82762145996094
+8  0.80000001192092896  104.03548431396484
+9  0.80000001192092896  70.13458251953125
+10  0.80000001192092896  38.133903503417969
+11  0.80000001192092896  47.649868011474609
+12  0.80000001192092896  122.48148345947266
+13  0.80000001192092896  89.441802978515625
+14  0.80000001192092896  1
+15  0.80000001192092896  46.653968811035156
+>>> 2nd loop: bar00L-R_Vov0.80_th02 reading entry 0 / 1508 (0%)>>> 2nd loop: bar00L-R_Vov0.80_th05 reading entry 0 / 1410 (0%)>>> 2nd loop: bar00L-R_Vov0.80_th07 reading entry 0 / 1340 (0%)>>> 2nd loop: bar00L-R_Vov0.80_th10 reading entry 0 / 1482 (0%)>>> 2nd loop: bar00L-R_Vov0.80_th15 reading entry 0 / 1404 (0%)>>> 2nd loop: bar01L-R_Vov0.80_th02 reading entry 0 / 2412 (0%)>>> 2nd loop: bar01L-R_Vov0.80_th05 reading entry 0 / 2285 (0%)>>> 2nd loop: bar01L-R_Vov0.80_th07 reading entry 0 / 2238 (0%)>>> 2nd loop: bar01L-R_Vov0.80_th10 reading entry 0 / 2520 (0%)>>> 2nd loop: bar01L-R_Vov0.80_th15 reading entry 0 / 2318 (0%)>>> 2nd loop: bar02L-R_Vov0.80_th02 reading entry 0 / 3679 (0%)>>> 2nd loop: bar02L-R_Vov0.80_th05 reading entry 0 / 3321 (0%)>>> 2nd loop: bar02L-R_Vov0.80_th07 reading entry 0 / 3349 (0%)>>> 2nd loop: bar02L-R_Vov0.80_th10 reading entry 0 / 3617 (0%)>>> 2nd loop: bar02L-R_Vov0.80_th15 reading entry 0 / 3455 (0%)>>> 2nd loop: bar03L-R_Vov0.80_th02 reading entry 0 / 4557 (0%)>>> 2nd loop: bar03L-R_Vov0.80_th05 reading entry 0 / 4594 (0%)>>> 2nd loop: bar03L-R_Vov0.80_th07 reading entry 0 / 4638 (0%)>>> 2nd loop: bar03L-R_Vov0.80_th10 reading entry 0 / 4913 (0%)>>> 2nd loop: bar03L-R_Vov0.80_th15 reading entry 0 / 4594 (0%)>>> 2nd loop: bar04L-R_Vov0.80_th02 reading entry 0 / 6397 (0%)>>> 2nd loop: bar04L-R_Vov0.80_th05 reading entry 0 / 5867 (0%)>>> 2nd loop: bar04L-R_Vov0.80_th07 reading entry 0 / 5835 (0%)>>> 2nd loop: bar04L-R_Vov0.80_th10 reading entry 0 / 6488 (0%)>>> 2nd loop: bar04L-R_Vov0.80_th15 reading entry 0 / 6142 (0%)>>> 2nd loop: bar05L-R_Vov0.80_th02 reading entry 0 / 7720 (0%)>>> 2nd loop: bar05L-R_Vov0.80_th05 reading entry 0 / 7355 (0%)>>> 2nd loop: bar05L-R_Vov0.80_th07 reading entry 0 / 7206 (0%)>>> 2nd loop: bar05L-R_Vov0.80_th10 reading entry 0 / 7850 (0%)>>> 2nd loop: bar05L-R_Vov0.80_th15 reading entry 0 / 7359 (0%)>>> 2nd loop: bar06L-R_Vov0.80_th02 reading entry 0 / 8633 (0%)>>> 2nd loop: bar06L-R_Vov0.80_th05 reading entry 0 / 8131 (0%)>>> 2nd loop: bar06L-R_Vov0.80_th07 reading entry 0 / 8261 (0%)>>> 2nd loop: bar06L-R_Vov0.80_th10 reading entry 0 / 8790 (0%)>>> 2nd loop: bar06L-R_Vov0.80_th15 reading entry 0 / 8328 (0%)>>> 2nd loop: bar07L-R_Vov0.80_th02 reading entry 0 / 8897 (0%)>>> 2nd loop: bar07L-R_Vov0.80_th05 reading entry 0 / 8324 (0%)>>> 2nd loop: bar07L-R_Vov0.80_th07 reading entry 0 / 8407 (0%)>>> 2nd loop: bar07L-R_Vov0.80_th10 reading entry 0 / 8922 (0%)>>> 2nd loop: bar07L-R_Vov0.80_th15 reading entry 0 / 8632 (0%)>>> 2nd loop: bar08L-R_Vov0.80_th02 reading entry 0 / 8468 (0%)>>> 2nd loop: bar08L-R_Vov0.80_th05 reading entry 0 / 8063 (0%)>>> 2nd loop: bar08L-R_Vov0.80_th07 reading entry 0 / 8074 (0%)>>> 2nd loop: bar08L-R_Vov0.80_th10 reading entry 0 / 8579 (0%)>>> 2nd loop: bar08L-R_Vov0.80_th15 reading entry 0 / 7997 (0%)>>> 2nd loop: bar09L-R_Vov0.80_th02 reading entry 0 / 6749 (0%)>>> 2nd loop: bar09L-R_Vov0.80_th05 reading entry 0 / 6319 (0%)>>> 2nd loop: bar09L-R_Vov0.80_th07 reading entry 0 / 6340 (0%)>>> 2nd loop: bar09L-R_Vov0.80_th10 reading entry 0 / 6843 (0%)>>> 2nd loop: bar09L-R_Vov0.80_th15 reading entry 0 / 6599 (0%)>>> 2nd loop: bar10L-R_Vov0.80_th02 reading entry 0 / 5654 (0%)>>> 2nd loop: bar10L-R_Vov0.80_th05 reading entry 0 / 5417 (0%)>>> 2nd loop: bar10L-R_Vov0.80_th07 reading entry 0 / 5299 (0%)>>> 2nd loop: bar10L-R_Vov0.80_th10 reading entry 0 / 5813 (0%)>>> 2nd loop: bar10L-R_Vov0.80_th15 reading entry 0 / 5444 (0%)>>> 2nd loop: bar11L-R_Vov0.80_th02 reading entry 0 / 3788 (0%)>>> 2nd loop: bar11L-R_Vov0.80_th05 reading entry 0 / 3696 (0%)>>> 2nd loop: bar11L-R_Vov0.80_th07 reading entry 0 / 3518 (0%)>>> 2nd loop: bar11L-R_Vov0.80_th10 reading entry 0 / 3879 (0%)>>> 2nd loop: bar11L-R_Vov0.80_th15 reading entry 0 / 3702 (0%)>>> 2nd loop: bar12L-R_Vov0.80_th02 reading entry 0 / 2296 (0%)>>> 2nd loop: bar12L-R_Vov0.80_th05 reading entry 0 / 2141 (0%)>>> 2nd loop: bar12L-R_Vov0.80_th07 reading entry 0 / 2102 (0%)>>> 2nd loop: bar12L-R_Vov0.80_th10 reading entry 0 / 2355 (0%)>>> 2nd loop: bar12L-R_Vov0.80_th15 reading entry 0 / 2169 (0%)>>> 2nd loop: bar13L-R_Vov0.80_th02 reading entry 0 / 829 (0%)>>> 2nd loop: bar13L-R_Vov0.80_th05 reading entry 0 / 816 (0%)>>> 2nd loop: bar13L-R_Vov0.80_th07 reading entry 0 / 761 (0%)>>> 2nd loop: bar13L-R_Vov0.80_th10 reading entry 0 / 909 (0%)>>> 2nd loop: bar13L-R_Vov0.80_th15 reading entry 0 / 813 (0%)>>> 2nd loop: bar14L-R_Vov0.80_th02 reading entry 0 / 303 (0%)>>> 2nd loop: bar14L-R_Vov0.80_th05 reading entry 0 / 283 (0%)>>> 2nd loop: bar14L-R_Vov0.80_th07 reading entry 0 / 248 (0%)>>> 2nd loop: bar14L-R_Vov0.80_th10 reading entry 0 / 303 (0%)>>> 2nd loop: bar14L-R_Vov0.80_th15 reading entry 0 / 253 (0%)>>> 2nd loop: bar15L-R_Vov0.80_th02 reading entry 0 / 208 (0%)>>> 2nd loop: bar15L-R_Vov0.80_th05 reading entry 0 / 163 (0%)>>> 2nd loop: bar15L-R_Vov0.80_th07 reading entry 0 / 187 (0%)>>> 2nd loop: bar15L-R_Vov0.80_th10 reading entry 0 / 208 (0%)>>> 2nd loop: bar15L-R_Vov0.80_th15 reading entry 0 / 185 (0%)>>> 3rd loop: bar00L-R_Vov0.80_th02 reading entry 0 / 1508 (0%)
+>>> 3rd loop: bar00L-R_Vov0.80_th05 reading entry 0 / 1410 (0%)
+>>> 3rd loop: bar00L-R_Vov0.80_th07 reading entry 0 / 1340 (0%)
+>>> 3rd loop: bar00L-R_Vov0.80_th10 reading entry 0 / 1482 (0%)
+>>> 3rd loop: bar00L-R_Vov0.80_th15 reading entry 0 / 1404 (0%)
+>>> 3rd loop: bar01L-R_Vov0.80_th02 reading entry 0 / 2412 (0%)
+>>> 3rd loop: bar01L-R_Vov0.80_th05 reading entry 0 / 2285 (0%)
+>>> 3rd loop: bar01L-R_Vov0.80_th07 reading entry 0 / 2238 (0%)
+>>> 3rd loop: bar01L-R_Vov0.80_th10 reading entry 0 / 2520 (0%)
+>>> 3rd loop: bar01L-R_Vov0.80_th15 reading entry 0 / 2318 (0%)
+>>> 3rd loop: bar02L-R_Vov0.80_th02 reading entry 0 / 3679 (0%)
+>>> 3rd loop: bar02L-R_Vov0.80_th05 reading entry 0 / 3321 (0%)
+>>> 3rd loop: bar02L-R_Vov0.80_th07 reading entry 0 / 3349 (0%)
+>>> 3rd loop: bar02L-R_Vov0.80_th10 reading entry 0 / 3617 (0%)
+>>> 3rd loop: bar02L-R_Vov0.80_th15 reading entry 0 / 3455 (0%)
+>>> 3rd loop: bar03L-R_Vov0.80_th02 reading entry 0 / 4557 (0%)
+>>> 3rd loop: bar03L-R_Vov0.80_th05 reading entry 0 / 4594 (0%)
+>>> 3rd loop: bar03L-R_Vov0.80_th07 reading entry 0 / 4638 (0%)
+>>> 3rd loop: bar03L-R_Vov0.80_th10 reading entry 0 / 4913 (0%)
+>>> 3rd loop: bar03L-R_Vov0.80_th15 reading entry 0 / 4594 (0%)
+>>> 3rd loop: bar04L-R_Vov0.80_th02 reading entry 0 / 6397 (0%)
+>>> 3rd loop: bar04L-R_Vov0.80_th05 reading entry 0 / 5867 (0%)
+>>> 3rd loop: bar04L-R_Vov0.80_th07 reading entry 0 / 5835 (0%)
+>>> 3rd loop: bar04L-R_Vov0.80_th10 reading entry 0 / 6488 (0%)
+>>> 3rd loop: bar04L-R_Vov0.80_th15 reading entry 0 / 6142 (0%)
+>>> 3rd loop: bar05L-R_Vov0.80_th02 reading entry 0 / 7720 (0%)
+>>> 3rd loop: bar05L-R_Vov0.80_th05 reading entry 0 / 7355 (0%)
+>>> 3rd loop: bar05L-R_Vov0.80_th07 reading entry 0 / 7206 (0%)
+>>> 3rd loop: bar05L-R_Vov0.80_th10 reading entry 0 / 7850 (0%)
+>>> 3rd loop: bar05L-R_Vov0.80_th15 reading entry 0 / 7359 (0%)
+>>> 3rd loop: bar06L-R_Vov0.80_th02 reading entry 0 / 8633 (0%)
+>>> 3rd loop: bar06L-R_Vov0.80_th05 reading entry 0 / 8131 (0%)
+>>> 3rd loop: bar06L-R_Vov0.80_th07 reading entry 0 / 8261 (0%)
+>>> 3rd loop: bar06L-R_Vov0.80_th10 reading entry 0 / 8790 (0%)
+>>> 3rd loop: bar06L-R_Vov0.80_th15 reading entry 0 / 8328 (0%)
+>>> 3rd loop: bar07L-R_Vov0.80_th02 reading entry 0 / 8897 (0%)
+>>> 3rd loop: bar07L-R_Vov0.80_th05 reading entry 0 / 8324 (0%)
+>>> 3rd loop: bar07L-R_Vov0.80_th07 reading entry 0 / 8407 (0%)
+>>> 3rd loop: bar07L-R_Vov0.80_th10 reading entry 0 / 8922 (0%)
+>>> 3rd loop: bar07L-R_Vov0.80_th15 reading entry 0 / 8632 (0%)
+>>> 3rd loop: bar08L-R_Vov0.80_th02 reading entry 0 / 8468 (0%)
+>>> 3rd loop: bar08L-R_Vov0.80_th05 reading entry 0 / 8063 (0%)
+>>> 3rd loop: bar08L-R_Vov0.80_th07 reading entry 0 / 8074 (0%)
+>>> 3rd loop: bar08L-R_Vov0.80_th10 reading entry 0 / 8579 (0%)
+>>> 3rd loop: bar08L-R_Vov0.80_th15 reading entry 0 / 7997 (0%)
+>>> 3rd loop: bar09L-R_Vov0.80_th02 reading entry 0 / 6749 (0%)
+>>> 3rd loop: bar09L-R_Vov0.80_th05 reading entry 0 / 6319 (0%)
+>>> 3rd loop: bar09L-R_Vov0.80_th07 reading entry 0 / 6340 (0%)
+>>> 3rd loop: bar09L-R_Vov0.80_th10 reading entry 0 / 6843 (0%)
+>>> 3rd loop: bar09L-R_Vov0.80_th15 reading entry 0 / 6599 (0%)
+>>> 3rd loop: bar10L-R_Vov0.80_th02 reading entry 0 / 5654 (0%)
+>>> 3rd loop: bar10L-R_Vov0.80_th05 reading entry 0 / 5417 (0%)
+>>> 3rd loop: bar10L-R_Vov0.80_th07 reading entry 0 / 5299 (0%)
+>>> 3rd loop: bar10L-R_Vov0.80_th10 reading entry 0 / 5813 (0%)
+>>> 3rd loop: bar10L-R_Vov0.80_th15 reading entry 0 / 5444 (0%)
+>>> 3rd loop: bar11L-R_Vov0.80_th02 reading entry 0 / 3788 (0%)
+>>> 3rd loop: bar11L-R_Vov0.80_th05 reading entry 0 / 3696 (0%)
+>>> 3rd loop: bar11L-R_Vov0.80_th07 reading entry 0 / 3518 (0%)
+>>> 3rd loop: bar11L-R_Vov0.80_th10 reading entry 0 / 3879 (0%)
+>>> 3rd loop: bar11L-R_Vov0.80_th15 reading entry 0 / 3702 (0%)
+>>> 3rd loop: bar12L-R_Vov0.80_th02 reading entry 0 / 2296 (0%)
+>>> 3rd loop: bar12L-R_Vov0.80_th05 reading entry 0 / 2141 (0%)
+>>> 3rd loop: bar12L-R_Vov0.80_th07 reading entry 0 / 2102 (0%)
+>>> 3rd loop: bar12L-R_Vov0.80_th10 reading entry 0 / 2355 (0%)
+>>> 3rd loop: bar12L-R_Vov0.80_th15 reading entry 0 / 2169 (0%)
+>>> 3rd loop: bar13L-R_Vov0.80_th02 reading entry 0 / 829 (0%)
+>>> 3rd loop: bar13L-R_Vov0.80_th05 reading entry 0 / 816 (0%)
+>>> 3rd loop: bar13L-R_Vov0.80_th07 reading entry 0 / 761 (0%)
+>>> 3rd loop: bar13L-R_Vov0.80_th10 reading entry 0 / 909 (0%)
+>>> 3rd loop: bar13L-R_Vov0.80_th15 reading entry 0 / 813 (0%)
+>>> 3rd loop: bar14L-R_Vov0.80_th02 reading entry 0 / 303 (0%)
+>>> 3rd loop: bar14L-R_Vov0.80_th05 reading entry 0 / 283 (0%)
+>>> 3rd loop: bar14L-R_Vov0.80_th07 reading entry 0 / 248 (0%)
+>>> 3rd loop: bar14L-R_Vov0.80_th10 reading entry 0 / 303 (0%)
+>>> 3rd loop: bar14L-R_Vov0.80_th15 reading entry 0 / 253 (0%)
+>>> 3rd loop: bar15L-R_Vov0.80_th02 reading entry 0 / 208 (0%)
+>>> 3rd loop: bar15L-R_Vov0.80_th05 reading entry 0 / 163 (0%)
+>>> 3rd loop: bar15L-R_Vov0.80_th07 reading entry 0 / 187 (0%)
+>>> 3rd loop: bar15L-R_Vov0.80_th10 reading entry 0 / 208 (0%)
+>>> 3rd loop: bar15L-R_Vov0.80_th15 reading entry 0 / 185 (0%)
+>>> 4th loop: bar00L-R_Vov0.80_th02 reading entry 0 / 1508 (0%)
+>>> 4th loop: bar00L-R_Vov0.80_th05 reading entry 0 / 1410 (0%)
+>>> 4th loop: bar00L-R_Vov0.80_th07 reading entry 0 / 1340 (0%)
+>>> 4th loop: bar00L-R_Vov0.80_th10 reading entry 0 / 1482 (0%)
+>>> 4th loop: bar00L-R_Vov0.80_th15 reading entry 0 / 1404 (0%)
+>>> 4th loop: bar01L-R_Vov0.80_th02 reading entry 0 / 2412 (0%)
+>>> 4th loop: bar01L-R_Vov0.80_th05 reading entry 0 / 2285 (0%)
+>>> 4th loop: bar01L-R_Vov0.80_th07 reading entry 0 / 2238 (0%)
+>>> 4th loop: bar01L-R_Vov0.80_th10 reading entry 0 / 2520 (0%)
+>>> 4th loop: bar01L-R_Vov0.80_th15 reading entry 0 / 2318 (0%)
+>>> 4th loop: bar02L-R_Vov0.80_th02 reading entry 0 / 3679 (0%)
+>>> 4th loop: bar02L-R_Vov0.80_th05 reading entry 0 / 3321 (0%)
+>>> 4th loop: bar02L-R_Vov0.80_th07 reading entry 0 / 3349 (0%)
+>>> 4th loop: bar02L-R_Vov0.80_th10 reading entry 0 / 3617 (0%)
+>>> 4th loop: bar02L-R_Vov0.80_th15 reading entry 0 / 3455 (0%)
+>>> 4th loop: bar03L-R_Vov0.80_th02 reading entry 0 / 4557 (0%)
+>>> 4th loop: bar03L-R_Vov0.80_th05 reading entry 0 / 4594 (0%)
+>>> 4th loop: bar03L-R_Vov0.80_th07 reading entry 0 / 4638 (0%)
+>>> 4th loop: bar03L-R_Vov0.80_th10 reading entry 0 / 4913 (0%)
+>>> 4th loop: bar03L-R_Vov0.80_th15 reading entry 0 / 4594 (0%)
+>>> 4th loop: bar04L-R_Vov0.80_th02 reading entry 0 / 6397 (0%)
+>>> 4th loop: bar04L-R_Vov0.80_th05 reading entry 0 / 5867 (0%)
+>>> 4th loop: bar04L-R_Vov0.80_th07 reading entry 0 / 5835 (0%)
+>>> 4th loop: bar04L-R_Vov0.80_th10 reading entry 0 / 6488 (0%)
+>>> 4th loop: bar04L-R_Vov0.80_th15 reading entry 0 / 6142 (0%)
+>>> 4th loop: bar05L-R_Vov0.80_th02 reading entry 0 / 7720 (0%)
+>>> 4th loop: bar05L-R_Vov0.80_th05 reading entry 0 / 7355 (0%)
+>>> 4th loop: bar05L-R_Vov0.80_th07 reading entry 0 / 7206 (0%)
+>>> 4th loop: bar05L-R_Vov0.80_th10 reading entry 0 / 7850 (0%)
+>>> 4th loop: bar05L-R_Vov0.80_th15 reading entry 0 / 7359 (0%)
+>>> 4th loop: bar06L-R_Vov0.80_th02 reading entry 0 / 8633 (0%)
+>>> 4th loop: bar06L-R_Vov0.80_th05 reading entry 0 / 8131 (0%)
+>>> 4th loop: bar06L-R_Vov0.80_th07 reading entry 0 / 8261 (0%)
+>>> 4th loop: bar06L-R_Vov0.80_th10 reading entry 0 / 8790 (0%)
+>>> 4th loop: bar06L-R_Vov0.80_th15 reading entry 0 / 8328 (0%)
+>>> 4th loop: bar07L-R_Vov0.80_th02 reading entry 0 / 8897 (0%)
+>>> 4th loop: bar07L-R_Vov0.80_th05 reading entry 0 / 8324 (0%)
+>>> 4th loop: bar07L-R_Vov0.80_th07 reading entry 0 / 8407 (0%)
+>>> 4th loop: bar07L-R_Vov0.80_th10 reading entry 0 / 8922 (0%)
+>>> 4th loop: bar07L-R_Vov0.80_th15 reading entry 0 / 8632 (0%)
+>>> 4th loop: bar08L-R_Vov0.80_th02 reading entry 0 / 8468 (0%)
+>>> 4th loop: bar08L-R_Vov0.80_th05 reading entry 0 / 8063 (0%)
+>>> 4th loop: bar08L-R_Vov0.80_th07 reading entry 0 / 8074 (0%)
+>>> 4th loop: bar08L-R_Vov0.80_th10 reading entry 0 / 8579 (0%)
+>>> 4th loop: bar08L-R_Vov0.80_th15 reading entry 0 / 7997 (0%)
+>>> 4th loop: bar09L-R_Vov0.80_th02 reading entry 0 / 6749 (0%)
+>>> 4th loop: bar09L-R_Vov0.80_th05 reading entry 0 / 6319 (0%)
+>>> 4th loop: bar09L-R_Vov0.80_th07 reading entry 0 / 6340 (0%)
+>>> 4th loop: bar09L-R_Vov0.80_th10 reading entry 0 / 6843 (0%)
+>>> 4th loop: bar09L-R_Vov0.80_th15 reading entry 0 / 6599 (0%)
+>>> 4th loop: bar10L-R_Vov0.80_th02 reading entry 0 / 5654 (0%)
+>>> 4th loop: bar10L-R_Vov0.80_th05 reading entry 0 / 5417 (0%)
+>>> 4th loop: bar10L-R_Vov0.80_th07 reading entry 0 / 5299 (0%)
+>>> 4th loop: bar10L-R_Vov0.80_th10 reading entry 0 / 5813 (0%)
+>>> 4th loop: bar10L-R_Vov0.80_th15 reading entry 0 / 5444 (0%)
+>>> 4th loop: bar11L-R_Vov0.80_th02 reading entry 0 / 3788 (0%)
+>>> 4th loop: bar11L-R_Vov0.80_th05 reading entry 0 / 3696 (0%)
+>>> 4th loop: bar11L-R_Vov0.80_th07 reading entry 0 / 3518 (0%)
+>>> 4th loop: bar11L-R_Vov0.80_th10 reading entry 0 / 3879 (0%)
+>>> 4th loop: bar11L-R_Vov0.80_th15 reading entry 0 / 3702 (0%)
+>>> 4th loop: bar12L-R_Vov0.80_th02 reading entry 0 / 2296 (0%)
+>>> 4th loop: bar12L-R_Vov0.80_th05 reading entry 0 / 2141 (0%)
+>>> 4th loop: bar12L-R_Vov0.80_th07 reading entry 0 / 2102 (0%)
+>>> 4th loop: bar12L-R_Vov0.80_th10 reading entry 0 / 2355 (0%)
+>>> 4th loop: bar12L-R_Vov0.80_th15 reading entry 0 / 2169 (0%)
+>>> 4th loop: bar13L-R_Vov0.80_th02 reading entry 0 / 829 (0%)
+>>> 4th loop: bar13L-R_Vov0.80_th05 reading entry 0 / 816 (0%)
+>>> 4th loop: bar13L-R_Vov0.80_th07 reading entry 0 / 761 (0%)
+>>> 4th loop: bar13L-R_Vov0.80_th10 reading entry 0 / 909 (0%)
+>>> 4th loop: bar13L-R_Vov0.80_th15 reading entry 0 / 813 (0%)
+>>> 4th loop: bar14L-R_Vov0.80_th02 reading entry 0 / 303 (0%)
+>>> 4th loop: bar14L-R_Vov0.80_th05 reading entry 0 / 283 (0%)
+>>> 4th loop: bar14L-R_Vov0.80_th07 reading entry 0 / 248 (0%)
+>>> 4th loop: bar14L-R_Vov0.80_th10 reading entry 0 / 303 (0%)
+>>> 4th loop: bar14L-R_Vov0.80_th15 reading entry 0 / 253 (0%)
+>>> 4th loop: bar15L-R_Vov0.80_th02 reading entry 0 / 208 (0%)
+>>> 4th loop: bar15L-R_Vov0.80_th05 reading entry 0 / 163 (0%)
+>>> 4th loop: bar15L-R_Vov0.80_th07 reading entry 0 / 187 (0%)
+>>> 4th loop: bar15L-R_Vov0.80_th10 reading entry 0 / 208 (0%)
+>>> 4th loop: bar15L-R_Vov0.80_th15 reading entry 0 / 185 (0%)
+>>> 5th loop: bar00L-R_Vov0.80_th02 reading entry 0 / 1508 (0%)
+>>> 5th loop: bar00L-R_Vov0.80_th05 reading entry 0 / 1410 (0%)
+>>> 5th loop: bar00L-R_Vov0.80_th07 reading entry 0 / 1340 (0%)
+>>> 5th loop: bar00L-R_Vov0.80_th10 reading entry 0 / 1482 (0%)
+>>> 5th loop: bar00L-R_Vov0.80_th15 reading entry 0 / 1404 (0%)
+>>> 5th loop: bar01L-R_Vov0.80_th02 reading entry 0 / 2412 (0%)
+>>> 5th loop: bar01L-R_Vov0.80_th05 reading entry 0 / 2285 (0%)
+>>> 5th loop: bar01L-R_Vov0.80_th07 reading entry 0 / 2238 (0%)
+>>> 5th loop: bar01L-R_Vov0.80_th10 reading entry 0 / 2520 (0%)
+>>> 5th loop: bar01L-R_Vov0.80_th15 reading entry 0 / 2318 (0%)
+>>> 5th loop: bar02L-R_Vov0.80_th02 reading entry 0 / 3679 (0%)
+>>> 5th loop: bar02L-R_Vov0.80_th05 reading entry 0 / 3321 (0%)
+>>> 5th loop: bar02L-R_Vov0.80_th07 reading entry 0 / 3349 (0%)
+>>> 5th loop: bar02L-R_Vov0.80_th10 reading entry 0 / 3617 (0%)
+>>> 5th loop: bar02L-R_Vov0.80_th15 reading entry 0 / 3455 (0%)
+>>> 5th loop: bar03L-R_Vov0.80_th02 reading entry 0 / 4557 (0%)
+>>> 5th loop: bar03L-R_Vov0.80_th05 reading entry 0 / 4594 (0%)
+>>> 5th loop: bar03L-R_Vov0.80_th07 reading entry 0 / 4638 (0%)
+>>> 5th loop: bar03L-R_Vov0.80_th10 reading entry 0 / 4913 (0%)
+>>> 5th loop: bar03L-R_Vov0.80_th15 reading entry 0 / 4594 (0%)
+>>> 5th loop: bar04L-R_Vov0.80_th02 reading entry 0 / 6397 (0%)
+>>> 5th loop: bar04L-R_Vov0.80_th05 reading entry 0 / 5867 (0%)
+>>> 5th loop: bar04L-R_Vov0.80_th07 reading entry 0 / 5835 (0%)
+>>> 5th loop: bar04L-R_Vov0.80_th10 reading entry 0 / 6488 (0%)
+>>> 5th loop: bar04L-R_Vov0.80_th15 reading entry 0 / 6142 (0%)
+>>> 5th loop: bar05L-R_Vov0.80_th02 reading entry 0 / 7720 (0%)
+>>> 5th loop: bar05L-R_Vov0.80_th05 reading entry 0 / 7355 (0%)
+>>> 5th loop: bar05L-R_Vov0.80_th07 reading entry 0 / 7206 (0%)
+>>> 5th loop: bar05L-R_Vov0.80_th10 reading entry 0 / 7850 (0%)
+>>> 5th loop: bar05L-R_Vov0.80_th15 reading entry 0 / 7359 (0%)
+>>> 5th loop: bar06L-R_Vov0.80_th02 reading entry 0 / 8633 (0%)
+>>> 5th loop: bar06L-R_Vov0.80_th05 reading entry 0 / 8131 (0%)
+>>> 5th loop: bar06L-R_Vov0.80_th07 reading entry 0 / 8261 (0%)
+>>> 5th loop: bar06L-R_Vov0.80_th10 reading entry 0 / 8790 (0%)
+>>> 5th loop: bar06L-R_Vov0.80_th15 reading entry 0 / 8328 (0%)
+>>> 5th loop: bar07L-R_Vov0.80_th02 reading entry 0 / 8897 (0%)
+>>> 5th loop: bar07L-R_Vov0.80_th05 reading entry 0 / 8324 (0%)
+>>> 5th loop: bar07L-R_Vov0.80_th07 reading entry 0 / 8407 (0%)
+>>> 5th loop: bar07L-R_Vov0.80_th10 reading entry 0 / 8922 (0%)
+>>> 5th loop: bar07L-R_Vov0.80_th15 reading entry 0 / 8632 (0%)
+>>> 5th loop: bar08L-R_Vov0.80_th02 reading entry 0 / 8468 (0%)
+>>> 5th loop: bar08L-R_Vov0.80_th05 reading entry 0 / 8063 (0%)
+>>> 5th loop: bar08L-R_Vov0.80_th07 reading entry 0 / 8074 (0%)
+>>> 5th loop: bar08L-R_Vov0.80_th10 reading entry 0 / 8579 (0%)
+>>> 5th loop: bar08L-R_Vov0.80_th15 reading entry 0 / 7997 (0%)
+>>> 5th loop: bar09L-R_Vov0.80_th02 reading entry 0 / 6749 (0%)
+>>> 5th loop: bar09L-R_Vov0.80_th05 reading entry 0 / 6319 (0%)
+>>> 5th loop: bar09L-R_Vov0.80_th07 reading entry 0 / 6340 (0%)
+>>> 5th loop: bar09L-R_Vov0.80_th10 reading entry 0 / 6843 (0%)
+>>> 5th loop: bar09L-R_Vov0.80_th15 reading entry 0 / 6599 (0%)
+>>> 5th loop: bar10L-R_Vov0.80_th02 reading entry 0 / 5654 (0%)
+>>> 5th loop: bar10L-R_Vov0.80_th05 reading entry 0 / 5417 (0%)
+>>> 5th loop: bar10L-R_Vov0.80_th07 reading entry 0 / 5299 (0%)
+>>> 5th loop: bar10L-R_Vov0.80_th10 reading entry 0 / 5813 (0%)
+>>> 5th loop: bar10L-R_Vov0.80_th15 reading entry 0 / 5444 (0%)
+>>> 5th loop: bar11L-R_Vov0.80_th02 reading entry 0 / 3788 (0%)
+>>> 5th loop: bar11L-R_Vov0.80_th05 reading entry 0 / 3696 (0%)
+>>> 5th loop: bar11L-R_Vov0.80_th07 reading entry 0 / 3518 (0%)
+>>> 5th loop: bar11L-R_Vov0.80_th10 reading entry 0 / 3879 (0%)
+>>> 5th loop: bar11L-R_Vov0.80_th15 reading entry 0 / 3702 (0%)
+>>> 5th loop: bar12L-R_Vov0.80_th02 reading entry 0 / 2296 (0%)
+>>> 5th loop: bar12L-R_Vov0.80_th05 reading entry 0 / 2141 (0%)
+>>> 5th loop: bar12L-R_Vov0.80_th07 reading entry 0 / 2102 (0%)
+>>> 5th loop: bar12L-R_Vov0.80_th10 reading entry 0 / 2355 (0%)
+>>> 5th loop: bar12L-R_Vov0.80_th15 reading entry 0 / 2169 (0%)
+>>> 5th loop: bar13L-R_Vov0.80_th02 reading entry 0 / 829 (0%)
+>>> 5th loop: bar13L-R_Vov0.80_th05 reading entry 0 / 816 (0%)
+>>> 5th loop: bar13L-R_Vov0.80_th07 reading entry 0 / 761 (0%)
+>>> 5th loop: bar13L-R_Vov0.80_th10 reading entry 0 / 909 (0%)
+>>> 5th loop: bar13L-R_Vov0.80_th15 reading entry 0 / 813 (0%)
+>>> 5th loop: bar14L-R_Vov0.80_th02 reading entry 0 / 303 (0%)
+>>> 5th loop: bar14L-R_Vov0.80_th05 reading entry 0 / 283 (0%)
+>>> 5th loop: bar14L-R_Vov0.80_th07 reading entry 0 / 248 (0%)
+>>> 5th loop: bar14L-R_Vov0.80_th10 reading entry 0 / 303 (0%)
+>>> 5th loop: bar14L-R_Vov0.80_th15 reading entry 0 / 253 (0%)
+>>> 5th loop: bar15L-R_Vov0.80_th02 reading entry 0 / 208 (0%)
+>>> 5th loop: bar15L-R_Vov0.80_th05 reading entry 0 / 163 (0%)
+>>> 5th loop: bar15L-R_Vov0.80_th07 reading entry 0 / 187 (0%)
+>>> 5th loop: bar15L-R_Vov0.80_th10 reading entry 0 / 208 (0%)
+>>> 5th loop: bar15L-R_Vov0.80_th15 reading entry 0 / 185 (0%)
+bar00L-R_Vov0.80_th02_energyBin01
+bar01L-R_Vov0.80_th02_energyBin01
+bar02L-R_Vov0.80_th02_energyBin01
+bar03L-R_Vov0.80_th02_energyBin01
+bar04L-R_Vov0.80_th02_energyBin01
+bar05L-R_Vov0.80_th02_energyBin01
+bar06L-R_Vov0.80_th02_energyBin01
+bar07L-R_Vov0.80_th02_energyBin01
+bar08L-R_Vov0.80_th02_energyBin01
+bar09L-R_Vov0.80_th02_energyBin01
+bar10L-R_Vov0.80_th02_energyBin01
+bar11L-R_Vov0.80_th02_energyBin01
+bar12L-R_Vov0.80_th02_energyBin01
+bar13L-R_Vov0.80_th02_energyBin01
+bar14L-R_Vov0.80_th02_energyBin01
+bar15L-R_Vov0.80_th02_energyBin01
+bar00L-R_Vov0.80_th05_energyBin01
+bar01L-R_Vov0.80_th05_energyBin01
+bar02L-R_Vov0.80_th05_energyBin01
+bar03L-R_Vov0.80_th05_energyBin01
+bar04L-R_Vov0.80_th05_energyBin01
+bar05L-R_Vov0.80_th05_energyBin01
+bar06L-R_Vov0.80_th05_energyBin01
+bar07L-R_Vov0.80_th05_energyBin01
+bar08L-R_Vov0.80_th05_energyBin01
+bar09L-R_Vov0.80_th05_energyBin01
+bar10L-R_Vov0.80_th05_energyBin01
+bar11L-R_Vov0.80_th05_energyBin01
+bar12L-R_Vov0.80_th05_energyBin01
+bar13L-R_Vov0.80_th05_energyBin01
+bar14L-R_Vov0.80_th05_energyBin01
+bar15L-R_Vov0.80_th05_energyBin01
+bar00L-R_Vov0.80_th07_energyBin01
+bar01L-R_Vov0.80_th07_energyBin01
+bar02L-R_Vov0.80_th07_energyBin01
+bar03L-R_Vov0.80_th07_energyBin01
+bar04L-R_Vov0.80_th07_energyBin01
+bar05L-R_Vov0.80_th07_energyBin01
+bar06L-R_Vov0.80_th07_energyBin01
+bar07L-R_Vov0.80_th07_energyBin01
+bar08L-R_Vov0.80_th07_energyBin01
+bar09L-R_Vov0.80_th07_energyBin01
+bar10L-R_Vov0.80_th07_energyBin01
+bar11L-R_Vov0.80_th07_energyBin01
+bar12L-R_Vov0.80_th07_energyBin01
+bar13L-R_Vov0.80_th07_energyBin01
+bar14L-R_Vov0.80_th07_energyBin01
+bar15L-R_Vov0.80_th07_energyBin01
+bar00L-R_Vov0.80_th10_energyBin01
+bar01L-R_Vov0.80_th10_energyBin01
+bar02L-R_Vov0.80_th10_energyBin01
+bar03L-R_Vov0.80_th10_energyBin01
+bar04L-R_Vov0.80_th10_energyBin01
+bar05L-R_Vov0.80_th10_energyBin01
+bar06L-R_Vov0.80_th10_energyBin01
+bar07L-R_Vov0.80_th10_energyBin01
+bar08L-R_Vov0.80_th10_energyBin01
+bar09L-R_Vov0.80_th10_energyBin01
+bar10L-R_Vov0.80_th10_energyBin01
+bar11L-R_Vov0.80_th10_energyBin01
+bar12L-R_Vov0.80_th10_energyBin01
+bar13L-R_Vov0.80_th10_energyBin01
+bar14L-R_Vov0.80_th10_energyBin01
+bar15L-R_Vov0.80_th10_energyBin01
+bar00L-R_Vov0.80_th15_energyBin01
+bar01L-R_Vov0.80_th15_energyBin01
+bar02L-R_Vov0.80_th15_energyBin01
+bar03L-R_Vov0.80_th15_energyBin01
+bar04L-R_Vov0.80_th15_energyBin01
+bar05L-R_Vov0.80_th15_energyBin01
+bar06L-R_Vov0.80_th15_energyBin01
+bar07L-R_Vov0.80_th15_energyBin01
+bar08L-R_Vov0.80_th15_energyBin01
+bar09L-R_Vov0.80_th15_energyBin01
+bar10L-R_Vov0.80_th15_energyBin01
+bar11L-R_Vov0.80_th15_energyBin01
+bar12L-R_Vov0.80_th15_energyBin01
+bar13L-R_Vov0.80_th15_energyBin01
+bar14L-R_Vov0.80_th15_energyBin01
+bar15L-R_Vov0.80_th15_energyBin01
+>>> 6th loop: bar00L-R_Vov0.80_th02 reading entry 0 / 1508 (0%)
+>>> 6th loop: bar00L-R_Vov0.80_th05 reading entry 0 / 1410 (0%)
+>>> 6th loop: bar00L-R_Vov0.80_th07 reading entry 0 / 1340 (0%)
+>>> 6th loop: bar00L-R_Vov0.80_th10 reading entry 0 / 1482 (0%)
+>>> 6th loop: bar00L-R_Vov0.80_th15 reading entry 0 / 1404 (0%)
+>>> 6th loop: bar01L-R_Vov0.80_th02 reading entry 0 / 2412 (0%)
+>>> 6th loop: bar01L-R_Vov0.80_th05 reading entry 0 / 2285 (0%)
+>>> 6th loop: bar01L-R_Vov0.80_th07 reading entry 0 / 2238 (0%)
+>>> 6th loop: bar01L-R_Vov0.80_th10 reading entry 0 / 2520 (0%)
+>>> 6th loop: bar01L-R_Vov0.80_th15 reading entry 0 / 2318 (0%)
+>>> 6th loop: bar02L-R_Vov0.80_th02 reading entry 0 / 3679 (0%)
+>>> 6th loop: bar02L-R_Vov0.80_th05 reading entry 0 / 3321 (0%)
+>>> 6th loop: bar02L-R_Vov0.80_th07 reading entry 0 / 3349 (0%)
+>>> 6th loop: bar02L-R_Vov0.80_th10 reading entry 0 / 3617 (0%)
+>>> 6th loop: bar02L-R_Vov0.80_th15 reading entry 0 / 3455 (0%)
+>>> 6th loop: bar03L-R_Vov0.80_th02 reading entry 0 / 4557 (0%)
+>>> 6th loop: bar03L-R_Vov0.80_th05 reading entry 0 / 4594 (0%)
+>>> 6th loop: bar03L-R_Vov0.80_th07 reading entry 0 / 4638 (0%)
+>>> 6th loop: bar03L-R_Vov0.80_th10 reading entry 0 / 4913 (0%)
+>>> 6th loop: bar03L-R_Vov0.80_th15 reading entry 0 / 4594 (0%)
+>>> 6th loop: bar04L-R_Vov0.80_th02 reading entry 0 / 6397 (0%)
+>>> 6th loop: bar04L-R_Vov0.80_th05 reading entry 0 / 5867 (0%)
+>>> 6th loop: bar04L-R_Vov0.80_th07 reading entry 0 / 5835 (0%)
+>>> 6th loop: bar04L-R_Vov0.80_th10 reading entry 0 / 6488 (0%)
+>>> 6th loop: bar04L-R_Vov0.80_th15 reading entry 0 / 6142 (0%)
+>>> 6th loop: bar05L-R_Vov0.80_th02 reading entry 0 / 7720 (0%)
+>>> 6th loop: bar05L-R_Vov0.80_th05 reading entry 0 / 7355 (0%)
+>>> 6th loop: bar05L-R_Vov0.80_th07 reading entry 0 / 7206 (0%)
+>>> 6th loop: bar05L-R_Vov0.80_th10 reading entry 0 / 7850 (0%)
+>>> 6th loop: bar05L-R_Vov0.80_th15 reading entry 0 / 7359 (0%)
+>>> 6th loop: bar06L-R_Vov0.80_th02 reading entry 0 / 8633 (0%)
+>>> 6th loop: bar06L-R_Vov0.80_th05 reading entry 0 / 8131 (0%)
+>>> 6th loop: bar06L-R_Vov0.80_th07 reading entry 0 / 8261 (0%)
+>>> 6th loop: bar06L-R_Vov0.80_th10 reading entry 0 / 8790 (0%)
+>>> 6th loop: bar06L-R_Vov0.80_th15 reading entry 0 / 8328 (0%)
+>>> 6th loop: bar07L-R_Vov0.80_th02 reading entry 0 / 8897 (0%)
+>>> 6th loop: bar07L-R_Vov0.80_th05 reading entry 0 / 8324 (0%)
+>>> 6th loop: bar07L-R_Vov0.80_th07 reading entry 0 / 8407 (0%)
+>>> 6th loop: bar07L-R_Vov0.80_th10 reading entry 0 / 8922 (0%)
+>>> 6th loop: bar07L-R_Vov0.80_th15 reading entry 0 / 8632 (0%)
+>>> 6th loop: bar08L-R_Vov0.80_th02 reading entry 0 / 8468 (0%)
+>>> 6th loop: bar08L-R_Vov0.80_th05 reading entry 0 / 8063 (0%)
+>>> 6th loop: bar08L-R_Vov0.80_th07 reading entry 0 / 8074 (0%)
+>>> 6th loop: bar08L-R_Vov0.80_th10 reading entry 0 / 8579 (0%)
+>>> 6th loop: bar08L-R_Vov0.80_th15 reading entry 0 / 7997 (0%)
+>>> 6th loop: bar09L-R_Vov0.80_th02 reading entry 0 / 6749 (0%)
+>>> 6th loop: bar09L-R_Vov0.80_th05 reading entry 0 / 6319 (0%)
+>>> 6th loop: bar09L-R_Vov0.80_th07 reading entry 0 / 6340 (0%)
+>>> 6th loop: bar09L-R_Vov0.80_th10 reading entry 0 / 6843 (0%)
+>>> 6th loop: bar09L-R_Vov0.80_th15 reading entry 0 / 6599 (0%)
+>>> 6th loop: bar10L-R_Vov0.80_th02 reading entry 0 / 5654 (0%)
+>>> 6th loop: bar10L-R_Vov0.80_th05 reading entry 0 / 5417 (0%)
+>>> 6th loop: bar10L-R_Vov0.80_th07 reading entry 0 / 5299 (0%)
+>>> 6th loop: bar10L-R_Vov0.80_th10 reading entry 0 / 5813 (0%)
+>>> 6th loop: bar10L-R_Vov0.80_th15 reading entry 0 / 5444 (0%)
+>>> 6th loop: bar11L-R_Vov0.80_th02 reading entry 0 / 3788 (0%)
+>>> 6th loop: bar11L-R_Vov0.80_th05 reading entry 0 / 3696 (0%)
+>>> 6th loop: bar11L-R_Vov0.80_th07 reading entry 0 / 3518 (0%)
+>>> 6th loop: bar11L-R_Vov0.80_th10 reading entry 0 / 3879 (0%)
+>>> 6th loop: bar11L-R_Vov0.80_th15 reading entry 0 / 3702 (0%)
+>>> 6th loop: bar12L-R_Vov0.80_th02 reading entry 0 / 2296 (0%)
+>>> 6th loop: bar12L-R_Vov0.80_th05 reading entry 0 / 2141 (0%)
+>>> 6th loop: bar12L-R_Vov0.80_th07 reading entry 0 / 2102 (0%)
+>>> 6th loop: bar12L-R_Vov0.80_th10 reading entry 0 / 2355 (0%)
+>>> 6th loop: bar12L-R_Vov0.80_th15 reading entry 0 / 2169 (0%)
+>>> 6th loop: bar13L-R_Vov0.80_th02 reading entry 0 / 829 (0%)
+>>> 6th loop: bar13L-R_Vov0.80_th05 reading entry 0 / 816 (0%)
+>>> 6th loop: bar13L-R_Vov0.80_th07 reading entry 0 / 761 (0%)
+>>> 6th loop: bar13L-R_Vov0.80_th10 reading entry 0 / 909 (0%)
+>>> 6th loop: bar13L-R_Vov0.80_th15 reading entry 0 / 813 (0%)
+>>> 6th loop: bar14L-R_Vov0.80_th02 reading entry 0 / 303 (0%)
+>>> 6th loop: bar14L-R_Vov0.80_th05 reading entry 0 / 283 (0%)
+>>> 6th loop: bar14L-R_Vov0.80_th07 reading entry 0 / 248 (0%)
+>>> 6th loop: bar14L-R_Vov0.80_th10 reading entry 0 / 303 (0%)
+>>> 6th loop: bar14L-R_Vov0.80_th15 reading entry 0 / 253 (0%)
+>>> 6th loop: bar15L-R_Vov0.80_th02 reading entry 0 / 208 (0%)
+>>> 6th loop: bar15L-R_Vov0.80_th05 reading entry 0 / 163 (0%)
+>>> 6th loop: bar15L-R_Vov0.80_th07 reading entry 0 / 187 (0%)
+>>> 6th loop: bar15L-R_Vov0.80_th10 reading entry 0 / 208 (0%)
+>>> 6th loop: bar15L-R_Vov0.80_th15 reading entry 0 / 185 (0%)
+bar00L-R_Vov0.80_th02_energyBin01
+bar01L-R_Vov0.80_th02_energyBin01
+bar02L-R_Vov0.80_th02_energyBin01
+bar03L-R_Vov0.80_th02_energyBin01
+bar04L-R_Vov0.80_th02_energyBin01
+bar05L-R_Vov0.80_th02_energyBin01
+bar06L-R_Vov0.80_th02_energyBin01
+bar07L-R_Vov0.80_th02_energyBin01
+bar08L-R_Vov0.80_th02_energyBin01
+bar09L-R_Vov0.80_th02_energyBin01
+bar10L-R_Vov0.80_th02_energyBin01
+bar11L-R_Vov0.80_th02_energyBin01
+bar12L-R_Vov0.80_th02_energyBin01
+bar13L-R_Vov0.80_th02_energyBin01
+bar14L-R_Vov0.80_th02_energyBin01
+bar15L-R_Vov0.80_th02_energyBin01
+bar00L-R_Vov0.80_th05_energyBin01
+bar01L-R_Vov0.80_th05_energyBin01
+bar02L-R_Vov0.80_th05_energyBin01
+bar03L-R_Vov0.80_th05_energyBin01
+bar04L-R_Vov0.80_th05_energyBin01
+bar05L-R_Vov0.80_th05_energyBin01
+bar06L-R_Vov0.80_th05_energyBin01
+bar07L-R_Vov0.80_th05_energyBin01
+bar08L-R_Vov0.80_th05_energyBin01
+bar09L-R_Vov0.80_th05_energyBin01
+bar10L-R_Vov0.80_th05_energyBin01
+bar11L-R_Vov0.80_th05_energyBin01
+bar12L-R_Vov0.80_th05_energyBin01
+bar13L-R_Vov0.80_th05_energyBin01
+bar14L-R_Vov0.80_th05_energyBin01
+bar15L-R_Vov0.80_th05_energyBin01
+bar00L-R_Vov0.80_th07_energyBin01
+bar01L-R_Vov0.80_th07_energyBin01
+bar02L-R_Vov0.80_th07_energyBin01
+bar03L-R_Vov0.80_th07_energyBin01
+bar04L-R_Vov0.80_th07_energyBin01
+bar05L-R_Vov0.80_th07_energyBin01
+bar06L-R_Vov0.80_th07_energyBin01
+bar07L-R_Vov0.80_th07_energyBin01
+bar08L-R_Vov0.80_th07_energyBin01
+bar09L-R_Vov0.80_th07_energyBin01
+bar10L-R_Vov0.80_th07_energyBin01
+bar11L-R_Vov0.80_th07_energyBin01
+bar12L-R_Vov0.80_th07_energyBin01
+bar13L-R_Vov0.80_th07_energyBin01
+bar14L-R_Vov0.80_th07_energyBin01
+bar15L-R_Vov0.80_th07_energyBin01
+bar00L-R_Vov0.80_th10_energyBin01
+bar01L-R_Vov0.80_th10_energyBin01
+bar02L-R_Vov0.80_th10_energyBin01
+bar03L-R_Vov0.80_th10_energyBin01
+bar04L-R_Vov0.80_th10_energyBin01
+bar05L-R_Vov0.80_th10_energyBin01
+bar06L-R_Vov0.80_th10_energyBin01
+bar07L-R_Vov0.80_th10_energyBin01
+bar08L-R_Vov0.80_th10_energyBin01
+bar09L-R_Vov0.80_th10_energyBin01
+bar10L-R_Vov0.80_th10_energyBin01
+bar11L-R_Vov0.80_th10_energyBin01
+bar12L-R_Vov0.80_th10_energyBin01
+bar13L-R_Vov0.80_th10_energyBin01
+bar14L-R_Vov0.80_th10_energyBin01
+bar15L-R_Vov0.80_th10_energyBin01
+bar00L-R_Vov0.80_th15_energyBin01
+bar01L-R_Vov0.80_th15_energyBin01
+bar02L-R_Vov0.80_th15_energyBin01
+bar03L-R_Vov0.80_th15_energyBin01
+bar04L-R_Vov0.80_th15_energyBin01
+bar05L-R_Vov0.80_th15_energyBin01
+bar06L-R_Vov0.80_th15_energyBin01
+bar07L-R_Vov0.80_th15_energyBin01
+bar08L-R_Vov0.80_th15_energyBin01
+bar09L-R_Vov0.80_th15_energyBin01
+bar10L-R_Vov0.80_th15_energyBin01
+bar11L-R_Vov0.80_th15_energyBin01
+bar12L-R_Vov0.80_th15_energyBin01
+bar13L-R_Vov0.80_th15_energyBin01
+bar14L-R_Vov0.80_th15_energyBin01
+bar15L-R_Vov0.80_th15_energyBin01
+============================================
+nr of  B written:  6195669
+nr of KB written:  6050
+nr of MB written:  5
+============================================
+STOP---------------
+
+
