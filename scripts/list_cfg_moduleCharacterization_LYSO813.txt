@@ -1,0 +1,11 @@
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_LYSO813_Vov0.80_T5C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_LYSO813_Vov1.50_T5C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_LYSO813_Vov3.50_T5C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_LYSO813_Vov0.50_T5C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_LYSO813_Vov3.50_angle52_T5C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_LYSO813_Vov3.50_angle40_T5C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_LYSO813_Vov3.50_angle30_T5C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_LYSO813_Vov3.50_angle20_T5C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_LYSO813_Vov3.50_angle10_T5C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_LYSO813_Vov3.50_angle0_T5C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_LYSO813_Vov3.50_angle350_T5C.cfg
