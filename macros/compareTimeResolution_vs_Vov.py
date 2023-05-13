@@ -47,22 +47,51 @@ if compareNum == 1:
     nameComparison = 'types_HPK_nonIrr_C25'
     extraLabel = ['','','']
     extraName = ['','','']
+    color_code = True
+
+
 elif compareNum == 2:
     sipmTypes = ['HPK_nonIrr_C25_LYSO818', 'HPK_nonIrr_C25_LYSO818', 'HPK_nonIrr_C25_LYSO818']
-    nameComparison = 'angles_HPK_nonIrr_C25_LYSO818'
+    nameComparison = 'angles_HPK_nonIrr_C25_T1_T1_T1'
     extraLabel = ['  32^{o}', '  52^{o}', '  64^{o}']
     extraName = ['_angle32', '','_angle64']
+    color_code = True
+
+
 elif compareNum == 3:
+    sipmTypes = ['HPK_nonIrr_C25_LYSO818', 'HPK_nonIrr_C25_LYSO813', 'HPK_nonIrr_C25_LYSO813']
+    nameComparison = 'angles_HPK_nonIrr_C25_T1_T2_T2'
+    extraLabel = ['  32^{o}', '  52^{o}', '  64^{o}']
+    extraName = ['_angle32'         , ''        , '_angle64']
+    color_code = True
+
+
+
+elif compareNum == 4:
     sipmTypes = ['HPK_nonIrr_C25_LYSO818', 'HPK_nonIrr_C25_LYSO818', 'HPK_nonIrr_C25_LYSO818', 'HPK_nonIrr_C25_LYSO813', 'HPK_nonIrr_C25_LYSO813']
     nameComparison = 'angles_HPK_nonIrr_C25'
     extraLabel = ['  32^{o}', '  52^{o}', '  64^{o}', '  52^{o}', '  64^{o}']
     extraName = ['_angle32', '','_angle64', '', '_angle64']
+    color_code = True
+
+
+elif compareNum == 5:
+    sipmTypes = ['HPK_nonIrr_C25_LYSO818', 'HPK_nonIrr_C25_LYSO813', 'HPK_nonIrr_C25_LYSO816']
+    nameComparison = 'angles_HPK_nonIrr_C25_T1_T2_T3'
+    extraLabel = ['  32^{o}', '  52^{o}', ' 52^{o}']
+    extraName = ['_angle32'         , ''        , '']
+
+    color_code = True
 
 
 
 #-----------------------
 
-outFile = ROOT.TFile('/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/plots/compareTimeResolution_vs_Vov_%s.root'%nameComparison, 'recreate')
+outFile = ROOT.TFile('/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/plots/compareTimeResolution_vs_Vov_%s.root'%nameComparison, 'RECREATE')
+
+
+#color_map = [850,880,800,840,910]
+color_map = [417,632,1]
 
 
 #-- temperatures
@@ -82,14 +111,17 @@ markers = {}
 for it, sipm in enumerate(sipmTypes):
     fnames[sipm] = '../plots/summaryPlots_%s.root'%(sipm)
     labels[sipm] = label_(sipm) + extraLabel[it]
-    colors[sipm] = it+1
+    if not color_code:
+        colors[sipm] = color_(sipm)
+    else:
+        colors[sipm] = color_map[it]
     markers[sipm] = 20
 
 
 g = {}
 Vovs = {}
 #--- retrieve plot tRes vs bar and compute average -----
-for sipm in sipmTypes:
+for j,sipm in enumerate(sipmTypes):
     f = ROOT.TFile.Open(fnames[sipm])
     g[sipm] = ROOT.TGraphErrors()
     Vovs[sipm] = []
@@ -104,6 +136,7 @@ for sipm in sipmTypes:
         #fitFun.SetRange(3,12)
         gg.Fit(fitFun,'QR')
         print sipm, Vovs_eff(vov,sipm), fitFun.GetParameter(0)
+
         g[sipm].SetPoint(g[sipm].GetN(), Vovs_eff(vov,sipm), fitFun.GetParameter(0))
         g[sipm].SetPointError( g[sipm].GetN()-1, 0, gg.GetRMS(2) )# use RMS as error on the points
         
@@ -154,6 +187,7 @@ for c in [c1]:
 
 
 for sipm in sipmTypes:
+    outFile.cd()
     g[sipm].Write('g_%s'%sipm)
 outFile.Close()
 

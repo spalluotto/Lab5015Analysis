@@ -9,6 +9,7 @@ import ROOT
 
 def getSlewRateFromPulseShape(g1, timingThreshold, npoints, gtemp, canvas=None):
     if ( g1.GetN() < npoints): return (-1, -1)
+
     # find index at the timing threshold
     itiming = 0
     for i in range(0,g1.GetN()):
@@ -28,6 +29,7 @@ def getSlewRateFromPulseShape(g1, timingThreshold, npoints, gtemp, canvas=None):
     else:
         tmax = 3
         nmax = g1.GetN()
+
     for i in range(imin, nmax):
         gtemp.SetPoint(gtemp.GetN(), g1.GetX()[i], g1.GetY()[i])
         gtemp.SetPointError(gtemp.GetN()-1, g1.GetErrorX(i), g1.GetErrorY(i))
@@ -68,7 +70,7 @@ def findTimingThreshold(g2,ov):
         y = g2.GetY()[i]
         x = g2.GetX()[i]
 
-        if (ov<=1.5 and x > 5): continue
+        # if (ov<=1.5 and x > 5): continue
 
         if ( y < ymin):
             ymin = y

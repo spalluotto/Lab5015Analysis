@@ -1,0 +1,179 @@
+#! /usr/bin/env python
+import os
+import shutil
+import glob
+import math
+import array
+import sys
+import time
+import argparse
+
+import ROOT
+import tdrstyle
+from SiPM import *
+from slewRate import *
+from moduleDict import *
+
+ROOT.gROOT.SetBatch(True)
+#ROOT.gROOT.SetBatch(False)
+ROOT.gErrorIgnoreLevel = ROOT.kWarning
+ROOT.gStyle.SetOptStat(0)
+ROOT.gStyle.SetOptFit(0111)
+
+
+#--------CAMBIA QUI------------------------------------------------------------------
+
+comparisonNum = 1
+
+
+# --- RUs T1 T2 T3 ----- 
+if comparisonNum == 1:
+    sipmTypes = ['HPK_nonIrr_C25_LYSO818','HPK_nonIrr_C25_LYSO813','HPK_nonIrr_C25_LYSO816']
+    fname = '../plots/compareTimeResolution_vs_Vov_types_HPK_nonIrr_C25.root'
+    outSuffix = 'HPK_nonIrr_C25_T1_T2_T3'
+    extraLabel = ['','','']
+    extraName = ['','','']
+    color_code = False
+    slant = [3.75/math.cos(52*3.14/180), 3/math.cos(52*3.14/180), 2.4/math.cos(52*3.14/180)]
+    angles = [52, 52, 52]
+
+
+# --- RUs T1 T1 T1 -----
+if comparisonNum == 2:
+    sipmTypes = ['HPK_nonIrr_C25_LYSO818','HPK_nonIrr_C25_LYSO818','HPK_nonIrr_C25_LYSO818']
+    fname = '../plots/compareTimeResolution_vs_Vov_angles_HPK_nonIrr_C25_LYSO818.root'
+    outSuffix = 'HPK_nonIrr_C25_T1_T1_T1'
+    extraLabel = ['  32^{o}','  52^{o}','  64^{o}'] # extra label da mettere nei grafici
+    extraName = ['_angle32','','_angle64']  # extra name del file dopo T12C
+    color_code = True
+    angles = [32, 52, 64]
+    slant = [3.75/math.cos(32*3.14/180), 3.75/math.cos(52*3.14/180), 3.75/math.cos(64*3.14/180)]
+
+
+# --- RUs T1 T2 T2 -----
+if comparisonNum == 3:
+    sipmTypes = ['HPK_nonIrr_C25_LYSO818','HPK_nonIrr_C25_LYSO813','HPK_nonIrr_C25_LYSO813']
+    fname = '../plots/compareTimeResolution_vs_Vov_angles_HPK_nonIrr_C25_T1_T2_T2.root'
+    outSuffix = 'HPK_nonIrr_C25_T1_T2_T2'
+    extraLabel = ['  52^{o}','  52^{o}','  64^{o}']         # extra label da mettere nei grafici
+    extraName = ['','','_angle64']                             # extra name del file dopo T12C
+    color_code = True
+    angles = [52, 52, 64]
+    slant = [3.75/math.cos(52*3.14/180), 3/math.cos(52*3.14/180), 3/math.cos(52*3.14/180)]
+
+
+
+color_map = [850,880,800,840,910]
+
+
+
+#--------------------------------------------------------------------------------------
+
+# ----- output --------
+outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_FNAL_Mar23/study_diff_angles/%s/'%outSuffix
+if (os.path.exists(outdir)==False):
+    os.mkdir(outdir)
+
+
+for it,sipm in enumerate(sipmTypes):
+    sipmTypes[it] = sipm + '_T12C' + extraName[it]
+#---------
+
+
+
+labels = {}
+cols = {}
+markers = {}
+LO = {}
+tau = {}
+tauRise = {}
+NpeFrac = {}
+
+for it, sipm in enumerate(sipmTypes):
+    labels[sipm] = label_(sipm) + extraLabel[it]
+    cols[sipm] = color_(sipm)
+    markers[sipm] = 20
+    LO[sipm] = light_output(sipm)
+    tau[sipm] = tau_decay(sipm)
+    tauRise[sipm] = tau_rise(sipm)
+    NpeFrac[sipm] = Npe_frac(sipm)
+
+
+
+
+
+# --- retrieve bars and ovs from compareTRes plots 
+VovsUnion = []
+
+g_t = {}
+Vovs = {}
+f = ROOT.TFile.Open(fname)
+
+for j,sipm in enumerate(sipmTypes):
+    print 'sipm: ', sipm
+    g_t[sipm] = f.Get('g_%s'%sipm)
+    Vovs[sipm] = []
+    for ipoint in range(g_t[sipm].GetN()):
+        Vovs[sipm].append(g_t[sipm].GetX()[ipoint])
+    if j == 0:  
+        VovsUnion = Vovs[sipm]
+    else:
+        VovsUnion = union(VovsUnion, Vovs[sipm]) 
+
+print 'ovs: ', VovsUnion
+        
+
+#----- time resolution: splitting contributions --
+g_t_vs_RU = {}
+line_t_vs_RU = {}
+erY = {}
+
+for ov in VovsUnion:
+    g_t_vs_RU[ov] = {}
+    line_t_vs_RU[ov] = {}
+    for it, sipm in enumerate(sipmTypes):
+        if ov not in Vovs[sipm]: continue
+        g_t_vs_RU[ov][sipm] = ROOT.TGraphErrors()
+        line_t_vs_RU[ov][sipm] = ROOT.TLine(it*2, g_t[sipm].Eval(ov), it*2+2, g_t[sipm].Eval(ov))
+
+        erY = 0
+        for ipoint in range(g_t[sipm].GetN()):
+            if ov == g_t[sipm].GetX()[ipoint]:
+                erY = g_t[sipm].GetErrorY(ipoint)                
+
+        for iRU in range(2):
+            if iRU == 0:
+                g_t_vs_RU[ov][sipm].SetPoint(g_t_vs_RU[ov][sipm].GetN(), it*2, g_t[sipm].Eval(ov))
+            else:
+                g_t_vs_RU[ov][sipm].SetPoint(g_t_vs_RU[ov][sipm].GetN(), it*2+1.99, g_t[sipm].Eval(ov))
+            g_t_vs_RU[ov][sipm].SetPointError(g_t_vs_RU[ov][sipm].GetN()-1, 2, erY)
+
+            #  0       1       2
+            #  0 1.99  2 3.99  4 5.99
+
+for ov in VovsUnion:
+    c = ROOT.TCanvas('c_timeResolution_vs_RU_Vov%.2f'%ov, '', 900, 700)
+    c.cd()
+    c.SetGridy()
+    
+    hPad = ROOT.TH2F('','',100,0,7,100,0,120)
+    hPad.GetXaxis().SetTitle('RU')
+    hPad.GetYaxis().SetTitle('#sigma_{t} [ps]')
+    hPad.Draw()
+    
+    for it,sipm in enumerate(sipmTypes):
+        if ov not in Vovs[sipm]: continue
+        g_t_vs_RU[ov][sipm].SetLineColor(it+1)
+        g_t_vs_RU[ov][sipm].SetFillColor(it+1)
+        g_t_vs_RU[ov][sipm].SetFillColorAlpha(it+1, 0.5)
+        g_t_vs_RU[ov][sipm].SetFillStyle(3001)
+        g_t_vs_RU[ov][sipm].Draw('E3lsame')
+    
+    latex = ROOT.TLatex(0.15,0.83,'Vov%.2f'%ov)
+    latex.SetNDC()
+    latex.SetTextSize(0.035)
+    latex.SetTextFont(42)
+    latex.Draw('same')
+            
+    c.SaveAs(outdir+'/'+c.GetName()+'.png')
+

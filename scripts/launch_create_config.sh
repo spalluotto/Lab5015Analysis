@@ -40,7 +40,7 @@ python create_config.py  -t 12      -ml HPK_nonIrr_C25_LYSO818    -ov 3.5       
 
 python create_config.py  -t 12      -ml HPK_nonIrr_C25_LYSO818    -ov 1.5        -r 67548-67587 -e angle32
 
-python create_config.py  -t 12      -ml HPK_nonIrr_C25_LYSO818    -ov 0.5        -r 67588-67592,67593-67512 -e angle32
+python create_config.py  -t 12      -ml HPK_nonIrr_C25_LYSO818    -ov 0.5        -r 67588-67592,67593-67612 -e angle32
 python create_config.py  -t 12      -ml HPK_nonIrr_C25_LYSO818    -ov 0.8        -r 67613-67636 -e angle32
 
 

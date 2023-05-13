@@ -1,0 +1,44 @@
+040 (14780183.005.000) 04/12 12:03:03 Started transferring input files
+	Transferring to host: <188.184.162.57:9618?addrs=188.184.162.57-9618+[2001-1458-301-4a--100-33]-9618&alias=b7s11p6553.cern.ch&noUDP&sock=slot1_24_123608_c49c_27528>
+...
+040 (14780183.005.000) 04/12 12:03:03 Finished transferring input files
+...
+001 (14780183.005.000) 04/12 12:03:04 Job executing on host: <188.184.162.57:9618?addrs=188.184.162.57-9618+[2001-1458-301-4a--100-33]-9618&alias=b7s11p6553.cern.ch&noUDP&sock=startd_28841_1b07>
+...
+006 (14780183.005.000) 04/12 12:03:12 Image size of job updated: 49712
+	47  -  MemoryUsage of job (MB)
+	47820  -  ResidentSetSize of job (KB)
+...
+006 (14780183.005.000) 04/12 12:08:12 Image size of job updated: 1054304
+	120  -  MemoryUsage of job (MB)
+	122016  -  ResidentSetSize of job (KB)
+...
+006 (14780183.005.000) 04/12 12:13:13 Image size of job updated: 3368968
+	368  -  MemoryUsage of job (MB)
+	376556  -  ResidentSetSize of job (KB)
+...
+006 (14780183.005.000) 04/12 12:15:18 Image size of job updated: 3389976
+	368  -  MemoryUsage of job (MB)
+	376556  -  ResidentSetSize of job (KB)
+...
+040 (14780183.005.000) 04/12 12:15:18 Started transferring output files
+...
+040 (14780183.005.000) 04/12 12:15:18 Finished transferring output files
+...
+005 (14780183.005.000) 04/12 12:15:18 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:04:24, Sys 0 00:00:10  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:04:24, Sys 0 00:00:10  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	84902  -  Run Bytes Sent By Job
+	323  -  Run Bytes Received By Job
+	84902  -  Total Bytes Sent By Job
+	323  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :     0.20        1         1 
+	   Disk (KB)            :   104           1   2840963 
+	   Memory (MB)          :   368        2000      2000 
+
+	Job terminated of its own accord at 2023-04-12T10:15:18Z.
+...
