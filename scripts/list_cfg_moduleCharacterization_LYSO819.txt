@@ -1,0 +1,10 @@
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_1E14_LYSO819_Vov1.25_delayT0b01111111_T-32C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_1E14_LYSO819_Vov1.25_delayT0b00111111_T-32C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_1E14_LYSO819_Vov1.25_delayT0b00011111_T-32C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_1E14_LYSO819_Vov1.25_delayT0b00001111_T-32C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_1E14_LYSO819_Vov1.25_delayT0b00000111_T-32C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_1E14_LYSO819_Vov1.25_delayT0b00000011_T-32C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_1E14_LYSO819_Vov1.25_delayT0b00000001_T-32C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_1E14_LYSO819_Vov2.50_T-32C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_1E14_LYSO819_Vov0.60_T-32C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_1E14_LYSO819_Vov0.80_T-32C.cfg

@@ -1,6 +1,6 @@
 executable            = drawPulseShapeTBCondor.sh
 arguments             = $(cfg)
-output                = /afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/scripts/jobs/job_drawPulseShape.$(ClusterId).$(ProcId).out
-error                 = /afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/scripts/jobs/job_drawPulseShape.$(ClusterId).$(ProcId).err
-log                   = /afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/scripts/jobs/job_drawPulseShape.$(ClusterId).$(ProcId).log
-queue cfg from list_cfg_drawPulseShapeTB_LYSO818.txt
+output                = /afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_May23/Lab5015Analysis/scripts/jobs/job_drawPulseShape.$(ClusterId).$(ProcId).out
+error                 = /afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_May23/Lab5015Analysis/scripts/jobs/job_drawPulseShape.$(ClusterId).$(ProcId).err
+log                   = /afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_May23/Lab5015Analysis/scripts/jobs/job_drawPulseShape.$(ClusterId).$(ProcId).log
+queue cfg from list_cfg_drawPulseShapeTB_LYSO815.txt
