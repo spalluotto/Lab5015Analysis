@@ -9,7 +9,7 @@ outFolder = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/macr
 plotFolder = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
 path = plotFolder
 
-txtName = 'lanciaSummaryPlots.sh'
+txtName = 'lancia_summary_plots_tmp.sh'
 
 if outFolder[-1] != "/": outFolder += '/'
 
