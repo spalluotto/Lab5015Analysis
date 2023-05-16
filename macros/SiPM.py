@@ -7,12 +7,19 @@ import math
 def sipm_type(lyso_):
     if '828' in lyso_ or '824' in lyso_ or '826' in lyso_:
         return 'HPK-ES3-25um'
-    elif '818' in lyso_ or '813' in lyso_ or '816' in lyso_ or '828' in lyso_ or '826' in lyso_:
+
+    elif '818' in lyso_ or '813' in lyso_ or '816' in lyso_ or '828' in lyso_ or '826' in lyso_ or '815' in lyso_ or '819' in lyso_ or '817' in lyso_:
         return 'HPK-ES2-25um'
-    elif '814' in lyso_:
+
+    elif '814' in lyso_ or '825' in lyso_:
         return 'HPK-ES2-20um'
+
     elif '824' in lyso_:
         return 'HPK-ES3-25um'
+
+    elif '820' in lyso_:
+        return 'HPK-ES2-30um'
+
     elif '528' in lyso_:
         return 'HPK-MS'
 

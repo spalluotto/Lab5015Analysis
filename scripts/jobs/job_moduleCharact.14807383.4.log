@@ -1,0 +1,58 @@
+000 (14807383.004.000) 05/15 18:20:36 Job submitted from host: <188.184.90.241:9618?addrs=188.184.90.241-9618+[2001-1458-201-e4--100-2eb]-9618&alias=bigbird15.cern.ch&noUDP&sock=schedd_3273_9590>
+...
+040 (14807383.004.000) 05/15 18:34:04 Started transferring input files
+	Transferring to host: <128.142.137.190:9618?addrs=128.142.137.190-9618+[2001-1458-301-5e--100-b2]-9618&alias=b7g19p1334.cern.ch&noUDP&sock=slot1_1_5292_7150_38172>
+...
+040 (14807383.004.000) 05/15 18:34:04 Finished transferring input files
+...
+001 (14807383.004.000) 05/15 18:34:05 Job executing on host: <128.142.137.190:9618?addrs=128.142.137.190-9618+[2001-1458-301-5e--100-b2]-9618&alias=b7g19p1334.cern.ch&noUDP&sock=startd_4614_6611>
+...
+006 (14807383.004.000) 05/15 18:34:13 Image size of job updated: 48456
+	47  -  MemoryUsage of job (MB)
+	47688  -  ResidentSetSize of job (KB)
+...
+006 (14807383.004.000) 05/15 18:39:13 Image size of job updated: 1640868
+	1102  -  MemoryUsage of job (MB)
+	1127512  -  ResidentSetSize of job (KB)
+...
+006 (14807383.004.000) 05/15 18:44:14 Image size of job updated: 1865924
+	1297  -  MemoryUsage of job (MB)
+	1327708  -  ResidentSetSize of job (KB)
+...
+006 (14807383.004.000) 05/15 18:54:14 Image size of job updated: 4092948
+	1297  -  MemoryUsage of job (MB)
+	1327708  -  ResidentSetSize of job (KB)
+...
+006 (14807383.004.000) 05/15 18:59:15 Image size of job updated: 4334448
+	1297  -  MemoryUsage of job (MB)
+	1327708  -  ResidentSetSize of job (KB)
+...
+006 (14807383.004.000) 05/15 19:04:16 Image size of job updated: 4398212
+	1297  -  MemoryUsage of job (MB)
+	1327708  -  ResidentSetSize of job (KB)
+...
+006 (14807383.004.000) 05/15 19:08:34 Image size of job updated: 4420656
+	1297  -  MemoryUsage of job (MB)
+	1327708  -  ResidentSetSize of job (KB)
+...
+040 (14807383.004.000) 05/15 19:08:34 Started transferring output files
+...
+040 (14807383.004.000) 05/15 19:08:34 Finished transferring output files
+...
+005 (14807383.004.000) 05/15 19:08:34 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:12:35, Sys 0 00:00:57  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:12:35, Sys 0 00:00:57  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	119873  -  Run Bytes Sent By Job
+	323  -  Run Bytes Received By Job
+	119873  -  Total Bytes Sent By Job
+	323  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated 
+	   Cpus                 :        0        1         1 
+	   Disk (KB)            :      138        1   1641041 
+	   Memory (MB)          :     1297     2000      2000 
+
+	Job terminated of its own accord at 2023-05-15T17:08:34Z.
+...

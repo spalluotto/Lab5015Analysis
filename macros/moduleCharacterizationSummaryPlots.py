@@ -8,11 +8,15 @@ import sys
 import time
 import argparse
 import json
+import ROOT
+import CMS_lumi, tdrstyle
 
 
 #from VovsEff import *
 from moduleDict import *
+from slewRate import *
 
+# --- arguments ---
 parser = argparse.ArgumentParser(description='Module characterization summary plots')
 #parser.add_argument("-r",  "--runs",          required=True, type=str, help="comma-separated list of runs to be processed")
 parser.add_argument("-i",  "--inputLabels",   required=True, type=str, help="comma-separated list of input labels")
@@ -20,9 +24,6 @@ parser.add_argument("-m",  "--resMode",       required=True, type=int, help="res
 parser.add_argument("-o",  "--outFolder",     required=True, type=str, help="out folder")
 args = parser.parse_args()
 
-
-import ROOT
-import CMS_lumi, tdrstyle
 
 #set the tdr style
 tdrstyle.setTDRStyle()
@@ -41,40 +42,6 @@ ROOT.gStyle.SetPadTopMargin(0.07)
 ROOT.gROOT.SetBatch(True)
 ROOT.gErrorIgnoreLevel = ROOT.kWarning
 
-
-def getTimeResolution(h1_deltaT):
-   
-   tRes = [-1,-1]
-
-   h1_deltaT.GetXaxis().SetRangeUser(h1_deltaT.GetMean() - 5*h1_deltaT.GetRMS(), h1_deltaT.GetMean() + 5*h1_deltaT.GetRMS())
-                    
-   fitFunc = ROOT.TF1('fitFunc','gaus',-10000, 10000)
-   fitFunc.SetLineColor(ROOT.kGreen+3)
-   fitFunc.SetLineWidth(2)
-   fitFunc.SetParameters(h1_deltaT.GetMaximum(),h1_deltaT.GetMean(), h1_deltaT.GetRMS())
-   
-   fitXMin = h1_deltaT.GetBinCenter(h1_deltaT.GetMaximumBin()) - 200
-   fitXMax = h1_deltaT.GetBinCenter(h1_deltaT.GetMaximumBin()) + 200.
-   #fitXMin = h1_deltaT.GetMean() - 3*h1_deltaT.GetRMS()
-   #fitXMax = h1_deltaT.GetMean() + 3*h1_deltaT.GetRMS()
-   fitFunc.SetRange(fitXMin, fitXMax)
-   h1_deltaT.Fit('fitFunc','QNRL','', fitXMin, fitXMax)
-   #fitFunc.SetRange(fitFunc.GetParameter(1) - 3.0*fitFunc.GetParameter(2), fitFunc.GetParameter(1) + 3.0*fitFunc.GetParameter(2))
-   fitFunc.SetRange(fitFunc.GetParameter(1) - 1.0*fitFunc.GetParameter(2), fitFunc.GetParameter(1) + 1.0*fitFunc.GetParameter(2))
-   h1_deltaT.Fit('fitFunc','QNRL')
-   fitFunc.SetRange(fitFunc.GetParameter(1) - 2.5*fitFunc.GetParameter(2), fitFunc.GetParameter(1) + 2.5*fitFunc.GetParameter(2))
-   h1_deltaT.Fit('fitFunc','QRSL+')
-
-   #if (fitFunc==None): continue                    
-   #if (fitFunc.GetParameter(2) > 1000): continue
-   #if (fitFunc.GetParameter(2) < 20): continue
-   #if (fitFunc.GetParError(2) > 200): continue
-   tRes = [ fitFunc.GetParameter(2),fitFunc.GetParError(2)]
-   #print h1_deltaT.GetName(), fitFunc.GetParameter(2)
-   return tRes
-
-
-# ====================================
 
 
 # INPUT
@@ -127,50 +94,13 @@ if (source == 'TB'):
 
 
 # --- colors
-'''
-cols = { 0.50 : 21,  
-         0.80 : 31,  
-         0.90 : 47,  
-         1.00 : 41,  
-         1.10 : 49,  
-         1.20 : 49,  
-         1.25 : 50,  
-         1.27 : 50,  
-         1.30 : 50,  
-         1.40 : 46, 
-         1.50 : 51, 
-         1.53 : 51, 
-         1.60 : 51+4, 
-         1.70 : 51+8,
-         1.75 : 51+8,
-         1.80 : 51+12,
-         1.90 : 51+16,
-         2.00 : 51 + 20, 
-         2.08 : 51 + 24, 
-         2.10 : 51 + 24, 
-         2.30 : 51 + 28,
-         2.40 : 51 + 30,
-         2.50  : 51 + 32,
-         2.60  : 51 + 34,
-         2.70  : 51 + 35,
-         2.80  : 51 + 36,
-         3.00  : 51 + 40,
-         3.10  : 51 + 42,
-         3.20  : 51 + 44,
-         3.50  : 51 + 48,
-         3.60  : 51 + 48,
-         3.70  : 51 + 48,
-         4.00  : 1,
-         5.00  : 12,
-         7.00  : 15}
-'''
-cols = { 0.50 : 224,
-         0.60 : 227,
+cols = { 0.50 : 220,
+         0.60 : 208,
          0.80 : 212,
          1.00 : 216,
-         1.25 : 200,
-         1.50 : 41,
-         2.00 : 210,
+         1.25 : 224,
+         1.50 : 227,
+         2.00 : 94,
          2.50 : 225,
          3.50 : 51+48
 }
@@ -214,61 +144,12 @@ goodBars = {}
 VovsEff = {}
 plots_label = ''
 
-
 for vov in Vovs:
-   VovsEff[vov] = Vovs_eff(vov,args.outFolder)
+   VovsEff[vov] = Vovs_eff(args.outFolder,vov)
+
+
 goodBars = good_bars(args.outFolder,VovsEff,bars)
 plots_label = label_(args.outFolder)
-
-
-# if ('528' in args.outFolder):
-#     plots_label = 'HPK (15#mum) + LYSO528 (prod5, type2)'
-#     for vov in Vovs:
-#         VovsEff[vov] = vov 
-#     goodBars[3.50] = [2,3,4,5,7,8,9,10,11,12,13] 
-#     goodBars[2.00] = [2,3,4,5,7,8,9,10,11,12,13] 
-#     goodBars[1.50] = [2,3,4,5,7,8,9,10,11,12,13] 
-#     goodBars[1.00] = [2,3,4,5,7,8,9,10,11,12,13] 
-
-# elif ('813' in args.outFolder):
-#     plots_label = 'HPK (25 #mum) + LYSO813 (prod1, type2)'
-#     for vov in Vovs:
-#         VovsEff[vov] = vov 
-#     goodBars[3.50] = [0,1,2,3,4,5,7,8,9,10,11,12,13] 
-#     goodBars[2.00] = [0,1,2,3,4,5,7,8,9,10,11,12,13] 
-#     goodBars[1.50] = [0,1,2,3,4,5,7,8,9,10,11,12,13] 
-#     goodBars[1.00] = [0,1,2,3,4,5,7,8,9,10,11,12,13] 
-#     goodBars[0.80] = [0,2,3,4,5,7,8,9,10,11,12,13]
-#     goodBars[0.50] = [0,3,4,5,7,8,9,11,12,13]
-
-# elif ('814' in args.outFolder):
-#     plots_label = 'HPK (20 #mum) + LYSO814 (prod1, type2)'
-#     for vov in Vovs:
-#         VovsEff[vov] = vov 
-#     goodBars[3.50] = [0,2,3,4,5,7,8,9,10,11,12,13] 
-#     goodBars[1.50] = [0,2,3,4,5,7,8,9,10,11,12,13]
-#     goodBars[1.00] = [0,2,3,4,5,7,8,9,10,11,12,13]
-#     goodBars[0.80] = [0,3,4,5,7,8,9,10,11,12,13]
-#     goodBars[0.50] = [0,3,4,5,7,8,9,10,11,12,13]
-
-# elif ('818' in args.outFolder):
-#     plots_label = 'HPK (25 #mum) + LYSO818 (prod1, type1)'
-#     for vov in Vovs:
-#         VovsEff[vov] = vov 
-#     goodBars[3.50] = [0,2,3,4,5,7,8,9,10,11,12,13] 
-#     goodBars[1.50] = [0,2,3,4,5,7,8,9,10,11,12,13]
-#     goodBars[1.00] = [0,2,3,4,5,7,8,9,10,11,12,13]
-#     goodBars[0.80] = [0,3,4,5,7,8,9,10,11,12,13]
-#     goodBars[0.50] = [0,3,4,5,7,8,9,10,11,12,13]
-
-
-
-# else:
-#     for vov in Vovs:
-#         VovsEff[vov] = vov
-#         goodBars[vov] = bars 
-#     print VovsEff
-
 
 print 'bars:', bars
 print 'good bars:', goodBars
