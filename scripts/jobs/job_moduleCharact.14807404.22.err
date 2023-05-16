@@ -1,0 +1,10 @@
+Error in <TSystem::ExpandFileName>: input: $HOME/.root.mimes, output: $HOME/.root.mimes
+Error in <TFile::Init>: file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_H8_May2023/TOFHIR2/h8/reco//5556/24_e.root is truncated at 53739520 bytes: should be 69913533, trying to recover
+Warning in <TFile::Init>: no keys recovered, file has been made a Zombie
+Error in <TSystem::ExpandFileName>: input: $HOME/.root.mimes, output: $HOME/.root.mimes
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed

@@ -1,0 +1,14 @@
+Error in <TSystem::ExpandFileName>: input: $HOME/.root.mimes, output: $HOME/.root.mimes
+Error in <TFile::Init>: file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_H8_May2023/TOFHIR2/h8/reco//5543/10_e.root is truncated at 122945536 bytes: should be 130198585, trying to recover
+Info in <TFile::Recover>: /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_H8_May2023/TOFHIR2/h8/reco//5543/10_e.root, recovered key TTree:index at address 30342634
+Info in <TFile::Recover>: /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_H8_May2023/TOFHIR2/h8/reco//5543/10_e.root, recovered key TTree:index at address 30343611
+Error in <TFile::Recover>: Address = 83339359	Nbytes = 0	=====E R R O R=======
+Warning in <TFile::Init>: successfully recovered 2 keys
+Error in <TChain::LoadTree>: Cannot find tree with name data in file /eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_H8_May2023/TOFHIR2/h8/reco//5543/10_e.root
+Error in <TSystem::ExpandFileName>: input: $HOME/.root.mimes, output: $HOME/.root.mimes
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
