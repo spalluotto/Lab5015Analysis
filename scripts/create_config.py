@@ -56,7 +56,7 @@ else:
 
 for line in baseCfg:
    if (line.startswith('Vov') and args.Vov not in line):
-      print 'ERROR: missing ov in moduleCharacterization.cfg file'
+      print '\n---------------- \n ERROR: missing ov in moduleCharacterization.cfg file\n'
       newCfg.write(line + '%s \n'%args.Vov) # non funziona perche va a capo
       sys.exit()
    elif 'runNumbers' in line:

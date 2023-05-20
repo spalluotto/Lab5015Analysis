@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 import math
-
+from moduleDict import *
 
 
 
@@ -24,47 +24,68 @@ def sipm_type(lyso_):
         return 'HPK-MS'
 
 
-def Gain(Vov,_lyso):
-    type = sipm_type(_lyso)
-    if type == 'HPK-ES1-15um':
-        return 36890. + 97602.*Vov
+def Gain_(Vov,sipm,flag='1'):
+    irr = irradiation(sipm)
+
+    if (irr == '2E14' and 'HPK' in sipm): k = 0.78 # 22% PDE reduction for HPK SiPMs irradiated 2E14  
+    elif (irr == '1E14' and 'HPK' in sipm): k = 0.89 # 11% PDE reduction for HPK SiPMs irradiated 1E14 ?(assume that for 1E14 is half of 2E14) 
+    else:
+        k = 1
+
+    if flag == '0':
+        k = 1
+
+    type = sipm_type(sipm)
+    if type == 'HPK-MS':
+        return k * 36890. + 97602.*Vov
     elif type == 'FBK-MS':
-        return 94954.6*(ov+0.512167)
+        return k * 94954.6*(ov+0.512167)
     # -- new cell size --
     elif type == 'HPK-ES2-20um':
-        return 6.234E04 + 1.787E05*Vov
+        return k * 6.234E04 + 1.787E05*Vov
     elif type == 'HPK-ES2-25um':
-        return 7.044E04 + 2.895E05*Vov
+        return k * 7.044E04 + 2.895E05*Vov
     elif type == 'HPK-ES2-30um':
-        return 9.067E04 + 4.020E05*ov
+        return k * 9.067E04 + 4.020E05*ov
     # -- low Cg --
     elif type == 'HPK-ES3-20um':
-        return 5.731E04 + 1.759E05*Vov
+        return k * 5.731E04 + 1.759E05*Vov
     elif type == 'HPK-ES3-25um':
-        return 7.857E04 + 2.836E05*Vov
+        return k * 7.857E04 + 2.836E05*Vov
     else:
         print 'CANNOT FIND GAIN'
 
 
 
 
-def PDE(ov, sipm, irr='0'):
+def PDE_(ov, sipm, flag='1'):
+    irr = irradiation(sipm)
+
+    if (irr == '2E14' and 'HPK' in sipm): k = 0.78 # 22% PDE reduction for HPK SiPMs irradiated 2E14  
+    elif (irr == '1E14' and 'HPK' in sipm): k = 0.89 # 11% PDE reduction for HPK SiPMs irradiated 1E14 ?(assume that for 1E14 is half of 2E14) 
+    else:
+        k = 1
+
+    if flag == '0':
+        k = 1
+        
+
     type = sipm_type(sipm)
-    if type == 'HPK-ES1-15um':
-        return 0.389 * ( 1. - math.exp(-1.*0.593*ov) )
+    if type == 'HPK-MS':
+        return k * 0.389 * ( 1. - math.exp(-1.*0.593*ov) )
     elif type == 'FBK-MS':
-        return 0.419907 * ( 1. - math.exp(-1.*0.3046*ov) )
+        return k * 0.419907 * ( 1. - math.exp(-1.*0.3046*ov) )
     # -- new cell size --
     elif type == 'HPK-ES2-20um':
-        return 0.576 * ( 1. - math.exp(-1.*0.625*ov) )
+        return k * 0.576 * ( 1. - math.exp(-1.*0.625*ov) )
     elif type == 'HPK-ES2-25um':
-        return 0.638 * ( 1. - math.exp(-1.*0.651*ov) )
+        return k * 0.638 * ( 1. - math.exp(-1.*0.651*ov) )
     elif type == 'HPK-ES2-30um':
-        return 0.653 * ( 1. - math.exp(-1.*0.728*ov) )
+        return k * 0.653 * ( 1. - math.exp(-1.*0.728*ov) )
     # -- low Cg --
     elif type == 'HPK-ES3-20um':
-        return 0.568 * ( 1. - math.exp(-1.*0.588*ov) )
+        return k * 0.568 * ( 1. - math.exp(-1.*0.588*ov) )
     elif type == 'HPK-ES3-25um':
-        return 0.638 * ( 1. - math.exp(-1.*0.589*ov) )
+        return k * 0.638 * ( 1. - math.exp(-1.*0.589*ov) )
     else:
         print 'CANNOT FIND PDE'
