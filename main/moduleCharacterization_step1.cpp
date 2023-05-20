@@ -656,6 +656,7 @@ int main(int argc, char** argv)
       }
   } // --- end loop over events
   
+  outFile -> Close();
   int bytes = outFile -> Write();
   std::cout << "============================================"  << std::endl;
   std::cout << "nr of  B written:  " << int(bytes)             << std::endl;

@@ -46,7 +46,7 @@ ROOT.gStyle.SetPadTopMargin(0.07)
 #--------CAMBIA QUI------------------------------------------------------------------
 
 comparisonNum = 1
-
+plotsdir = '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
 
 
 # --- RUs T1 T2 T3 ----- 
@@ -139,7 +139,7 @@ for it,sipm in enumerate(sipmTypes):
     sipmTypes[it] = sipm + '_T12C' + extraName[it]
     sipm_base[it] = sipm + '_T12C'
 
-    outFileName = '/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/plots/plot_tRes_'+sipmTypes[it]+'.root'
+    outFileName = plotsdir+'/plot_tRes_'+sipmTypes[it]+'.root'
     outfile[sipmTypes[it]] = ROOT.TFile(outFileName, 'RECREATE')
 
 if verbose:
@@ -159,7 +159,7 @@ NpeFrac = {}
 thick = {}
 
 for it, sipm in enumerate(sipmTypes):
-    fnames[sipm] = '../plots/summaryPlots_%s.root'%(sipm)
+    fnames[sipm] = '%s/summaryPlots_%s.root'%(plotsdir,sipm)
     labels[sipm] = label_(sipm) + extraLabel[it]
     if color_code:
         cols[sipm] = color_map[it]
@@ -282,8 +282,7 @@ for it,sipm in enumerate(sipmTypes):
 
     fPS[sipm] = {}
     for ov in Vovs[sipm]:
-        #fPS[sipm][ov] = ROOT.TFile.Open('../plots/pulseShape_%s_Vov%.2f.root'%(sipm,ov))
-        fPS[sipm][ov] = ROOT.TFile.Open('../plots/pulseShape_%s_Vov%.2f%s.root'%(sipm_base[it],ov,extraName[it]))
+        fPS[sipm][ov] = ROOT.TFile.Open('%s/pulseShape_%s_Vov%.2f%s.root'%(plotsdir,sipm_base[it],ov,extraName[it]))
 
         g_SR_vs_bar[sipm][ov] = ROOT.TGraphErrors()
         g_bestTh_vs_bar[sipm][ov] = ROOT.TGraphErrors()
@@ -297,7 +296,6 @@ for it,sipm in enumerate(sipmTypes):
         g_Tot_vs_SR[sipm][ov]   = ROOT.TGraphErrors()
 
     for bar in bars[sipm]:
-        #g[sipm][bar] = f.Get('g_deltaT_totRatioCorr_vs_vov_bar%02d_th10_enBin01'%bar)
         g[sipm][bar] = f.Get('g_deltaT_totRatioCorr_bestTh_vs_vov_bar%02d_enBin01'%bar)
 
         if verbose:

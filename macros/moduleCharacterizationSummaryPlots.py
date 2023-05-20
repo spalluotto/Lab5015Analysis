@@ -45,7 +45,7 @@ ROOT.gErrorIgnoreLevel = ROOT.kWarning
 
 
 # INPUT
-inputdir = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
+inputdir = '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
 source = 'TB'
 
 
