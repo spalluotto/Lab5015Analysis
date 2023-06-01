@@ -13,6 +13,19 @@ import CMS_lumi, tdrstyle
 from moduleDict import *
 from SiPM import *
 
+
+parser = argparse.ArgumentParser()  
+parser.add_argument("-n","--comparisonNumber", required = True, type=str, help="comparison number")    
+args = parser.parse_args()   
+
+
+#---- init ---
+
+compareNum = int(args.comparisonNumber)
+
+#-------------
+
+
 #set the tdr style                                                                                                                                   
 tdrstyle.setTDRStyle()
 ROOT.gStyle.SetOptStat(0)
@@ -32,23 +45,22 @@ ROOT.gErrorIgnoreLevel = ROOT.kWarning
 
 
 outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_May23/compareTimeResolution/'
-plotsdir = '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/bkp/'
+plotsdir = '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots'
+#plotsdir = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
 
-#---- init ---
-
-compareNum = 4
-
-#-------------
 
 #----- comparison ------
+
+marker_code = True
+color_code = True
+
 
 # ----- LYSO 815 ------
 if compareNum == 1:
     sipmTypes = ['HPK_2E14_LYSO815', 'HPK_2E14_LYSO815', 'HPK_2E14_LYSO815']
     nameComparison = 'HPK_2E14_LYSO815_temperatures'
     extraLabel = ['','','']
-    extraName = ['_T-30C','_angle52_T-35C','_T-40C']
-    color_code = True
+    extraName = ['_angle52_T-30C','_angle52_T-35C','_angle52_T-40C']
 
 
 elif compareNum == 2:
@@ -56,7 +68,6 @@ elif compareNum == 2:
     nameComparison = 'HPK_2E14_LYSO815_angles_T-35C'
     extraLabel = ['  32^{o}','  52^{o}','  64^{o}']
     extraName = ['_angle32_T-35C','_angle52_T-35C','_angle64_T-35C']
-    color_code = True
 
 
 # ----- LYSO 825 ------
@@ -64,8 +75,7 @@ elif compareNum == 3:
     sipmTypes = ['HPK_2E14_LYSO825', 'HPK_2E14_LYSO825', 'HPK_2E14_LYSO825']
     nameComparison = 'HPK_2E14_LYSO825_temperatures'
     extraLabel = ['','','']
-    extraName = ['_T-30C','_angle52_T-35C','_T-40C']
-    color_code = True
+    extraName = ['_angle52_T-30C','_angle52_T-35C','_angle52_T-40C']
 
 
 elif compareNum == 4:
@@ -73,7 +83,9 @@ elif compareNum == 4:
     nameComparison = 'HPK_2E14_LYSO825_angles_T-35C'
     extraLabel = ['  52^{o}','  64^{o}']
     extraName = ['_angle52_T-35C','_angle64_T-35C']
-    color_code = True
+
+
+
 
 
 # ---------------------
@@ -82,50 +94,181 @@ elif compareNum == 5:
     sipmTypes = ['HPK_1E14_LYSO819', 'HPK_1E14_LYSO819', 'HPK_1E14_LYSO819' , 'HPK_1E14_LYSO819']
     nameComparison = 'HPK_1E14_LYSO819_temperatures'
     extraLabel = ['','','',   '']
-    extraName = ['_angle52_T-22C','_T-27C', '_angle52_T-32C', '_T-37C'     ]
-    color_code = True
+    extraName = ['_angle52_T-22C','_angle52_T-27C', '_angle52_T-32C', '_angle52_T-37C'     ]
 
 elif compareNum == 6:
     sipmTypes = ['HPK_1E14_LYSO819', 'HPK_1E14_LYSO819', 'HPK_1E14_LYSO819']
     nameComparison = 'HPK_1E14_LYSO819_angles_T-22C'
     extraLabel = ['  32^{o}','  52^{o}','  64^{o}']
     extraName = ['_angle32_T-22C','_angle52_T-22C','_angle64_T-22C']
-    color_code = True
 
 elif compareNum == 7:
     sipmTypes = ['HPK_1E14_LYSO819', 'HPK_1E14_LYSO819', 'HPK_1E14_LYSO819']
     nameComparison = 'HPK_1E14_LYSO819_angles_T-32C'
     extraLabel = ['  32^{o}','  52^{o}','  64^{o}']
     extraName = ['_angle32_T-32C','_angle52_T-32C','_angle64_T-32C']
-    color_code = True
 
 
+
+# ---------------------
 # ----- LYSO 829 ------
 elif compareNum == 8:
-    sipmTypes = ['HPK_1E13_LYSO829']#, 'HPK_1E13_LYSO829', 'HPK_1E13_LYSO829' , 'HPK_1E13_LYSO829']
+    sipmTypes = ['HPK_1E13_LYSO829', 'HPK_1E13_LYSO829', 'HPK_1E13_LYSO829' , 'HPK_1E13_LYSO829']
     nameComparison = 'HPK_1E13_LYSO829_temperatures'
-    extraLabel = ['']#,'','',   '']
-    extraName = ['_angle52_T-19C',]#'_T-27C', '_angle52_T-32C', '_T-37C'     ]
-    color_code = True
+    extraLabel = ['' ,'','',   '']
+    extraName = ['_angle52_T-32C','_angle52_T-19C', '_angle52_T0C', '_angle52_T12C'     ]
+
+
+elif compareNum == 9:
+    sipmTypes = ['HPK_1E13_LYSO829', 'HPK_1E13_LYSO829', 'HPK_1E13_LYSO829']
+    nameComparison = 'HPK_1E13_LYSO829_angles_T-19C'
+    extraLabel = ['  32^{o}','  52^{o}','  64^{o}']
+    extraName = ['_angle32_T-19C','_angle52_T-19C','_angle64_T-19C']
+
+
+
+
+
+
+#### --------   thickening scenarios ------
+#compareTimeResolution_vs_Vov_EoL_T1_T2_T3
+elif compareNum == 10:
+    sipmTypes = ['HPK_1E14_LYSO819','HPK_2E14_LYSO815','HPK_1E14_LYSO817']
+    nameComparison = 'EoL_T1_T2_T3'
+    extraLabel = ['  32^{o}','  52^{o}','  64^{o}']
+    extraName = ['_angle32_T-22C', '_angle52_T-35C', '_angle64_T-22C']
+    color_code = False
+    color_map = [417,2,1]
+
+
+elif compareNum == 11:
+    sipmTypes = ['HPK_1E14_LYSO819','HPK_2E14_LYSO815','HPK_2E14_LYSO815']
+    nameComparison = 'EoL_T1_T2_T2'
+    extraLabel = ['  32^{o}','  52^{o}','  64^{o}']
+    extraName =['_angle32_T-22C', '_angle52_T-35C', '_angle64_T-35C']
+    color_code = False
+    color_map = [417,2,1]
+
+elif compareNum == 12:
+    sipmTypes = ['HPK_1E14_LYSO819','HPK_1E14_LYSO819','HPK_1E14_LYSO819']
+    nameComparison = 'EoL_T1_T1_T1'
+    extraLabel = ['  32^{o}','  52^{o}','  64^{o}']
+    extraName = ['_angle32_T-22C', '_angle52_T-22C', '_angle64_T-22C']
+    color_code = False
+    color_map = [417,2,1]
+
+
+elif compareNum == 13:
+    sipmTypes = ['HPK_1E14_LYSO819','HPK_1E14_LYSO817']
+    nameComparison = 'EoL_T1_T3'
+    #extraLabel = ['  64^{o}','  64^{o}']
+    extraLabel = ['','']
+    extraName = ['_angle64_T-22C', '_angle64_T-22C']
+    color_code = False
+    color_map = [417,1]
+
+
+
+
+
+
+
+
+#---------- BTL like ------
+elif compareNum == 14:
+    sipmTypes = ['HPK_1E14_LYSO819','HPK_1E14_LYSO817']
+    nameComparison = 'BTLlike_1E14_T1_T3'
+    #extraLabel = ['  64^{o}','  64^{o}']
+    extraLabel = ['','']
+    extraName = ['_angle64_T-32C', '_angle64_T-32C']
+    color_code = False
+    color_map = [417,1]
+
+
+elif compareNum == 15:
+    sipmTypes = ['HPK_1E14_LYSO819','HPK_2E14_LYSO815','HPK_1E14_LYSO817']
+    nameComparison = 'BTLlike_T1_T2_T3'
+    extraLabel = ['','', '']
+    extraName = ['_angle32_T-32C', '_angle52_T-40C', '_angle64_T-32C']
+    color_code = False
+    color_map = [417,2,1]
+
+
+elif compareNum == 16:
+    sipmTypes = ['HPK_1E14_LYSO819','HPK_2E14_LYSO815','HPK_2E14_LYSO815']
+    nameComparison = 'BTLlike_T1_T2_T2'
+    extraLabel = ['','', '']
+    extraName = ['_angle32_T-32C', '_angle52_T-40C', '_angle64_T-40C']
+    color_code = False
+    color_map = [417,2,1]
+
+
+elif compareNum == 17:
+    sipmTypes = ['HPK_1E14_LYSO819','HPK_1E14_LYSO819','HPK_1E14_LYSO819']
+    nameComparison = 'BTLlike_T1_T1_T1'
+    extraLabel = ['','', '']
+    extraName = ['_angle32_T-32C', '_angle52_T-32C', '_angle64_T-32C']
+    color_code = False
+    color_map = [417,2,1]
+
+
+
+
+
+
+
+
+
+elif compareNum == 18:
+    sipmTypes = ['HPK_2E14_LYSO825', 'HPK_2E14_LYSO825', 'HPK_2E14_LYSO825','HPK_2E14_LYSO815', 'HPK_2E14_LYSO815', 'HPK_2E14_LYSO815']
+    nameComparison = 'HPK_2E14_LYSO825_LYSO815_temperatures'
+    extraLabel = ['','','','','','']
+    extraName = ['_angle52_T-30C','_angle52_T-35C','_angle52_T-40C','_angle52_T-30C','_angle52_T-35C','_angle52_T-40C']
+    marker_code = False
+    marker_map = [24,24,24,20,20,20]
+    color_code = False
+    color_map = [2,800,860,2,800,860]
+
+
+
+
+
 
 
 
 # ---- T1 for different moment of life ----
 
-elif compareNum == 9:
+elif compareNum == 90:
     sipmTypes = ['HPK_1E13_LYSO829','HPK_1E14_LYSO819', 'HPK_1E14_LYSO819']
     nameComparison = 'diff_irrad_T1'
     extraLabel = ['','','']
     extraName = ['_angle52_T-19C','_angle52_T-22C','_angle52_T-32C'     ]
-    color_code = True
+
+
+
+
+
+
+
+
+
+
+
+
 
 #-----------------------
 
 outFile = ROOT.TFile('%s/compareTimeResolution_vs_Vov_%s.root'%(plotsdir,nameComparison), 'RECREATE')
 
 
-color_map = [850,880,800,840,910]
-#color_map = [417,632,1]
+#color_map = [850,880,800,840,910]
+#color_map = [208,212,216,224,227,94,225,99,220]
+if color_code:
+    color_map = [2,210,4,6,7,8,94]
+
+if marker_code:
+    marker_map = [20,20,20,20,20,20,20,20]
+
 
 
 #-- extra name
@@ -145,11 +288,10 @@ markers = {}
 for it, sipm in enumerate(sipmTypes):
     fnames[sipm] = '%s/summaryPlots_%s.root'%(plotsdir,sipm)
     labels[sipm] = label_(sipm) + extraLabel[it]
-    if not color_code:
-        colors[sipm] = color_(sipm)
-    else:
-        colors[sipm] = color_map[it]
-    markers[sipm] = 20
+
+    print 'sipm : ', sipm, '     label: ', label_(sipm)
+    colors[sipm] = color_map[it]
+    markers[sipm] = marker_map[it]
 
 g = {}
 Vovs = {}
@@ -189,11 +331,11 @@ c1.cd()
 jsipm= 1
 if len(sipmTypes)==1: jsipm = 0 
 n = g[sipmTypes[jsipm]].GetN()
-xmax = 4
+xmax = 3
 xmin = 0
 
-ymin = 0
-ymax = 120
+ymin = 40
+ymax = 140
 
 hdummy = ROOT.TH2F('hdummy','',100,xmin,xmax,100,ymin,ymax)
 hdummy.GetXaxis().SetTitle('V_{OV}^{eff} [V]')
@@ -214,15 +356,14 @@ for i,sipm in enumerate(sipmTypes):
 leg.Draw('same')
 
 
-# latex = ROOT.TLatex(0.65,0.68,'%s'%irr)
-# if (irr == 'unirr'):
-#     latex = ROOT.TLatex(0.65,0.68,'non-irradiated')
-# latex.SetNDC()
-# latex.SetTextSize(0.045)
-# latex.SetTextFont(42)
-# #latex.Draw('same')
-
-
+logo = ROOT.TLatex()
+logo.SetNDC()
+logo.SetTextSize(0.045) 
+logo.SetTextFont(62)
+logo.DrawText(0.16,0.95,'CMS') 
+logo.SetTextFont(52)
+logo.DrawText(0.22, 0.95, '  Preliminary')
+    
 
 c1.SaveAs(outdir+c1.GetName()+'_%s.png'%nameComparison)
 

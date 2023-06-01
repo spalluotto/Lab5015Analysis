@@ -6,7 +6,7 @@ command_base = 'python moduleCharacterizationSummaryPlots.py -m 2'
 
 outFolder = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/macros/'
 
-plotFolder = '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots'
+plotFolder = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
 path = plotFolder
 
 txtName = 'lancia_summary_plots_tmp.sh'

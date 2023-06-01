@@ -77,13 +77,17 @@ def sipm_cell_size(module):
 
 
 def thickness(module):
-    if 'LYSO818' in module or 'LYSO819' in module or 'LSYO829' in module:
+    lyso_ref = lyso_(module)
+    if 'LYSO818' == lyso_ref or 'LYSO819' == lyso_ref or 'LYSO829' == lyso_ref:
         return 3.75
-    elif 'LYSO813' or 'LYSO815' or 'LYSO825' in module or 'LYSO820' in module:
+    elif 'LYSO813' == lyso_ref or 'LYSO815'==lyso_ref  or 'LYSO825' == lyso_ref or 'LYSO820' == lyso_ref:
         return 3
-    elif 'LYSO816' in module or 'LYSO817' in module:
+    elif 'LYSO816' == lyso_ref or 'LYSO817' == lyso_ref:
         return 2.4
-
+    else:
+        print 'ERROR CANNOT FIND THICKNESS'
+        return 'ERROR'
+        
 
 
 def light_output(module):
@@ -256,7 +260,9 @@ def temperature_(module):
 
 def getVovEffDCR(module, ov) :
 
-    ov_set = '%.2f'%float(ov)
+    ov_temp = round(5*round(float(ov)/5,2),2)
+    ov_set = '%.2f'%float(ov_temp)
+
     irrad = irradiation(module)
     temp = temperature_(module)
     
@@ -270,15 +276,20 @@ def getVovEffDCR(module, ov) :
 
         if not data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_A'][ov_set][0]:
             print 'ERROR:   ',module,'  not in json file!!!'
-            return 'ERROR'
+            return ([ov_set,0,0])
         else:
             ov_eff_A = float(data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_A'][ov_set][0])
             dcr_A    = float(data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_A'][ov_set][1])
             ov_eff_B = float(data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_B'][ov_set][0])
             dcr_B    = float(data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_B'][ov_set][1])
+
+            current_A= float(data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_A'][ov_set][2])
+            current_B= float(data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_B'][ov_set][2])
+            current = 0.5*(current_A+current_B)
+
             ov_eff =  0.5*(ov_eff_A+ov_eff_B)
             dcr    =  0.5*(dcr_A+dcr_B)
-            return ([ov_eff, dcr])      
+            return ([ov_eff, dcr, current])      
 
     else:
         print 'ERROR: CANNOT FIND WHICH IRRADIATION'
@@ -288,7 +299,7 @@ def getVovEffDCR(module, ov) :
 def Vovs_eff(module, ov):
     ov_set_ = '%.2f'%float(ov)
     if 'non-irr' in irradiation(module):
-        VovEff_ = ov_set_
+        VovEff_ = float(ov_set_)
     else:    
         VovEff_ = getVovEffDCR(module, ov_set_)[0]
     return VovEff_
@@ -302,6 +313,16 @@ def DCR(module, ov):
         DCR_ = getVovEffDCR(module,ov_set_)[1]
 
     return DCR_
+
+
+def current_(module, ov):
+    ov_set_ = '%.2f'%float(ov)
+    if 'non-irr' in irradiation(module):
+        cur_ = 0
+    else:    
+        cur_ = getVovEffDCR(module,ov_set_)[2]
+
+    return cur_
 
 
 
@@ -325,6 +346,7 @@ def Npe_frac(module):
 # ---- style -----
 def label_(module):
     tmp = 'T'+str(type_(module))+': '+sipm_cell_size(module)+' '+irradiation(module)+'+ '+lyso_(module)+' + T'+temperature_(module)+'C'
+    #tmp = 'T'+str(type_(module))+'  :  '+sipm_cell_size(module)+'   +   '+lyso_(module)
     return tmp
 
 
@@ -420,6 +442,22 @@ def good_bars(module, ovs, bars):
         good_bars_[0.80] = [0,3,4,5,7,8,9,10,11,12,13,15]
         good_bars_[0.60] = [0,2,3,4,5,7,8,9,10,11,12]
             
+    elif '817' in module:
+        good_bars_[2.50] = [3,4,5,7,8,9,10,11,12,13,15]
+        good_bars_[2.00] = [0,2,3,4,5,7,8,9,10,11,12,13,15]
+        good_bars_[1.50] = [0,2,3,4,5,7,8,9,10,11,12,13,15]
+        good_bars_[1.25] = [0,3,4,5,7,8,9,10,11,12,13,15]
+        good_bars_[1.00] = [0,3,4,5,7,8,9,11,12,13,15]
+        good_bars_[0.80] = [0,3,4,5,7,8,9,12,13,15]
+        good_bars_[0.60] = [0,3,4,5,7,8,9,12,13]
+
+
+    elif '820' in module:
+        good_bars_[3.50] = [0,1,2,3,4,5,7,8,9,10,11,12,13,14,15]
+        good_bars_[1.50] = [0,1,2,3,4,5,7,8,9,10,11,12,13,14,15]
+        good_bars_[0.80] = [0,3,4,5,7,8,9,10,11,12,13,15]
+        good_bars_[0.60] = [0,3,4,5,7,8,9,10,11,12,13,15]
+
 
     else:
         for vov in ovs:

@@ -1,13 +1,18 @@
 # Creating a list of filenames
 filenames = [
+    'list_cfg_drawPulseShapeTB_LYSO817.txt',
+    'list_cfg_drawPulseShapeTB_LYSO813.txt',
     'list_cfg_drawPulseShapeTB_LYSO815.txt',
     'list_cfg_drawPulseShapeTB_LYSO825.txt',
     'list_cfg_drawPulseShapeTB_LYSO819.txt',
-    'list_cfg_drawPulseShapeTB_LYSO829.txt'
+    'list_cfg_drawPulseShapeTB_LYSO829.txt',
 ]
+
+outfile = 'mergedfiles.txt'
+
  
 # Open file3 in write mode
-with open('merge_ps_tot.txt', 'w') as outfile:
+with open('%s'%outfile, 'w') as outfile:
  
     # Iterate through list
     for names in filenames:

@@ -24,11 +24,11 @@ def getSlewRateFromPulseShape(g1, timingThreshold, npoints, gtemp, canvas=None):
     tmax = 3
     
     if ((imin+npoints) < g1.GetN()): 
-        tmax = min(g1.GetX()[imin+npoints],3.)
+        tmax = min(g1.GetX()[imin+npoints],max(g1.GetX()))
         nmax = imin+npoints+1
     else:
-        tmax = 3
-        nmax = g1.GetN()
+        tmax = max(g1.GetX())
+        nmax = g1.GetN()-1
 
     for i in range(imin, nmax):
         gtemp.SetPoint(gtemp.GetN(), g1.GetX()[i], g1.GetY()[i])
