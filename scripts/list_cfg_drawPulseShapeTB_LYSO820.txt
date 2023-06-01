@@ -1,0 +1,4 @@
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/drawPulseShapeTB_HPK_nonIrr_LYSO820_Vov0.60_angle52_T5C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/drawPulseShapeTB_HPK_nonIrr_LYSO820_Vov0.80_angle52_T5C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/drawPulseShapeTB_HPK_nonIrr_LYSO820_Vov1.50_angle52_T5C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/drawPulseShapeTB_HPK_nonIrr_LYSO820_Vov3.50_angle52_T5C.cfg
