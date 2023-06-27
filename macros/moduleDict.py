@@ -125,9 +125,9 @@ def stoch_reference(module):
     elif 'LYSO825' in module:
         return 35
     elif 'LYSO819' in module:
-        return 30
+        return 25
     elif 'LYSO817' in module:
-        return 0
+        return 35
     elif 'LYSO820' in module:
         return 30
     elif 'LYSO829' in module:
@@ -251,6 +251,15 @@ def temperature_(module):
         return 'ERROR'
 
 
+def angle_(module):
+    if '_angle' in module:
+        tmp = module.split("_angle")[1]
+        return tmp
+    else:
+        print 'ERROR: CANNOT FIND TEMPERATURE IN THE NAME'
+        return 'ERROR'
+
+
 
 
 
@@ -271,7 +280,7 @@ def getVovEffDCR(module, ov) :
 
     elif 'irr' in irrad:
         # Import file with VovEff and DCR
-        with open('/eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_H8_May2023/VovsEff.json', 'r') as f:
+        with open('/eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_H8_May2023/VovsEff_v2.json', 'r') as f:
             data = json.load(f) 
 
         if not data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_A'][ov_set][0]:
@@ -405,7 +414,7 @@ def good_bars(module, ovs, bars):
         good_bars_[0.50] = [0,3,4,5,7,8,9,10,11,12,13]
 
     elif '815' in module:
-        good_bars_[2.00] = [0,3,4,5,7,8,9,10,12,13,15]
+        good_bars_[2.00] = [3,4,5,7,8,9,10,12,13,15]
         good_bars_[1.50] = [0,3,4,5,7,8,9,11,12,13,15]
         good_bars_[1.25] = [0,3,4,5,7,8,9,11,12,13,15]
         good_bars_[1.00] = [0,3,4,5,7,8,9,11,12,13,15]
@@ -443,19 +452,19 @@ def good_bars(module, ovs, bars):
         good_bars_[0.60] = [0,2,3,4,5,7,8,9,10,11,12]
             
     elif '817' in module:
-        good_bars_[2.50] = [3,4,5,7,8,9,10,11,12,13,15]
-        good_bars_[2.00] = [0,2,3,4,5,7,8,9,10,11,12,13,15]
+        good_bars_[2.50] = [3,4,5,7,8,9,10,11,12,13,14,15]
+        good_bars_[2.00] = [2,3,4,5,7,8,9,10,11,12,13,15]
         good_bars_[1.50] = [0,2,3,4,5,7,8,9,10,11,12,13,15]
         good_bars_[1.25] = [0,3,4,5,7,8,9,10,11,12,13,15]
         good_bars_[1.00] = [0,3,4,5,7,8,9,11,12,13,15]
         good_bars_[0.80] = [0,3,4,5,7,8,9,12,13,15]
-        good_bars_[0.60] = [0,3,4,5,7,8,9,12,13]
+        good_bars_[0.60] = [0,3,4,5,7,8,12,13]
 
 
     elif '820' in module:
-        good_bars_[3.50] = [0,1,2,3,4,5,7,8,9,10,11,12,13,14,15]
+        good_bars_[3.50] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
         good_bars_[1.50] = [0,1,2,3,4,5,7,8,9,10,11,12,13,14,15]
-        good_bars_[0.80] = [0,3,4,5,7,8,9,10,11,12,13,15]
+        good_bars_[0.80] = [0,2,3,4,5,7,8,9,10,11,12,13,15]
         good_bars_[0.60] = [0,3,4,5,7,8,9,10,11,12,13,15]
 
 

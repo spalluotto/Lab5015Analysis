@@ -1,14 +1,15 @@
 # Creating a list of filenames
 filenames = [
-    'list_cfg_drawPulseShapeTB_LYSO817.txt',
-    'list_cfg_drawPulseShapeTB_LYSO813.txt',
-    'list_cfg_drawPulseShapeTB_LYSO815.txt',
-    'list_cfg_drawPulseShapeTB_LYSO825.txt',
-    'list_cfg_drawPulseShapeTB_LYSO819.txt',
-    'list_cfg_drawPulseShapeTB_LYSO829.txt',
+    'list_cfg_moduleCharacterization_LYSO817.txt',
+    'list_cfg_moduleCharacterization_LYSO813.txt',
+    'list_cfg_moduleCharacterization_LYSO815.txt',
+    'list_cfg_moduleCharacterization_LYSO825.txt',
+    'list_cfg_moduleCharacterization_LYSO819.txt',
+    'list_cfg_moduleCharacterization_LYSO829.txt',
+    'list_cfg_moduleCharacterization_LYSO820.txt',
 ]
 
-outfile = 'mergedfiles.txt'
+outfile = 'mergedfiles_moduleCharacterization.txt'
 
  
 # Open file3 in write mode
@@ -27,3 +28,6 @@ with open('%s'%outfile, 'w') as outfile:
         # Add '\n' to enter data of file2
         # from next line
         outfile.write("\n")
+
+
+print 'output file : ', outfile

@@ -38,7 +38,7 @@ scenariosList = []
 
 
 # --------CAMBIA QUI---------------------------------------
-compareNum = 2
+compareNum = 1
 
 if compareNum == 1:
     outSuffix = 'HPK_irr_BTLlike_mid'
