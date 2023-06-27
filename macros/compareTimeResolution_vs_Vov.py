@@ -161,7 +161,7 @@ elif compareNum == 12:
 elif compareNum == 13:
     sipmTypes = ['HPK_1E14_LYSO819','HPK_1E14_LYSO817']
     nameComparison = 'EoL_T1_T3'
-    #extraLabel = ['  64^{o}','  64^{o}']
+    extraLabel = ['  64^{o}','  64^{o}']
     extraLabel = ['','']
     extraName = ['_angle64_T-22C', '_angle64_T-22C']
     color_code = False
@@ -311,7 +311,6 @@ for j,sipm in enumerate(sipmTypes):
         print '\nov:  ', vov
         gg = f.Get('g_deltaT_totRatioCorr_bestTh_vs_bar_Vov%.02f_enBin01'%(vov))
         fitFun = ROOT.TF1('fitFun','pol0',0,16)
-        #fitFun.SetRange(3,12)
         if not gg:
             continue
         gg.Fit(fitFun,'QR')
@@ -334,7 +333,7 @@ n = g[sipmTypes[jsipm]].GetN()
 xmax = 3
 xmin = 0
 
-ymin = 40
+ymin = 0
 ymax = 140
 
 hdummy = ROOT.TH2F('hdummy','',100,xmin,xmax,100,ymin,ymax)

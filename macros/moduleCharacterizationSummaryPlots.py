@@ -46,6 +46,7 @@ ROOT.gErrorIgnoreLevel = ROOT.kWarning
 
 # INPUT
 inputdir = '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
+summarydir = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
 # inputdir = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
 source = 'TB'
 
@@ -53,7 +54,8 @@ source = 'TB'
 # OUTPUT
 outdir  = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_May23/ModuleCharacterization/'
 outdir=outdir+args.outFolder
-outFileName = inputdir+'/summaryPlots_'+args.outFolder+'.root'
+
+outFileName = summarydir+'/summaryPlots_'+args.outFolder+'.root'
 print 'Saving root file ', outFileName
 print 'Saving plots in ', outdir
 outfile = ROOT.TFile(outFileName, 'RECREATE' )

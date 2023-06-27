@@ -1,0 +1,6 @@
+Error in <TSystem::ExpandFileName>: input: $HOME/.root.mimes, output: $HOME/.root.mimes
+Error in <TSystem::ExpandFileName>: input: $HOME/.root.mimes, output: $HOME/.root.mimes
+libpng error: Write Error
+Error in <TASImage::WriteImage>: error writing file /eos/home-s/spalluot/www/MTD/MTDTB_CERN_May23/ModuleCharacterization/HPK_nonIrr_LYSO813_Vov1.50_angle52_T-15C//energyRatioCorr_totRatioCorr/c_deltaT_energyRatioCorr_vs_totRatio__bar03L-R_Vov1.50_th03_energyBin01.png
+libpng error: Write Error
+Error in <TASImage::WriteImage>: error writing file /eos/home-s/spalluot/www/MTD/MTDTB_CERN_May23/ModuleCharacterization/HPK_nonIrr_LYSO813_Vov1.50_angle52_T-15C//energyRatioCorr_totRatioCorr/c_deltaT_energyRatioCorr_vs_totRatio__bar01L-R_Vov1.50_th20_energyBin01.png

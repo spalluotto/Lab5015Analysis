@@ -1,0 +1,123 @@
+Error in <TSystem::ExpandFileName>: input: $HOME/.root.mimes, output: $HOME/.root.mimes
+Error in <TSystem::ExpandFileName>: input: $HOME/.root.mimes, output: $HOME/.root.mimes
+Error in <TCanvas::Range>: illegal world coordinates range: x1=4.088750, y1=0.000000, x2=4.096562, y2=0.000000
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=4.090000, ymin=0.000000, xmax=4.095000, ymax=0.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=4.088750, y1=0.000000, x2=4.096562, y2=0.000000
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=4.090000, ymin=0.000000, xmax=4.095000, ymax=0.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=1.076875, y1=0.000000, x2=1.080781, y2=0.000000
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=1.077500, ymin=0.000000, xmax=1.080000, ymax=0.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=1.076875, y1=0.000000, x2=1.080781, y2=0.000000
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=1.077500, ymin=0.000000, xmax=1.080000, ymax=0.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=0.328750, y1=0.000000, x2=0.336562, y2=0.000000
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=0.330000, ymin=0.000000, xmax=0.335000, ymax=0.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=0.328750, y1=0.000000, x2=0.336562, y2=0.000000
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=0.330000, ymin=0.000000, xmax=0.335000, ymax=0.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=0.951875, y1=0.000000, x2=0.955781, y2=0.000000
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=0.952500, ymin=0.000000, xmax=0.955000, ymax=0.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=0.951875, y1=0.000000, x2=0.955781, y2=0.000000
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=0.952500, ymin=0.000000, xmax=0.955000, ymax=0.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=1.603750, y1=0.000000, x2=1.611562, y2=0.000000
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=1.605000, ymin=0.000000, xmax=1.610000, ymax=0.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=1.603750, y1=0.000000, x2=1.611562, y2=0.000000
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=1.605000, ymin=0.000000, xmax=1.610000, ymax=0.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=1.156875, y1=0.000000, x2=1.160781, y2=0.000000
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=1.157500, ymin=0.000000, xmax=1.160000, ymax=0.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=1.156875, y1=0.000000, x2=1.160781, y2=0.000000
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=1.157500, ymin=0.000000, xmax=1.160000, ymax=0.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=0.538750, y1=0.000000, x2=0.546562, y2=0.000000
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=0.540000, ymin=0.000000, xmax=0.545000, ymax=0.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=0.538750, y1=0.000000, x2=0.546562, y2=0.000000
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=0.540000, ymin=0.000000, xmax=0.545000, ymax=0.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=0.884375, y1=0.000000, x2=0.888281, y2=0.000000
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=0.885000, ymin=0.000000, xmax=0.887500, ymax=0.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=0.884375, y1=0.000000, x2=0.888281, y2=0.000000
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=0.885000, ymin=0.000000, xmax=0.887500, ymax=0.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=4.092500, y1=-0.160494, x2=4.092500, y2=1.074074
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=4.092500, ymin=0.000000, xmax=4.092500, ymax=1.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=4.092500, y1=-0.160494, x2=4.092500, y2=1.074074
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=4.092500, ymin=0.000000, xmax=4.092500, ymax=1.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=3.187500, y1=-0.160494, x2=3.187500, y2=1.074074
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=3.187500, ymin=0.000000, xmax=3.187500, ymax=1.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=3.187500, y1=-0.160494, x2=3.187500, y2=1.074074
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=3.187500, ymin=0.000000, xmax=3.187500, ymax=1.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=0.332500, y1=-0.160494, x2=0.332500, y2=1.074074
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=0.332500, ymin=0.000000, xmax=0.332500, ymax=1.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=0.332500, y1=-0.160494, x2=0.332500, y2=1.074074
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=0.332500, ymin=0.000000, xmax=0.332500, ymax=1.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=1.607500, y1=-0.160494, x2=1.607500, y2=1.074074
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=1.607500, ymin=0.000000, xmax=1.607500, ymax=1.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=1.607500, y1=-0.160494, x2=1.607500, y2=1.074074
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=1.607500, ymin=0.000000, xmax=1.607500, ymax=1.000000
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TCanvas::Range>: illegal world coordinates range: x1=0.542500, y1=-0.160494, x2=0.542500, y2=1.074074
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=0.542500, ymin=0.000000, xmax=0.542500, ymax=1.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=0.542500, y1=-0.160494, x2=0.542500, y2=1.074074
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=0.542500, ymin=0.000000, xmax=0.542500, ymax=1.000000
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed

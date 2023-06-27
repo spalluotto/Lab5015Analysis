@@ -4,5 +4,4 @@ output                = /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015An
 error                 = /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/scripts/jobs/job_moduleCharact.$(ClusterId).$(ProcId).err
 log                   = /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/scripts/jobs/job_moduleCharact.$(ClusterId).$(ProcId).log
 +JobFlavour = "longlunch"
-+RequestWalltime = (24 * 3600)
-queue cfg from list_cfg_moduleCharacterization_LYSO817.txt
+queue cfg from list_cfg_moduleCharacterization_LYSO815.txt

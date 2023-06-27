@@ -24,13 +24,14 @@ parser.add_argument("-c",  "--config",             required=True,  type=str, hel
 parser.add_argument("-e", "--extraLabel",    required=False, type=str, help="eg: angle or check or whatever")
 
 args = parser.parse_args()
-
 runs = args.runs
 
 if args.extraLabel:
    label = '%s_Vov%.2f_%s_T%sC' %(args.modulelabel, float(args.Vov),args.extraLabel,  args.temperature)
+   module_label = "%s_%s"%(args.modulelabel,args.extraLabel)
 else:
    label = '%s_Vov%.2f_T%sC' %(args.modulelabel, float(args.Vov) , args.temperature)
+   module_label = "%s"%args.modulelabel 
 
 
 #---- write min energy ---
@@ -41,8 +42,20 @@ if not (os.path.isfile(temp_min)):
    newMinEnergy = open('%s/minEnergies_%s.txt'%(cfgFolder,args.modulelabel), 'w')
 
    command = 'cp %s/minEnergies_base.txt %s/minEnergies_%s.txt'%(cfgFolder, cfgFolder, args.modulelabel)
-
    os.system(command)
+
+# create the extra label min energy
+if args.extraLabel:
+   temp_min = '%s/minEnergies_%s_%s.txt'%(cfgFolder,args.modulelabel,args.extraLabel)
+   if not (os.path.isfile(temp_min)):
+      baseMinEnergy = open('%s/minEnergies_%s.txt'%(cfgFolder,args.modulelabel), 'r')
+      newMinEnergy = open('%s/minEnergies_%s_%s.txt'%(cfgFolder,args.modulelabel,args.extraLabel), 'w')
+
+      command = 'cp %s/minEnergies_%s.txt %s/minEnergies_%s_%s.txt'%(cfgFolder,args.modulelabel, cfgFolder, args.modulelabel,args.extraLabel)
+      os.system(command)
+      
+
+
 
 # --- write cfg ---- moduleChar
 baseCfg = open('%s/moduleCharacterization_base.cfg'%cfgFolder, 'r')
@@ -64,7 +77,7 @@ for line in baseCfg:
    elif 'generalLabel' in line:
       newCfg.write(line.replace('generalLabel', '%s'%label))
    elif 'moduleLabel' in line:
-      newCfg.write(line.replace('moduleLabel', '%s'%args.modulelabel))
+      newCfg.write(line.replace('moduleLabel', '%s'%module_label))
    elif 'confNumber' in line:
       newCfg.write(line.replace('confNumber', '%s'%args.config))
       print 'config : ', args.config
@@ -97,7 +110,7 @@ for line in baseCfg:
    elif 'generalLabel' in line:
       newCfg.write(line.replace('generalLabel', '%s'%label))
    elif 'moduleLabel' in line:
-      newCfg.write(line.replace('moduleLabel', '%s'%args.modulelabel))
+      newCfg.write(line.replace('moduleLabel', '%s'%module_label))
    elif 'confNumber' in line:
       newCfg.write(line.replace('confNumber', '%s'%args.config))
       print 'config : ', args.config
