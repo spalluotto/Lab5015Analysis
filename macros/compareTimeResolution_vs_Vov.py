@@ -11,7 +11,21 @@ import argparse
 import ROOT
 import CMS_lumi, tdrstyle
 from moduleDict import *
-from Vovs_eff import *
+from SiPM import *
+
+
+parser = argparse.ArgumentParser()  
+parser.add_argument("-n","--comparisonNumber", required = True, type=str, help="comparison number")    
+args = parser.parse_args()   
+
+
+#---- init ---
+
+compareNum = int(args.comparisonNumber)
+
+#-------------
+
+
 
 #set the tdr style                                                                                                                                   
 tdrstyle.setTDRStyle()
@@ -31,72 +45,106 @@ ROOT.gROOT.SetBatch(True)
 ROOT.gErrorIgnoreLevel = ROOT.kWarning   
 
 
-outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_FNAL_Mar23/compareTimeResolution/'
+outdir   = '/eos/home-s/spalluot/www/MTD/MTDTB_FNAL_Mar23/compareTimeResolution/'
+plotsdir = '/eos/home-s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/plots/'
 
+#----- comparison ------
 
-#---- init ---
+marker_code = True
+color_code = True
 
-compareNum = 1
-
-#-------------
 
 
 #----- comparison ------
 if compareNum == 1:
-    sipmTypes = ['HPK_nonIrr_C25_LYSO818', 'HPK_nonIrr_C25_LYSO813', 'HPK_nonIrr_C25_LYSO816']
-    nameComparison = 'types_HPK_nonIrr_C25'
-    extraLabel = ['','','']
-    extraName = ['','','']
-    color_code = True
-
+    sipmTypes = ['HPK_nonIrr_LYSO818', 'HPK_nonIrr_LYSO813', 'HPK_nonIrr_LYSO816']
+    nameComparison = 'HPK_nonIrr_T1_T2_T3_angle52'
+    extraLabel = [' - T1',' - T2',' - T3']
+    extraName = ['_angle52_T12C','_angle52_T12C','_angle52_T12C']
+    color_code = False
+    color_map = [417,2,1]
 
 elif compareNum == 2:
-    sipmTypes = ['HPK_nonIrr_C25_LYSO818', 'HPK_nonIrr_C25_LYSO818', 'HPK_nonIrr_C25_LYSO818']
-    nameComparison = 'angles_HPK_nonIrr_C25_T1_T1_T1'
-    extraLabel = ['  32^{o}', '  52^{o}', '  64^{o}']
-    extraName = ['_angle32', '','_angle64']
-    color_code = True
-
+    sipmTypes = ['HPK_nonIrr_LYSO818', 'HPK_nonIrr_LYSO818', 'HPK_nonIrr_LYSO818']
+    nameComparison = 'HPK_nonIrr_T1_T1_T1'
+    extraLabel = [' - T1 - 32^{o}', ' - T1 - 52^{o}', ' - T1 - 64^{o}']
+    extraName = ['_angle32_T12C', '_angle52_T12C','_angle64_T12C']
+    color_code = False
+    color_map = [417,2,1]
 
 elif compareNum == 3:
-    sipmTypes = ['HPK_nonIrr_C25_LYSO818', 'HPK_nonIrr_C25_LYSO813', 'HPK_nonIrr_C25_LYSO813']
-    nameComparison = 'angles_HPK_nonIrr_C25_T1_T2_T2'
-    extraLabel = ['  32^{o}', '  52^{o}', '  64^{o}']
-    extraName = ['_angle32'         , ''        , '_angle64']
-    color_code = True
+    sipmTypes = ['HPK_nonIrr_LYSO818', 'HPK_nonIrr_LYSO813', 'HPK_nonIrr_LYSO813']
+    nameComparison = 'HPK_nonIrr_T1_T2_T2'
+    extraLabel = [' - T1 - 32^{o}', ' - T2 - 52^{o}', ' - T2 - 64^{o}']
+    extraName = ['_angle32_T12C'         , '_angle52_T12C'        , '_angle64_T12C']
+    color_code = False
+    color_map = [417,2,1]
+
 
 
 
 elif compareNum == 4:
-    sipmTypes = ['HPK_nonIrr_C25_LYSO818', 'HPK_nonIrr_C25_LYSO818', 'HPK_nonIrr_C25_LYSO818', 'HPK_nonIrr_C25_LYSO813', 'HPK_nonIrr_C25_LYSO813']
-    nameComparison = 'angles_HPK_nonIrr_C25'
-    extraLabel = ['  32^{o}', '  52^{o}', '  64^{o}', '  52^{o}', '  64^{o}']
-    extraName = ['_angle32', '','_angle64', '', '_angle64']
+    sipmTypes = ['HPK_nonIrr_LYSO818', 'HPK_nonIrr_LYSO813', 'HPK_nonIrr_LYSO816']
+    nameComparison = 'HPK_nonIrr_T1_T2_T3*'
+    extraLabel = [' - T1 - 32^{o}', ' - T2 - 52^{o}', ' - T3 - 52^{o}']
+    extraName = ['_angle32_T12C'         , '_angle52_T12C'        , '_angle52_T12C']
+    color_code = False
+    color_map = [417,2,1]
+
+
+elif compareNum == 6:
+    sipmTypes = ['HPK_nonIrr_LYSO818', 'HPK_nonIrr_LYSO816']
+    nameComparison = 'HPK_nonIrr_T1_T3_angle52'
+    extraLabel = [' - T1',' - T3']
+    extraName = ['_angle52_T12C','_angle52_T12C']
+    color_code = False
+    color_map = [417,1]
+
+elif compareNum == 7:
+    sipmTypes = ['HPK_nonIrr_LYSO528', 'HPK_nonIrr_LYSO814', 'HPK_nonIrr_LYSO813']
+    nameComparison = 'HPK_nonIrr_cellSizes_15_20_25'
+    extraLabel = ['','','']
+    extraName = ['_angle52_T12C'         , '_angle52_T12C'        , '_angle52_T12C']
     color_code = True
 
 
-elif compareNum == 5:
-    sipmTypes = ['HPK_nonIrr_C25_LYSO818', 'HPK_nonIrr_C25_LYSO813', 'HPK_nonIrr_C25_LYSO816']
-    nameComparison = 'angles_HPK_nonIrr_C25_T1_T2_T3'
-    extraLabel = ['  32^{o}', '  52^{o}', ' 52^{o}']
-    extraName = ['_angle32'         , ''        , '']
 
+elif compareNum == 8:
+    sipmTypes = ['HPK_nonIrr_LYSO528', 'HPK_nonIrr_LYSO814', 'HPK_nonIrr_LYSO813', 'HPK_nonIrr_LYSO820']
+    nameComparison = 'HPK_nonIrr_cellSizes_15_20_25_30'
+    extraLabel = ['','','','']
+    extraName = ['_angle52_T12C'         , '_angle52_T12C'        , '_angle52_T12C', '_angle52_T5C']
+    color_code = True
+    
+
+elif compareNum == 99:
+    sipmTypes = ['HPK_nonIrr_LYSO818', 'HPK_nonIrr_LYSO818', 'HPK_nonIrr_LYSO818', 'HPK_nonIrr_LYSO813', 'HPK_nonIrr_LYSO813']
+    nameComparison = 'angles_HPK_nonIrr'
+    extraLabel = ['  32^{o}', '  52^{o}', '  64^{o}', '  52^{o}', '  64^{o}']
+    extraName = ['_angle32', '','_angle64', '', '_angle64']
     color_code = True
 
 
 
 #-----------------------
 
-outFile = ROOT.TFile('/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/plots/compareTimeResolution_vs_Vov_%s.root'%nameComparison, 'RECREATE')
+outFile = ROOT.TFile('%s/compareTimeResolution_vs_Vov_%s.root'%(plotsdir,nameComparison), 'RECREATE')
+
+if color_code:
+    color_map = [2,210,4,6,7,8,94]
+
+if marker_code:
+    marker_map = [20,20,20,20,20,20,20,20]
 
 
-#color_map = [850,880,800,840,910]
-color_map = [417,632,1]
 
 
-#-- temperatures
+
+
+
+#-- extra name
 for it,sipm in enumerate(sipmTypes):
-    sipmTypes[it] = sipm + '_T12C' + extraName[it]
+    sipmTypes[it] = sipm + extraName[it]
 
 print sipmTypes
 #---------
@@ -109,20 +157,20 @@ colors = {}
 markers = {}
 
 for it, sipm in enumerate(sipmTypes):
-    fnames[sipm] = '../plots/summaryPlots_%s.root'%(sipm)
+    fnames[sipm] = '%s/summaryPlots_%s.root'%(plotsdir,sipm)
     labels[sipm] = label_(sipm) + extraLabel[it]
-    if not color_code:
-        colors[sipm] = color_(sipm)
-    else:
-        colors[sipm] = color_map[it]
-    markers[sipm] = 20
 
+    print 'sipm : ', sipm, '     label: ', label_(sipm)
+    colors[sipm] = color_map[it]
+    markers[sipm] = marker_map[it]
 
 g = {}
 Vovs = {}
 #--- retrieve plot tRes vs bar and compute average -----
 for j,sipm in enumerate(sipmTypes):
+    print '\n\nsipm : ', sipm
     f = ROOT.TFile.Open(fnames[sipm])
+    print 'opening file: ', fnames[sipm]
     g[sipm] = ROOT.TGraphErrors()
     Vovs[sipm] = []
     listOfKeys = [key.GetName().replace('g_deltaT_energyRatioCorr_bestTh_vs_bar_','') for key in ROOT.gDirectory.GetListOfKeys() if key.GetName().startswith('g_deltaT_energyRatioCorr_bestTh_vs_bar_')]
@@ -131,15 +179,19 @@ for j,sipm in enumerate(sipmTypes):
     Vovs[sipm].sort()    
     print sipm, Vovs[sipm]
     for i,vov in enumerate(Vovs[sipm]):
+        print '\nov:  ', vov
         gg = f.Get('g_deltaT_totRatioCorr_bestTh_vs_bar_Vov%.02f_enBin01'%(vov))
         fitFun = ROOT.TF1('fitFun','pol0',0,16)
-        #fitFun.SetRange(3,12)
+        if not gg:
+            continue
         gg.Fit(fitFun,'QR')
-        print sipm, Vovs_eff(vov,sipm), fitFun.GetParameter(0)
+        print 'values :    ', Vovs_eff(sipm,vov), fitFun.GetParameter(0)
 
-        g[sipm].SetPoint(g[sipm].GetN(), Vovs_eff(vov,sipm), fitFun.GetParameter(0))
+        g[sipm].SetPoint(g[sipm].GetN(), Vovs_eff(sipm,vov), fitFun.GetParameter(0))
         g[sipm].SetPointError( g[sipm].GetN()-1, 0, gg.GetRMS(2) )# use RMS as error on the points
         
+
+print '\ndraw plots'
 
 # --- draw tRes vs vov ----
 c1 =  ROOT.TCanvas('c_timeResolution_bestTh_vs_Vov','c_timeResolution_bestTh_vs_Vov',900,700)
@@ -153,13 +205,13 @@ xmax = 4
 xmin = 0
 
 ymin = 0
-ymax = 120
+ymax = 140
 
 hdummy = ROOT.TH2F('hdummy','',100,xmin,xmax,100,ymin,ymax)
 hdummy.GetXaxis().SetTitle('V_{OV}^{eff} [V]')
 hdummy.GetYaxis().SetTitle('#sigma_{t} [ps]')
 hdummy.Draw()
-leg = ROOT.TLegend(0.30,0.74,0.90,0.92)
+leg = ROOT.TLegend(0.55,0.70,0.90,0.92)
 leg.SetBorderSize(0)
 leg.SetFillStyle(0)
 for i,sipm in enumerate(sipmTypes):
@@ -173,17 +225,19 @@ for i,sipm in enumerate(sipmTypes):
     leg.AddEntry( g[sipm], labels[sipm], 'PL')
 leg.Draw('same')
 
-# latex = ROOT.TLatex(0.65,0.68,'%s'%irr)
-# if (irr == 'unirr'):
-#     latex = ROOT.TLatex(0.65,0.68,'non-irradiated')
-# latex.SetNDC()
-# latex.SetTextSize(0.045)
-# latex.SetTextFont(42)
-# #latex.Draw('same')
 
-for c in [c1]:
-    c.SaveAs(outdir+c.GetName()+'_%s.png'%nameComparison)
-    c.SaveAs(outdir+c.GetName()+'_%s.pdf'%nameComparison)
+logo = ROOT.TLatex()
+logo.SetNDC()
+logo.SetTextSize(0.045) 
+logo.SetTextFont(62)
+logo.DrawText(0.16,0.95,'CMS') 
+logo.SetTextFont(52)
+logo.DrawText(0.22, 0.95, '  Phase-2 Preliminary')
+    
+
+c1.SaveAs(outdir+c1.GetName()+'_%s.png'%nameComparison)
+
+print 'saving in ', outdir, '   as ', c1.GetName(), '_', nameComparison
 
 
 for sipm in sipmTypes:

@@ -1,4 +1,4 @@
-/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_C15_LYSO528_Vov1.00.cfg
-/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_C15_LYSO528_Vov1.50.cfg
-/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_C15_LYSO528_Vov2.00.cfg
-/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_C15_LYSO528_Vov3.50.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_LYSO528_Vov3.50_angle52_T12C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_LYSO528_Vov1.50_angle52_T12C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_LYSO528_Vov1.00_angle52_T12C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/cfg/moduleCharacterization_HPK_nonIrr_LYSO528_Vov2.00_angle52_T12C.cfg

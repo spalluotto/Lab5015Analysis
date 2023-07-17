@@ -28,7 +28,7 @@ ROOT.gStyle.SetOptFit(0111)
 
 comparisonNum = 1
 posCor = True
-
+plotsdir = '/eos/home-s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/plots/'
 
 
 
@@ -47,7 +47,7 @@ cosRatio = math.cos(angleDest * math.pi /180 ) / math.cos(angleRef * math.pi /18
 
 #--------------------------------------------------------------------------------------
 sipm = sipm + '_T12C'
-fname = '../plots/plot_tRes_%s.root'%sipm
+fname = '%s/plot_tRes_%s.root'%(plotsdir,sipm)
 
 
 # ----- output --------
@@ -156,7 +156,7 @@ leg.Draw('same')
 c.SaveAs(outdir+'/'+c.GetName()+'.png')
 
 
-outFile = ROOT.TFile('/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/plots/compareTimeResolution_vs_Vov_%s.root'%outSuffix, 'RECREATE')
+outFile = ROOT.TFile('%s/compareTimeResolution_vs_Vov_%s.root'%(plotsdir,outSuffix), 'RECREATE')
 outFile.cd()
 g_t_scaled_vs_Vov['timeResolutionAve'].Write('g_%s'%sipm)
 outFile.Close()

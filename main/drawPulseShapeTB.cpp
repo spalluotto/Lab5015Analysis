@@ -42,6 +42,7 @@ int main(int argc, char** argv)
   int debugMode = 0;
   if( argc > 2 ) debugMode = atoi(argv[2]);
   
+  std::string inputDir = opts.GetOpt<std::string>("Input.inputDir");
   std::string runs = opts.GetOpt<std::string>("Input.runs");
   std::string ithMode = opts.GetOpt<std::string>("Input.ithMode");
 
@@ -50,9 +51,10 @@ int main(int argc, char** argv)
 
   int chRef = opts.GetOpt<float>("Input.chRef");
 
-  std::string outName = opts.GetOpt<std::string>("Input.outName");
+  std::string outName = opts.GetOpt<std::string>("Output.outName");
+  std::string outDir  = opts.GetOpt<std::string>("Output.outDir");
+  std::string plotDirName  = opts.GetOpt<std::string>("Output.plotDir");
 
-  
   float energyMinRef = opts.GetOpt<float>("Cuts.energyMinRef");
   float energyMaxRef = opts.GetOpt<float>("Cuts.energyMaxRef");
 
@@ -127,10 +129,7 @@ int main(int argc, char** argv)
       if( runMax == -1 ) runMax = runMin;
     
       for(int run = runMin; run <= runMax; ++run) {
-	//std::string inFileName = Form("/data/tofhir2/h8/reco/%04d/*_e.root",run); 
-	//std::string inFileName = Form("/data1/cmsdaq/tofhir2/h8/reco/%04d/*_e.root",run);
-	//std::string inFileName = Form("/eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_H8_Oct2021/TOFHIR2/h8/reco/%04d/*_e.root",run); 
-	std::string inFileName = Form("/eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_FNAL_Mar2023/TOFHIR2/RecoData/run%05d_e.root",run); 
+	std::string inFileName = Form("%s/run%05d_e.root",inputDir.c_str(),run); // FNAL data
 	std::cout << ">>> Adding file " << inFileName << std::endl;
 	data -> Add(inFileName.c_str());
       }
@@ -155,8 +154,7 @@ int main(int argc, char** argv)
   
   //---------------
   // define outfile
-  TFile* outFile = new TFile(Form("./plots/pulseShape_%s.root", outName.c_str()),"RECREATE");
-  //TFile* outFile = new TFile(Form("./plots_tofhir2b/pulseShape_%s.root", outName.c_str()),"RECREATE");
+  TFile* outFile = new TFile(Form("%s/pulseShape_%s.root", outDir.c_str(), outName.c_str()),"RECREATE");
   
   
   //------------------
@@ -215,12 +213,21 @@ int main(int argc, char** argv)
       int nActiveBars0 = 0;
       int nActiveBars1 = 0;
       for(unsigned int iBar = 0; iBar < channelMapping.size()/2; ++iBar){          
-        if ( channelIdx[chL[iBar]] > 0  &&  channelIdx[chR[iBar]] > 0 && (*energy)[channelIdx[chL[iBar]]] > 0 && (*energy)[channelIdx[chR[iBar]]] > 0 )
-	  nActiveBars0+=1;
-        if ( channelIdx[chL[iBar]+64] > 0  &&  channelIdx[chR[iBar]+64] > 0 && (*energy)[channelIdx[chL[iBar]+64]] > 0 && (*energy)[channelIdx[chR[iBar]+64]] > 0 )
-	  nActiveBars1+=1;
-      }
-      
+	
+	if(opts.GetOpt<int>("Channels.array")==0){
+	  if ( channelIdx[chL[iBar]] > 0  &&  channelIdx[chR[iBar]] > 0 && (*energy)[channelIdx[chL[iBar]]] > 0 && (*energy)[channelIdx[chR[iBar]]] > 0 )
+	    nActiveBars0+=1;
+	  if ( channelIdx[chL[iBar]+64] > 0  &&  channelIdx[chR[iBar]+64] > 0 && (*energy)[channelIdx[chL[iBar]+64]] > 0 && (*energy)[channelIdx[chR[iBar]+64]] > 0 )
+	    nActiveBars1+=1;
+	}
+
+	if(opts.GetOpt<int>("Channels.array")==1){
+	  if ( channelIdx[chL[iBar]-64] > 0  &&  channelIdx[chR[iBar]-64] > 0 && (*energy)[channelIdx[chL[iBar]-64]] > 0 && (*energy)[channelIdx[chR[iBar]-64]] > 0 )
+	    nActiveBars0+=1;
+	  if ( channelIdx[chL[iBar]] > 0  &&  channelIdx[chR[iBar]] > 0 && (*energy)[channelIdx[chL[iBar]]] > 0 && (*energy)[channelIdx[chR[iBar]]] > 0 )
+	    nActiveBars1+=1;
+	}
+      }      
       int maxActiveBars = 3;
       //if (Vov>4.0) maxActiveBars = 5;
       if (nActiveBars0 > maxActiveBars || nActiveBars1 > maxActiveBars){
@@ -735,7 +742,8 @@ int main(int argc, char** argv)
   std::cout << "Plotting..."<<std::endl;
   //std::string plotDir(Form("/var/www/html/TOFHIR2X/MTDTB_CERN_June22/pulseShapes/%s",outName.c_str()));
   //std::string plotDir(Form("/var/www/html/TOFHIR2B/MTDTB_CERN_June22/pulseShapes/%s",outName.c_str()));
-  std::string plotDir(Form("/eos/home-s/spalluot/www/MTD/MTDTB_FNAL_Mar23/pulseShapes/%s",outName.c_str()));  
+  //std::string plotDir(Form("/eos/home-s/spalluot/www/MTD/MTDTB_FNAL_Mar23/pulseShapes/%s",outName.c_str()));  
+  std::string plotDir(Form("%s/%s", plotDirName.c_str(),outName.c_str())); 
   system(Form("mkdir -p %s",plotDir.c_str()));
   
   TCanvas* c;

@@ -1,0 +1,2 @@
+/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/cfg/drawPulseShapeTB_HPK_nonIrr_LYSO828_Vov3.50_angle52_T12C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/cfg/drawPulseShapeTB_HPK_nonIrr_LYSO828_Vov1.50_angle52_T12C.cfg

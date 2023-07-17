@@ -32,20 +32,23 @@ class scenario:
         # scenario.posCor = [7,10,15]
         scenario.posCor = [0,0,0]
 
-#--------CAMBIA QUI------------------------------------------------------------------
 
+
+
+#--------CAMBIA QUI------------------------------------------------------------------
+plotsdir = '/eos/home-s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/plots/'
 
 #--- T1 T2 T3
 standard = scenario()
 standard.sipmTypes = ['HPK_nonIrr_C25_LYSO818','HPK_nonIrr_C25_LYSO813','HPK_nonIrr_C25_LYSO816']
-standard.fname = '../plots/compareTimeResolution_vs_Vov_angles_HPK_nonIrr_C25_T1_T2_T3.root' # -------> TO BE FIXED CON SCALED
+standard.fname = '%s/compareTimeResolution_vs_Vov_angles_HPK_nonIrr_C25_T1_T2_T3.root'%plotsdir         # -------> TO BE FIXED CON SCALED
 standard.extraName  = ['_angle32', '', '']
 standard.extraLabel = [' 32^{o}', ' 52^{o}', ' 52^{o}']
 standard.angles = [32, 52, 52]
 standard.label = 'T1 T2 T3'
 standard.posCor = [7,10,0]
 
-scaling_file = '../plots/compareTimeResolution_vs_Vov_scaling_HPK_nonIrr_C25_LYSO816_posCor.root'
+scaling_file = '%s/compareTimeResolution_vs_Vov_scaling_HPK_nonIrr_C25_LYSO816_posCor.root'%plotsdir
 
 
 
@@ -53,7 +56,7 @@ scaling_file = '../plots/compareTimeResolution_vs_Vov_scaling_HPK_nonIrr_C25_LYS
 #--- T1 T2 T2
 mixed = scenario()
 mixed.sipmTypes = ['HPK_nonIrr_C25_LYSO818','HPK_nonIrr_C25_LYSO813','HPK_nonIrr_C25_LYSO813']
-mixed.fname = '../plots/compareTimeResolution_vs_Vov_angles_HPK_nonIrr_C25_T1_T2_T2.root'
+mixed.fname = '%s/compareTimeResolution_vs_Vov_angles_HPK_nonIrr_C25_T1_T2_T2.root'%plotsdir
 mixed.extraName  = ['_angle32', '', '_angle64']
 mixed.extraLabel = [' 32^{o}', ' 52^{o}', ' 64^{o}']
 mixed.angles = [32, 52, 64]
@@ -63,7 +66,7 @@ mixed.posCor = [7,10,15]
 #--- T1 T1 T1
 allT1 = scenario()
 allT1.sipmTypes = ['HPK_nonIrr_C25_LYSO818','HPK_nonIrr_C25_LYSO818','HPK_nonIrr_C25_LYSO818']
-allT1.fname = '../plots/compareTimeResolution_vs_Vov_angles_HPK_nonIrr_C25_T1_T1_T1.root'
+allT1.fname = '%s/compareTimeResolution_vs_Vov_angles_HPK_nonIrr_C25_T1_T1_T1.root'%plotsdir
 allT1.extraName  = ['_angle32', '', '_angle64']
 allT1.extraLabel = [' 32^{o}', ' 52^{o}', ' 64^{o}']
 allT1.angles = [32, 52, 64]

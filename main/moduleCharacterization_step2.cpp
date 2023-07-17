@@ -1934,6 +1934,7 @@ int main(int argc, char** argv)
   
   
   int bytes = outFile -> Write();
+  outFile->Close();
   std::cout << "============================================"  << std::endl;
   std::cout << "nr of  B written:  " << int(bytes)             << std::endl;
   std::cout << "nr of KB written:  " << int(bytes/1024.)       << std::endl;

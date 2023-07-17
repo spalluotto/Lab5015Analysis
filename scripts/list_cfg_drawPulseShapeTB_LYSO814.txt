@@ -1,0 +1,5 @@
+/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/cfg/drawPulseShapeTB_HPK_nonIrr_LYSO814_Vov3.50_angle52_T12C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/cfg/drawPulseShapeTB_HPK_nonIrr_LYSO814_Vov1.50_angle52_T12C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/cfg/drawPulseShapeTB_HPK_nonIrr_LYSO814_Vov1.00_angle52_T12C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/cfg/drawPulseShapeTB_HPK_nonIrr_LYSO814_Vov0.50_angle52_T12C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/cfg/drawPulseShapeTB_HPK_nonIrr_LYSO814_Vov0.80_angle52_T12C.cfg

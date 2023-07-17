@@ -24,11 +24,11 @@ def getSlewRateFromPulseShape(g1, timingThreshold, npoints, gtemp, canvas=None):
     tmax = 3
     
     if ((imin+npoints) < g1.GetN()): 
-        tmax = min(g1.GetX()[imin+npoints],3.)
+        tmax = min(g1.GetX()[imin+npoints],max(g1.GetX()))
         nmax = imin+npoints+1
     else:
-        tmax = 3
-        nmax = g1.GetN()
+        tmax = max(g1.GetX())
+        nmax = g1.GetN()-1
 
     for i in range(imin, nmax):
         gtemp.SetPoint(gtemp.GetN(), g1.GetX()[i], g1.GetY()[i])
@@ -81,3 +81,40 @@ def findTimingThreshold(g2,ov):
 def sigma_noise(sr):
     noise_single = math.sqrt( pow(420./sr,2) + 16.7*16.7 )
     return noise_single / math.sqrt(2)
+
+
+
+
+def getTimeResolution(h1_deltaT):
+   
+   tRes = [-1,-1]
+
+   h1_deltaT.GetXaxis().SetRangeUser(h1_deltaT.GetMean() - 5*h1_deltaT.GetRMS(), h1_deltaT.GetMean() + 5*h1_deltaT.GetRMS())
+                    
+   fitFunc = ROOT.TF1('fitFunc','gaus',-10000, 10000)
+   fitFunc.SetLineColor(ROOT.kGreen+3)
+   fitFunc.SetLineWidth(2)
+   fitFunc.SetParameters(h1_deltaT.GetMaximum(),h1_deltaT.GetMean(), h1_deltaT.GetRMS())
+   
+   fitXMin = h1_deltaT.GetBinCenter(h1_deltaT.GetMaximumBin()) - 200
+   fitXMax = h1_deltaT.GetBinCenter(h1_deltaT.GetMaximumBin()) + 200.
+   #fitXMin = h1_deltaT.GetMean() - 3*h1_deltaT.GetRMS()
+   #fitXMax = h1_deltaT.GetMean() + 3*h1_deltaT.GetRMS()
+   fitFunc.SetRange(fitXMin, fitXMax)
+   h1_deltaT.Fit('fitFunc','QNRL','', fitXMin, fitXMax)
+   #fitFunc.SetRange(fitFunc.GetParameter(1) - 3.0*fitFunc.GetParameter(2), fitFunc.GetParameter(1) + 3.0*fitFunc.GetParameter(2))
+   fitFunc.SetRange(fitFunc.GetParameter(1) - 1.0*fitFunc.GetParameter(2), fitFunc.GetParameter(1) + 1.0*fitFunc.GetParameter(2))
+   h1_deltaT.Fit('fitFunc','QNRL')
+   fitFunc.SetRange(fitFunc.GetParameter(1) - 2.5*fitFunc.GetParameter(2), fitFunc.GetParameter(1) + 2.5*fitFunc.GetParameter(2))
+   h1_deltaT.Fit('fitFunc','QRSL+')
+
+   #if (fitFunc==None): continue                    
+   #if (fitFunc.GetParameter(2) > 1000): continue
+   #if (fitFunc.GetParameter(2) < 20): continue
+   #if (fitFunc.GetParError(2) > 200): continue
+   tRes = [ fitFunc.GetParameter(2),fitFunc.GetParError(2)]
+   #print h1_deltaT.GetName(), fitFunc.GetParameter(2)
+   return tRes
+
+
+# ====================================

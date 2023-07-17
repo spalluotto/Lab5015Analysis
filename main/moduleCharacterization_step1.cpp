@@ -265,35 +265,14 @@ int main(int argc, char** argv)
 	  float energySumArray = 0.;
 	  int   nActiveBarsArray = 0;
 	  
-	  // check adjacent bars
-	  /*for( int iBar = thisBar - 2; iBar < thisBar+3; ++iBar) {                                                                                                                            
-	    if (iBar<0 || iBar>15 ) continue;                                                                                                                                                   
-	    if (iBar == thisBar) continue;
-	    //int chL_iext = channelMapping[iBar*2+0];// array0 for coincidence is hard coded... - to be fixed
-	    //int chR_iext = channelMapping[iBar*2+1];// array0 for coincidence is hard coded... - to be fixed
-	    int chL_iext = channelMapping[iBar*2+0]+64;// array1 for coincidence is hard coded... - to be fixed
-	    int chR_iext = channelMapping[iBar*2+1]+64;// array1 for coincidence is hard coded... - to be fixed
-	    float energyL_iext = (*energy)[channelIdx[chL_iext]];              
-	    float energyR_iext = (*energy)[channelIdx[chR_iext]]; 
-	    float totL_iext    = 0.001*(*tot)[channelIdx[chL_iext]];              
-	    float totR_iext    = 0.001*(*tot)[channelIdx[chR_iext]]; 
-	    if ( totL_iext > 0 && totL_iext < 100 && totR_iext > 0 && totR_iext < 100   ){
-	      float energyMean=(energyL_iext+energyR_iext)/2;
-	      if (energyMean>200 && energyMean < 1024){
-		energySumArray+=energyMean;
-		nActiveBarsArray+=1;
-	      }
-	    }
-	  }
-	  if (nActiveBarsArray > 0 ) continue; // veto signals in the adjacent bars
-	  */
-
-
 	  for(int iBar = 0; iBar < int(channelMapping.size())/2; ++iBar) {                             
-	    int chL_iext = channelMapping[iBar*2+0];// array0 for coincidence is hard coded... - to be fixed
-	    int chR_iext = channelMapping[iBar*2+1];// array0 for coincidence is hard coded... - to be fixed
-	    //int chL_iext = channelMapping[iBar*2+0]+64;// array1 for coincidence is hard coded... - to be fixed
-	    //int chR_iext = channelMapping[iBar*2+1]+64;// array1 for coincidence is hard coded... - to be fixed
+	    int chL_iext = channelMapping[iBar*2+0];// module under test is array1, coincidence channel in array0 
+	    int chR_iext = channelMapping[iBar*2+1];// module under test is array1, coincidence channel in array0 
+	    if (opts.GetOpt<int>("Channels.array")==0) {
+	      int chL_iext = channelMapping[iBar*2+0]+64;// module under test is array0, coincidence channel in array1
+	      int chR_iext = channelMapping[iBar*2+1]+64;// module under test is array0, coincidence channel in array1
+	    }
+
 	    float energyL_iext = (*energy)[channelIdx[chL_iext]];              
 	    float energyR_iext = (*energy)[channelIdx[chR_iext]]; 
 	    float totL_iext    = 0.001*(*tot)[channelIdx[chL_iext]];              
@@ -662,9 +641,11 @@ int main(int argc, char** argv)
   } // --- end loop over events
   
   int bytes = outFile -> Write();
+  outFile -> Close();
   std::cout << "============================================"  << std::endl;
   std::cout << "nr of  B written:  " << int(bytes)             << std::endl;
   std::cout << "nr of KB written:  " << int(bytes/1024.)       << std::endl;
   std::cout << "nr of MB written:  " << int(bytes/1024./1024.) << std::endl;
   std::cout << "============================================"  << std::endl;
+
 }

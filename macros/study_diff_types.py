@@ -24,6 +24,8 @@ ROOT.gStyle.SetOptFit(0111)
 #--------CAMBIA QUI------------------------------------------------------------------
 
 comparisonNum = 1
+plotsdir = '/eos/home-s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/plots/'
+
 
 if comparisonNum == 1:
     sipmTypes = ['HPK_nonIrr_C25_LYSO818','HPK_nonIrr_C25_LYSO813','HPK_nonIrr_C25_LYSO816']
@@ -57,7 +59,7 @@ tauRise = {}
 NpeFrac = {}
 
 for it, sipm in enumerate(sipmTypes):
-    fnames[sipm] = '../plots/plot_tRes_%s.root'%(sipm)
+    fnames[sipm] = '%s/plot_tRes_%s.root'%(plotsdir,sipm)
     labels[sipm] = label_(sipm) + extraLabel[it]
     cols[sipm] = color_(sipm)
     markers[sipm] = 20
