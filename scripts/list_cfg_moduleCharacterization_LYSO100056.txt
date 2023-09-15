@@ -1,0 +1,7 @@
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/cfg/moduleCharacterization_HPK_2E14_LYSO100056_Vov1.25_angle52_delayT0b00000111_T-40C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/cfg/moduleCharacterization_HPK_2E14_LYSO100056_Vov1.25_angle52_delayT0b00011111_T-40C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/cfg/moduleCharacterization_HPK_2E14_LYSO100056_Vov1.25_angle52_delayT0b01111111_T-40C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/cfg/moduleCharacterization_HPK_2E14_LYSO100056_Vov1.25_angle52_delayT0b10000001_T-40C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/cfg/moduleCharacterization_HPK_2E14_LYSO100056_Vov1.25_angle52_delayT0b10000111_T-40C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/cfg/moduleCharacterization_HPK_2E14_LYSO100056_Vov1.25_angle52_delayT0b10011111_T-40C.cfg
+/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/cfg/moduleCharacterization_HPK_2E14_LYSO100056_Vov1.25_angle52_delayT0b11111111_T-40C.cfg

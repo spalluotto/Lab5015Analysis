@@ -1,7 +1,7 @@
 executable            = drawPulseShapeTBCondor.sh
 arguments             = $(cfg)
-output                = /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/scripts/jobs/job_drawPulseShape.$(ClusterId).$(ProcId).out
-error                 = /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/scripts/jobs/job_drawPulseShape.$(ClusterId).$(ProcId).err
-log                   = /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/scripts/jobs/job_drawPulseShape.$(ClusterId).$(ProcId).log
+output                = /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/scripts/jobs/job_drawPulseShape.$(ClusterId).$(ProcId).out
+error                 = /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/scripts/jobs/job_drawPulseShape.$(ClusterId).$(ProcId).err
+log                   = /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/scripts/jobs/job_drawPulseShape.$(ClusterId).$(ProcId).log
 +JobFlavour = "longlunch"
-queue cfg from list_cfg_drawPulseShapeTB_LYSO817.txt
+queue cfg from 

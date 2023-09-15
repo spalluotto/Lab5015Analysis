@@ -2,9 +2,9 @@
 import os, sys
 import re
 
-outFolder = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/scripts/'
+outFolder = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/scripts/'
 
-cfgFolder = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/'
+cfgFolder = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/cfg/'
 path = cfgFolder
 
 txtName = 'list_cfg_moduleCharacterization_LYSO'
@@ -24,7 +24,7 @@ for path_, subdirs, files in os.walk(path):
             print 'cannot find LYSO ID for ', name
             continue
         print '\n\nname: ', name
-        moduleNum = re.search("LYSO(\d\d\d)_", name).group(1)  # look for the three numbers after "LYSO"
+        moduleNum = re.search(r'LYSO(\d{3}|\d{6})_', name).group(1)  # look for the three numbers after "LYSO"
         if name.startswith("moduleCharacterization"):
             if moduleNum not in outFiles:
                 print 'module ID: ', moduleNum

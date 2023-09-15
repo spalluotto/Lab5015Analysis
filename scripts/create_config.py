@@ -10,7 +10,7 @@ import argparse
 import subprocess
 
 # ----
-cfgFolder = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg'
+cfgFolder = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/cfg'
 # ----
 
 
