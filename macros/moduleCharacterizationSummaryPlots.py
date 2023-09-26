@@ -15,12 +15,24 @@ import CMS_lumi, tdrstyle
 from moduleDict import *
 from slewRate import *
 
+
+
+# ---- EDIT -----
+#inputdir = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/'
+inputdir = '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/'
+summarydir = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/'
+source = 'TB'
+
+outdir  = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/ModuleCharacterization/'
+# ---------------
+
+
+
 # --- arguments ---
 parser = argparse.ArgumentParser(description='Module characterization summary plots')
 parser.add_argument("-i",  "--inputLabels",   required=True, type=str, help="comma-separated list of input labels")
 parser.add_argument("-m",  "--resMode",       required=True, type=int, help="resolution mode: 2 - tDiff, 1 - tAve")
 parser.add_argument("-o",  "--outFolder",     required=True, type=str, help="out folder")
-parser.add_argument("-v",  "--versionTOFHIR", required=True, type=str, help="TOFHIR version: TOFHIR2X or TOFHIR2C")
 args = parser.parse_args()
 
 
@@ -52,22 +64,11 @@ source = 'TB'
 
 # OUTPUT
 outdir  = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_May23/ModuleCharacterization/'
-
 outdir=outdir+args.outFolder
-
 outFileName = summarydir+'/summaryPlots_'+args.outFolder+'.root'
 print 'Saving root file ', outFileName
 print 'Saving plots in ', outdir
 outfile = ROOT.TFile(outFileName, 'RECREATE' )
-
-# Import file with VovEff and DCR
-if (args.versionTOFHIR == 'TOFHIR2X'):
-   with open('/eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_H8_May2023/VovsEff.json', 'r') as f:
-      data = json.load(f)   
-if (args.versionTOFHIR == 'TOFHIR2C'):
-   with open('/eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_H8_May2023/VovsEff_TOFHIR2C.json', 'r') as f:
-      data = json.load(f)   
-
 
 
 # ranges for plots
@@ -376,7 +377,20 @@ for label in label_list:
                ctemp = ROOT.TCanvas()
                h1_deltaT_energyCorr.GetYaxis().SetRangeUser(0, h1_deltaT_energyCorr.GetBinContent(h1_deltaT_energyCorr.GetMaximumBin())*1.2)                
                h1_deltaT_energyCorr.Draw()                
-               #ctemp.SaveAs(outdir+'/summaryPlots/timeResolution/fits/'+'/c_h1_deltaT_energyRatioCorr_bar%02dL-R_Vov%.02f_th%02d_energyBin%02d.png'%(bar, vov, thr, enBin))
+               ctemp.SaveAs(outdir+'/summaryPlots/timeResolution/fits/'+'/c_h1_deltaT_energyRatioCorr_bar%02dL-R_Vov%.02f_th%02d_energyBin%02d.png'%(bar, vov, thr, enBin))
+
+               # totRatio + phase corr
+               if (h1_deltaT_totCorr == None): continue
+               if (h1_deltaT_totCorr.GetEntries() < 200 ): continue
+               tRes_totCorr[enBin] = getTimeResolution(h1_deltaT_totCorr)
+               if ( tRes_totCorr[enBin][0] < bestRes_totCorr[bar, vov, enBin][0]):
+                  #if ( ('1E14' in args.outFolder or  '2E14' in args.outFolder ) and VovsEff[vov] <= 1.50 and thr >= 13): continue
+                  bestRes_totCorr[bar, vov, enBin] = tRes_totCorr[enBin]
+               ctemp = ROOT.TCanvas()
+               h1_deltaT_totCorr.GetYaxis().SetRangeUser(0, h1_deltaT_totCorr.GetBinContent(h1_deltaT_totCorr.GetMaximumBin())*1.2)                
+               h1_deltaT_totCorr.Draw()                
+               ctemp.SaveAs(outdir+'/summaryPlots/timeResolution/fits/'+'/c_h1_deltaT_totRatioCorr_bar%02dL-R_Vov%.02f_th%02d_energyBin%02d.png'%(bar, vov, thr, enBin))
+>>>>>>> f1f8a52 (26.09 - sync new pieces in step1 + new cfg)
 
                # energyRatio + totRatio + phase corr
                if (h1_deltaT_energyCorr_totCorr == None): continue
@@ -388,8 +402,7 @@ for label in label_list:
                ctemp = ROOT.TCanvas()
                h1_deltaT_energyCorr_totCorr.GetYaxis().SetRangeUser(0, h1_deltaT_energyCorr_totCorr.GetBinContent(h1_deltaT_energyCorr_totCorr.GetMaximumBin())*1.2)
                h1_deltaT_energyCorr_totCorr.Draw()                
-               #ctemp.SaveAs(outdir+'/summaryPlots/timeResolution/fits/'+'/c_h1_deltaT_energyRatioCorr_totRatioCorr_bar%02dL-R_Vov%.02f_th%02d_energyBin%02d.png'%(bar, vov, thr, enBin))
-
+               ctemp.SaveAs(outdir+'/summaryPlots/timeResolution/fits/'+'/c_h1_deltaT_energyRatioCorr_totRatioCorr_bar%02dL-R_Vov%.02f_th%02d_energyBin%02d.png'%(bar, vov, thr, enBin))
 
                # graphs vs threshold
                g_deltaT_energyRatioCorr_vs_th[bar, vov, enBin].SetPoint(g_deltaT_energyRatioCorr_vs_th[bar, vov, enBin].GetN(), thr, tRes_energyCorr[enBin][0]/kscale )

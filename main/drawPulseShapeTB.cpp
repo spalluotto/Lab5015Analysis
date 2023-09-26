@@ -11,6 +11,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <sys/stat.h>
+#include <dirent.h>
 
 #include "TFile.h"
 #include "TChain.h"
@@ -51,6 +52,8 @@ int main(int argc, char** argv)
 
   int chRef = opts.GetOpt<float>("Input.chRef");
 
+  float my_step1 = opts.GetOpt<float>("Input.vov") ;
+
   std::string outName = opts.GetOpt<std::string>("Output.outName");
   std::string outDir  = opts.GetOpt<std::string>("Output.outDir");
   std::string plotDirName  = opts.GetOpt<std::string>("Output.plotDir");
@@ -62,14 +65,16 @@ int main(int argc, char** argv)
   std::string minEnergiesFileName = opts.GetOpt<std::string>("Cuts.minEnergiesFileName");
   std::map < std::pair<int, float>, float> minE; 
   std::cout << minEnergiesFileName <<std::endl;
-  if (minEnergiesFileName != "") {
+  if (minEnergiesFileName != "") 
+  {
     std::ifstream minEnergiesFile;
     minEnergiesFile.open(minEnergiesFileName);
     std::string line;
     int bar;
     float ov;
     float value;
-    while ( minEnergiesFile.good() ){
+    while ( minEnergiesFile.good() )
+    {
       getline(minEnergiesFile, line);
       std::istringstream ss(line);
       ss >> bar >> ov >> value; 
@@ -98,12 +103,15 @@ int main(int argc, char** argv)
   int chL[16];
   int chR[16];
   
-  for(unsigned int iBar = 0; iBar < channelMapping.size()/2; ++iBar){
-    if(opts.GetOpt<int>("Channels.array")==0){
+  for(unsigned int iBar = 0; iBar < channelMapping.size()/2; ++iBar)
+  {
+    if(opts.GetOpt<int>("Channels.array")==0)
+    {
       chL[iBar] = channelMapping[iBar*2+0];
       chR[iBar] = channelMapping[iBar*2+1];
     }
-    if(opts.GetOpt<int>("Channels.array")==1){
+    if(opts.GetOpt<int>("Channels.array")==1)
+    {
       chL[iBar] = channelMapping[iBar*2+0]+64;
       chR[iBar] = channelMapping[iBar*2+1]+64;
     }
@@ -116,7 +124,7 @@ int main(int argc, char** argv)
   std::stringstream ss(runs); 
   std::string token;
   while( std::getline(ss,token,',') )
-    {
+  {
       std::stringstream ss2(token);
       std::string token2;
       int runMin = -1;
@@ -127,13 +135,54 @@ int main(int argc, char** argv)
 	  if( runMin == -1 ) runMin = atoi(token2.c_str());
 	}
       if( runMax == -1 ) runMax = runMin;
-    
-      for(int run = runMin; run <= runMax; ++run) {
-	std::string inFileName = Form("%s/%04d/*_e.root",inputDir.c_str(),run); // pc-mtd-tb01 
-	std::cout << ">>> Adding file " << inFileName << std::endl;
-	data -> Add(inFileName.c_str());
-      }
-    }
+      for(int run = runMin; run <= runMax; ++run) 
+      {
+	// -- analyze only spills at a chosen OV to speed up analysis
+	// - list of files in run folder
+	DIR *dir_ptr;
+	struct dirent *diread;
+	std::vector<std::string> filenames;
+	std::string directory_path = Form("%s/%04d/",inputDir.c_str(),run);
+	std::cout << directory_path.c_str()<<std::endl;
+	if ((dir_ptr = opendir(directory_path.c_str())) != nullptr) 
+	{
+	  while ((diread = readdir(dir_ptr)) != nullptr) 
+	  {
+	    //std::cout << diread->d_name << std::endl;
+	    std::string fname(diread->d_name);
+	    filenames.push_back(fname);
+	  }
+	  closedir(dir_ptr);    
+	}
+	for (auto fname: filenames) 
+	{
+	  //std::cout << fname.c_str() << std::endl;;
+	  if (fname == ".") continue;
+	  if (fname == "..") continue;
+	  // -- check if Vov selected
+	  bool addFile = true;
+	  TFile *f = TFile::Open((directory_path+fname).c_str());
+	  TTree *tmpTree = f->Get<TTree>("data");
+	  float step1;
+	  tmpTree->SetBranchAddress("step1",&step1);
+	  tmpTree->GetEntry(0);
+	  if (my_step1 > 0 && step1!=my_step1) addFile = false;
+	  delete tmpTree;
+	  f->Close();
+	  
+	  if (addFile)
+	  {
+	    std::cout << ">>> step1 = " << step1 << " --> Adding file: " << fname.c_str()<< std::endl;
+	    data -> Add((directory_path+fname).c_str());
+	  } 
+	} // end for filenames
+       }// end for run < runMax
+
+	// std::string inFileName = Form("%s/%04d/*_e.root",inputDir.c_str(),run); // pc-mtd-tb01 
+	// std::cout << ">>> Adding file " << inFileName << std::endl;
+	// data -> Add(inFileName.c_str());
+
+    } //end while getline
   
   float step1, step2;
   int channelIdx[128];

@@ -1,2 +1,2 @@
 USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-spalluot    95 77.7  2.5 7071280 6757516 ?     SN   22:23  31:22 ./bin/moduleCharacterization_step1.exe /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/cfg/moduleCharacterization_HPK_1E14_LYSO819_Vov2.50_angle64_T-32C.cfg
+spalluot    95 91.1  0.4 1416936 1113368 ?     SN   22:02  13:39 ./bin/moduleCharacterization_step1.exe /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/cfg/moduleCharacterization_HPK_2E14_LYSO815_Vov1.25_angle64_T-35C.cfg

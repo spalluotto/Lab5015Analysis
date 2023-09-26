@@ -44,9 +44,9 @@ ROOT.gROOT.SetBatch(True)
 ROOT.gErrorIgnoreLevel = ROOT.kWarning   
 
 
-outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_May23/compareTimeResolution/'
-plotsdir = '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots'
-#plotsdir = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
+outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/compareTimeResolution/'
+plotsdir = '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots'
+#plotsdir = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/'
 
 
 #----- comparison ------
@@ -55,10 +55,10 @@ marker_code = True
 color_code = True
 
 
-# ----- LYSO 815 ------
+# ----- LYSO 813 ------
 if compareNum == 1:
-    sipmTypes = ['HPK_2E14_LYSO815', 'HPK_2E14_LYSO815', 'HPK_2E14_LYSO815']
-    nameComparison = 'HPK_2E14_LYSO815_temperatures'
+    sipmTypes = ['HPK_nonIrr_LYSO813','HPK_nonIrr_LYSO813']
+    nameComparison = 'HPK_nonIrr_LYSO813_old'
     extraLabel = ['','','']
     extraName = ['_angle52_T-30C','_angle52_T-35C','_angle52_T-40C']
 
@@ -68,191 +68,6 @@ elif compareNum == 2:
     nameComparison = 'HPK_2E14_LYSO815_angles_T-35C'
     extraLabel = ['  32^{o}','  52^{o}','  64^{o}']
     extraName = ['_angle32_T-35C','_angle52_T-35C','_angle64_T-35C']
-
-
-# ----- LYSO 825 ------
-elif compareNum == 3:
-    sipmTypes = ['HPK_2E14_LYSO825', 'HPK_2E14_LYSO825', 'HPK_2E14_LYSO825']
-    nameComparison = 'HPK_2E14_LYSO825_temperatures'
-    extraLabel = ['','','']
-    extraName = ['_angle52_T-30C','_angle52_T-35C','_angle52_T-40C']
-
-
-elif compareNum == 4:
-    sipmTypes = ['HPK_2E14_LYSO825', 'HPK_2E14_LYSO825']
-    nameComparison = 'HPK_2E14_LYSO825_angles_T-35C'
-    extraLabel = ['  52^{o}','  64^{o}']
-    extraName = ['_angle52_T-35C','_angle64_T-35C']
-
-
-
-
-
-# ---------------------
-# ----- LYSO 819 ------
-elif compareNum == 5:
-    sipmTypes = ['HPK_1E14_LYSO819', 'HPK_1E14_LYSO819', 'HPK_1E14_LYSO819' , 'HPK_1E14_LYSO819']
-    nameComparison = 'HPK_1E14_LYSO819_temperatures'
-    extraLabel = ['','','',   '']
-    extraName = ['_angle52_T-22C','_angle52_T-27C', '_angle52_T-32C', '_angle52_T-37C'     ]
-
-elif compareNum == 6:
-    sipmTypes = ['HPK_1E14_LYSO819', 'HPK_1E14_LYSO819', 'HPK_1E14_LYSO819']
-    nameComparison = 'HPK_1E14_LYSO819_angles_T-22C'
-    extraLabel = ['  32^{o}','  52^{o}','  64^{o}']
-    extraName = ['_angle32_T-22C','_angle52_T-22C','_angle64_T-22C']
-
-elif compareNum == 7:
-    sipmTypes = ['HPK_1E14_LYSO819', 'HPK_1E14_LYSO819', 'HPK_1E14_LYSO819']
-    nameComparison = 'HPK_1E14_LYSO819_angles_T-32C'
-    extraLabel = ['  32^{o}','  52^{o}','  64^{o}']
-    extraName = ['_angle32_T-32C','_angle52_T-32C','_angle64_T-32C']
-
-
-
-# ---------------------
-# ----- LYSO 829 ------
-elif compareNum == 8:
-    sipmTypes = ['HPK_1E13_LYSO829', 'HPK_1E13_LYSO829', 'HPK_1E13_LYSO829' , 'HPK_1E13_LYSO829']
-    nameComparison = 'HPK_1E13_LYSO829_temperatures'
-    extraLabel = ['' ,'','',   '']
-    extraName = ['_angle52_T-32C','_angle52_T-19C', '_angle52_T0C', '_angle52_T12C'     ]
-
-
-elif compareNum == 9:
-    sipmTypes = ['HPK_1E13_LYSO829', 'HPK_1E13_LYSO829', 'HPK_1E13_LYSO829']
-    nameComparison = 'HPK_1E13_LYSO829_angles_T-19C'
-    extraLabel = ['  32^{o}','  52^{o}','  64^{o}']
-    extraName = ['_angle32_T-19C','_angle52_T-19C','_angle64_T-19C']
-
-
-
-
-
-
-#### --------   thickening scenarios ------
-#compareTimeResolution_vs_Vov_EoL_T1_T2_T3
-elif compareNum == 10:
-    sipmTypes = ['HPK_1E14_LYSO819','HPK_2E14_LYSO815','HPK_1E14_LYSO817']
-    nameComparison = 'EoL_T1_T2_T3'
-    extraLabel = ['  32^{o}','  52^{o}','  64^{o}']
-    extraName = ['_angle32_T-22C', '_angle52_T-35C', '_angle64_T-22C']
-    color_code = False
-    color_map = [417,2,1]
-
-
-elif compareNum == 11:
-    sipmTypes = ['HPK_1E14_LYSO819','HPK_2E14_LYSO815','HPK_2E14_LYSO815']
-    nameComparison = 'EoL_T1_T2_T2'
-    extraLabel = ['  32^{o}','  52^{o}','  64^{o}']
-    extraName =['_angle32_T-22C', '_angle52_T-35C', '_angle64_T-35C']
-    color_code = False
-    color_map = [417,2,1]
-
-elif compareNum == 12:
-    sipmTypes = ['HPK_1E14_LYSO819','HPK_1E14_LYSO819','HPK_1E14_LYSO819']
-    nameComparison = 'EoL_T1_T1_T1'
-    extraLabel = ['  32^{o}','  52^{o}','  64^{o}']
-    extraName = ['_angle32_T-22C', '_angle52_T-22C', '_angle64_T-22C']
-    color_code = False
-    color_map = [417,2,1]
-
-
-elif compareNum == 13:
-    sipmTypes = ['HPK_1E14_LYSO819','HPK_1E14_LYSO817']
-    nameComparison = 'EoL_T1_T3'
-    extraLabel = ['  64^{o}','  64^{o}']
-    extraLabel = ['','']
-    extraName = ['_angle64_T-22C', '_angle64_T-22C']
-    color_code = False
-    color_map = [417,1]
-
-
-
-
-
-
-
-
-#---------- BTL like ------
-elif compareNum == 14:
-    sipmTypes = ['HPK_1E14_LYSO819','HPK_1E14_LYSO817']
-    nameComparison = 'BTLlike_1E14_T1_T3'
-    #extraLabel = ['  64^{o}','  64^{o}']
-    extraLabel = ['','']
-    extraName = ['_angle64_T-32C', '_angle64_T-32C']
-    color_code = False
-    color_map = [417,1]
-
-
-elif compareNum == 15:
-    sipmTypes = ['HPK_1E14_LYSO819','HPK_2E14_LYSO815','HPK_1E14_LYSO817']
-    nameComparison = 'BTLlike_T1_T2_T3'
-    extraLabel = ['','', '']
-    extraName = ['_angle32_T-32C', '_angle52_T-40C', '_angle64_T-32C']
-    color_code = False
-    color_map = [417,2,1]
-
-
-elif compareNum == 16:
-    sipmTypes = ['HPK_1E14_LYSO819','HPK_2E14_LYSO815','HPK_2E14_LYSO815']
-    nameComparison = 'BTLlike_T1_T2_T2'
-    extraLabel = ['','', '']
-    extraName = ['_angle32_T-32C', '_angle52_T-40C', '_angle64_T-40C']
-    color_code = False
-    color_map = [417,2,1]
-
-
-elif compareNum == 17:
-    sipmTypes = ['HPK_1E14_LYSO819','HPK_1E14_LYSO819','HPK_1E14_LYSO819']
-    nameComparison = 'BTLlike_T1_T1_T1'
-    extraLabel = ['','', '']
-    extraName = ['_angle32_T-32C', '_angle52_T-32C', '_angle64_T-32C']
-    color_code = False
-    color_map = [417,2,1]
-
-
-
-
-
-
-
-
-
-elif compareNum == 18:
-    sipmTypes = ['HPK_2E14_LYSO825', 'HPK_2E14_LYSO825', 'HPK_2E14_LYSO825','HPK_2E14_LYSO815', 'HPK_2E14_LYSO815', 'HPK_2E14_LYSO815']
-    nameComparison = 'HPK_2E14_LYSO825_LYSO815_temperatures'
-    extraLabel = ['','','','','','']
-    extraName = ['_angle52_T-30C','_angle52_T-35C','_angle52_T-40C','_angle52_T-30C','_angle52_T-35C','_angle52_T-40C']
-    marker_code = False
-    marker_map = [24,24,24,20,20,20]
-    color_code = False
-    color_map = [2,800,860,2,800,860]
-
-
-
-
-
-
-
-
-# ---- T1 for different moment of life ----
-
-elif compareNum == 90:
-    sipmTypes = ['HPK_1E13_LYSO829','HPK_1E14_LYSO819', 'HPK_1E14_LYSO819']
-    nameComparison = 'diff_irrad_T1'
-    extraLabel = ['','','']
-    extraName = ['_angle52_T-19C','_angle52_T-22C','_angle52_T-32C'     ]
-
-
-
-
-
-
-
-
-
-
 
 
 
