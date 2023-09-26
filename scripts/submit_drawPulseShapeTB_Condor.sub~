@@ -4,4 +4,4 @@ output                = /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015An
 error                 = /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/scripts/jobs/job_drawPulseShape.$(ClusterId).$(ProcId).err
 log                   = /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/scripts/jobs/job_drawPulseShape.$(ClusterId).$(ProcId).log
 +JobFlavour = "longlunch"
-queue cfg from 
+queue cfg from list_cfg_drawPulseShapeTB_LYSO815.txt
