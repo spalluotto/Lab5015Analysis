@@ -16,6 +16,26 @@ from slewRate import *
 from SiPM import *
 from moduleDict import *
 
+
+
+def draw_logo():
+    logo_x = 0.16
+    logo = ROOT.TLatex()
+    logo.SetNDC()
+    logo.SetTextSize(0.045) 
+    logo.SetTextFont(62)
+    logo.DrawText(logo_x,0.95,'CMS') 
+    logo.SetTextFont(52)
+    logo.DrawText(logo_x+0.07, 0.95, '  Phase-2 Preliminary')
+    return logo
+
+def latex_vov(overv):
+    latex_tmp = ROOT.TLatex(0.19,0.88,'Vov%.2f'%overv)
+    latex_tmp.SetNDC()
+    latex_tmp.SetTextSize(0.035)
+    latex_tmp.SetTextFont(42)
+    return latex_tmp
+
 parser = argparse.ArgumentParser()  
 parser.add_argument("-n","--comparisonNumber", required = True, type=str, help="comparison number")    
 args = parser.parse_args()   
@@ -28,27 +48,24 @@ comparisonNum = int(args.comparisonNumber)
 #-------------
 
 
-logo_x = 0.16
 
 #set the tdr style
 tdrstyle.setTDRStyle()
 ROOT.gStyle.SetOptStat(0)
-ROOT.gStyle.SetOptFit(1)
+ROOT.gStyle.SetOptFit(0)
 ROOT.gStyle.SetOptTitle(0)
 ROOT.gStyle.SetLabelSize(0.055,'X')
 ROOT.gStyle.SetLabelSize(0.055,'Y')
-ROOT.gStyle.SetTitleSize(0.06,'X')
-ROOT.gStyle.SetTitleSize(0.06,'Y')
+ROOT.gStyle.SetTitleSize(0.07,'X')
+ROOT.gStyle.SetTitleSize(0.07,'Y')
 ROOT.gStyle.SetTitleOffset(1.05,'X')
-ROOT.gStyle.SetTitleOffset(1.12,'Y')
+ROOT.gStyle.SetTitleOffset(1.1,'Y')
 ROOT.gStyle.SetLegendFont(42)
 ROOT.gStyle.SetLegendTextSize(0.045)
 ROOT.gStyle.SetPadTopMargin(0.07)
-ROOT.gStyle.SetPadRightMargin(0.1)
-
 ROOT.gROOT.SetBatch(True)
-#ROOT.gROOT.SetBatch(False)
 ROOT.gErrorIgnoreLevel = ROOT.kWarning
+
 ROOT.gStyle.SetOptStat(0)
 ROOT.gStyle.SetOptFit(0111)
     
@@ -60,72 +77,140 @@ ROOT.gStyle.SetOptFit(0111)
 plotsdir = '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
 
 
+
+color_code = True
+marker_code = True
+
 # ------------------ 
 
-if comparisonNum == 1:
+
+#   ----- cell size ------
+
+if comparisonNum == 11:
     modules =       ['LYSO819', 'LYSO819',       'LYSO819',    'LYSO819']
     temperatures =  ['-22',     '-27',           '-32',        '-37']
     extraName =     ['_angle52','_angle52',      '_angle52',   '_angle52']
     extraLabel =    ['',        '',              '',           '']
-    outSuffix =     'HPK_1E14_LYSO819_temperatures'
-    color_code =    True
+    outSuffix =     '1E14_LYSO819_temperatures'
 
 
 
-elif comparisonNum == 2:
+
+elif comparisonNum == 12:
     modules =       ['LYSO829', 'LYSO829',       'LYSO829',    'LYSO829']
     temperatures =  ['12',      '0',             '-19',        '-32']
     extraName =     ['_angle52','_angle52',      '_angle52',   '_angle52']
     extraLabel =    ['',        '',              '',           '']
-    outSuffix =     'HPK_1E13_LYSO829_temperatures'
-    color_code =    True
-
-
-# ---- comparison T1 vs T3 ------
-elif comparisonNum == 3:
-    modules =       ['LYSO819',   'LYSO817']
-    temperatures =  ['-32',       '-32']
-    extraName =     ['_angle64',  '_angle64']
-    extraLabel =    ['',          '']
-    outSuffix =     'HPK_1E14_T1_T3_BTLequiv'
-    color_code =    False
-    color_map  =    [417,1]
-
-
-elif comparisonNum == 4:
-    modules =       ['LYSO819',   'LYSO817']
-    temperatures =  ['-22',       '-22']
-    extraName =     ['_angle64',  '_angle64']
-    extraLabel =    ['',          '']
-    outSuffix =     'HPK_1E14_T1_T3_EoL'
-    color_code =    False
-    color_map =     [417,1]
+    outSuffix =     '1E13_LYSO829_temperatures'
 
 
 
 
 # ----- LYSO 815
-elif comparisonNum == 5:
+elif comparisonNum == 13:
     modules =       ['LYSO815',     'LYSO815',       'LYSO815']
     temperatures =  ['-30',         '-35',           '-40']
     extraName =     ['_angle52',    '_angle52',      '_angle52']
     extraLabel =    ['',            '',              '']
-    outSuffix =     'HPK_2E14_LYSO815_temperatures'
-    color_code =    True
+    outSuffix =     '2E14_LYSO815_temperatures'
 
 
 # ----- LYSO 825
-elif comparisonNum == 6:
+elif comparisonNum == 14:
     modules =       ['LYSO825',     'LYSO825',       'LYSO825']
     temperatures =  ['-30',         '-35',           '-40']
     extraName =     ['_angle52',    '_angle52',      '_angle52']
     extraLabel =    ['',            '',              '']
-    outSuffix =     'HPK_2E14_LYSO825_temperatures'
-    color_code =    True
+    outSuffix =     '2E14_LYSO825_temperatures'
 
+
+
+
+# ----- LYSO 825 and LYSO 815
+elif comparisonNum == 15:
+    modules =       ['LYSO825',     'LYSO825',       'LYSO825',   'LYSO815',     'LYSO815',       'LYSO815']
+    temperatures =  ['-30',         '-35',           '-40',       '-30',         '-35',           '-40'  ]
+    extraName =     ['_angle52',    '_angle52',      '_angle52',  '_angle52',    '_angle52',      '_angle52']
+    extraLabel =    ['',            '',              '',          '' ,           '' ,             '']
+    outSuffix =     '2E14_cellSizes'
+    marker_code = False
+    marker_map = [24,24,24,20,20,20]
+    color_code = False
+    color_map = [2,800,860,2,800,860]
+
+
+
+
+
+
+
+
+# ---- comparison T1 vs T3 ------
+elif comparisonNum == 1:
+    modules =       ['LYSO819',   'LYSO817']
+    temperatures =  ['-32',       '-32']
+    extraName =     ['_angle64',  '_angle64']
+    extraLabel =    [' - T1',     ' - T3']
+    outSuffix =     'T1_T3_angle64_BTLlike1E14'
+    color_code =    False
+    color_map  =    [417,1]
+
+
+elif comparisonNum == 2:
+    modules =       ['LYSO819',   'LYSO817']
+    temperatures =  ['-22',       '-22']
+    extraName =     ['_angle64',  '_angle64']
+    extraLabel =    [' - T1',          ' - T3']
+    outSuffix =     'T1_T3_angle64_EoLemulation'
+    color_code =    False
+    color_map =     [417,1]
 
 
 # ------------------ 
+
+# ---- comparison T1 T2 T3 ------
+# BTL like : equivalent scenario in BTL for a damage rate corresponding to these 1e14 sipms and corresponing emulation of 2e14 (T-40)
+elif comparisonNum == 3: 
+    modules =       ['LYSO819',   'LYSO815',   'LYSO817']
+    temperatures =  ['-32',       '-40',       '-32']
+    extraName =     ['_angle32',  '_angle52' , '_angle64']
+    extraLabel =    [' - T1',     ' - T2',     ' - T3']
+    outSuffix =     'T1_T2_T3_BTLlike1E14' # BTL like for 1e14 irradiation and corresponding emulation of 2e14 --> caveat: temperature does not take into account other damages
+    color_code =    False
+    color_map  =    [417,2,1]
+
+
+# EoL emulation
+elif comparisonNum == 4: 
+    modules =       ['LYSO819',   'LYSO815',   'LYSO817']
+    temperatures =  ['-22',       '-35',       '-22']
+    extraName =     ['_angle32',  '_angle52' , '_angle64']
+    extraLabel =    [' - T1',     ' - T2',     ' - T3']
+    outSuffix =     'T1_T2_T3_EoLemulation'
+    color_code =    False
+    color_map  =    [417,2,1]
+
+
+elif comparisonNum == 5:
+    modules =      ['LYSO819',   'LYSO815' ,    'LYSO817']
+    temperatures = ['-22',       '-35',         '-22']
+    extraName =    ['_angle64',  '_angle64',    '_angle64']
+    extraLabel =   [' - T1',     ' - T2',       ' - T3']
+    outSuffix =    'T1_T2_T3_angle64_EoLemulation'
+    color_code = False
+    color_map = [417,2,1]
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 verbose = False
@@ -149,10 +234,12 @@ for it,module in enumerate(modules):
 if verbose:
     print 'module: ', sipmTypes , '\t outfile: ', outfile
 
-#color_map = [208,212,216,224,227,94,225,99,220]
+
 if color_code:
     color_map = [2,210,4,6,7,8,94]
 
+if marker_code:
+    marker_map = [20,20,20,20,20,20,20,20]
 
 
 # ----- output --------
@@ -205,7 +292,7 @@ for it, sipm in enumerate(sipmTypes):
     fnames[sipm]   = '%s/summaryPlots_%s.root'%(plotsdir,sipm)
     labels[sipm]   = label_(sipm) + extraLabel[it]
     cols[sipm]     = color_map[it]
-    markers[sipm]  = 20
+    markers[sipm]  = marker_map[it]
     LO[sipm]       = light_output(sipm)
     tau[sipm]      = tau_decay(sipm)
     tauRise[sipm]  = tau_rise(sipm)
@@ -296,13 +383,16 @@ for sipm in sipmTypes:
 
 VovsUnion = []
 barsUnion = []
+barsIntersection = []
 for it, sipm in enumerate(sipmTypes):
     if it == 0:
         VovsUnion = Vovs[sipm]
         barsUnion = bars[sipm]
+        barsIntersection = bars[sipm]
     else:
         VovsUnion = union(VovsUnion, Vovs[sipm]) 
         barsUnion = union(barsUnion, bars[sipm])
+        barsIntersection = intersection(barsIntersection, bars[sipm])
 print 'ovs union: ', VovsUnion, '\t bars union: ', barsUnion
 
 # ------   
@@ -451,7 +541,7 @@ for it,sipm in enumerate(sipmTypes):
             sr      = -1
             err_srL = -1
             err_srR = -1
-            c = ROOT.TCanvas('c_%s'%(g_psL.GetName().replace('g_pulseShapeL','pulseShape').replace('Vov%.2f'%ov,'VovEff%.2f'%ovEff)),'',650,500)  
+            c = ROOT.TCanvas('c_%s'%(g_psL.GetName().replace('g_pulseShapeL','pulseShape').replace('Vov%.2f'%ov,'VovEff%.2f'%ovEff)),'',600,500)  
             hdummy = ROOT.TH2F('hdummy','', 100, min(g_psL.GetX())-1., 5, 100, 0., 15.)
             hdummy.GetXaxis().SetTitle('time [ns]')
             hdummy.GetYaxis().SetTitle('amplitude [#muA]')
@@ -590,7 +680,7 @@ for it,sipm in enumerate(sipmTypes):
             g_Noise_vs_SR[sipm][ov].SetPoint(g_Noise_vs_SR[sipm][ov].GetN(), sr, s_noise)
             g_Noise_vs_SR[sipm][ov].SetPointError(g_Noise_vs_SR[sipm][ov].GetN()-1, errSR, err_s_noise)
 
-            g_DCR_vs_SR[sipm][ov].SetPoint(g_DCR_vs_SR[sipm][ov].GetN(), sr, s_dcr)
+            g_DCR_vs_SR[sipm][ov].SetPoint(g_DCR_vs_SR[sipm][ov].GetN(), sr, s_dcr)  #  questo non e normalizzato a sqrt(dcr) !! diverso da quello medio che faccio sotto
             g_DCR_vs_SR[sipm][ov].SetPointError(g_DCR_vs_SR[sipm][ov].GetN()-1, errSR, err_s_dcr)
             
 
@@ -757,7 +847,7 @@ for sipm in sipmTypes:
     for i,bar in enumerate(bars[sipm]):
         if (bar not in g_data[sipm].keys()): continue
         if (g_data[sipm][bar].GetN()==0): continue
-        c =  ROOT.TCanvas('c_timeResolution_vs_Vov_%s_bar%02d'%(sipm,bar),'c_timeResolution_vs_Vov_%s_bar%02d'%(sipm,bar),650,500)
+        c =  ROOT.TCanvas('c_timeResolution_vs_Vov_%s_bar%02d'%(sipm,bar),'c_timeResolution_vs_Vov_%s_bar%02d'%(sipm,bar),600,500)
         c.SetGridy()
         c.cd()
         xmin = 0.0
@@ -823,14 +913,8 @@ for sipm in sipmTypes:
         latex.SetTextFont(42)
         latex.Draw('same')
 
-        logo = ROOT.TLatex()
-        logo.SetNDC()
-        logo.SetTextSize(0.045) 
-        logo.SetTextFont(62)
-        logo.DrawText(logo_x,0.95,'CMS') 
-        logo.SetTextFont(52)
-        logo.DrawText(logo_x+0.07, 0.95, '  Preliminary')
-
+        cms_logo = draw_logo()
+        cms_logo.Draw()
 
         c.SaveAs(outdir+'/tRes_vs_Vov_perBar/'+c.GetName()+'.png')
         c.SaveAs(outdir+'/tRes_vs_Vov_perBar/'+c.GetName()+'.pdf')
@@ -841,7 +925,7 @@ for sipm in sipmTypes:
 print'Plotting tRes_DCR vs Npe...'
 
 for bar in range(0,16):      
-    c =  ROOT.TCanvas('c_timeResolutionDCR_vs_DCRNpe_bar%02d'%(bar),'c_timeResolutionDCR_vs_DCRNpe_bar%02d'%(bar),650,500)
+    c =  ROOT.TCanvas('c_timeResolutionDCR_vs_DCRNpe_bar%02d'%(bar),'c_timeResolutionDCR_vs_DCRNpe_bar%02d'%(bar),600,500)
     c.SetGridx()
     c.SetGridy()
     c.cd()
@@ -859,14 +943,8 @@ for bar in range(0,16):
         g_DCR_vs_Npe[sipm][bar].SetLineColor(cols[sipm])
         g_DCR_vs_Npe[sipm][bar].Draw('psame')
 
-
-    logo = ROOT.TLatex()
-    logo.SetNDC()
-    logo.SetTextSize(0.045) 
-    logo.SetTextFont(62)
-    logo.DrawText(logo_x,0.95,'CMS') 
-    logo.SetTextFont(52)
-    logo.DrawText(logo_x+0.07, 0.95, '  Preliminary')
+    cms_logo = draw_logo()
+    cms_logo.Draw()
 
     c.SaveAs(outdir+'/tRes_vs_DCRNpe_perBar/'+c.GetName()+'.png')
     c.SaveAs(outdir+'/tRes_vs_DCRNpe_perBar'+c.GetName()+'.pdf')
@@ -874,7 +952,7 @@ for bar in range(0,16):
 
 
 # -- DCR vs DCRNpe
-c =  ROOT.TCanvas('c_timeResolutionDCR_vs_DCRNpe_average','c_timeResolutionDCR_vs_DCRNpe_average',650,500)
+c =  ROOT.TCanvas('c_timeResolutionDCR_vs_DCRNpe_average','c_timeResolutionDCR_vs_DCRNpe_average',600,500)
 c.SetGridx()
 c.SetGridy()
 c.cd()    
@@ -896,14 +974,8 @@ for sipm in sipmTypes:
     outfile.cd() 
     g_DCR_vs_DCRNpe_average[sipm].Write('g_DCR_vs_DCRNpe_average_%s'%sipm)
 
-
-logo = ROOT.TLatex()
-logo.SetNDC()
-logo.SetTextSize(0.045) 
-logo.SetTextFont(62)
-logo.DrawText(logo_x,0.95,'CMS') 
-logo.SetTextFont(52)
-logo.DrawText(logo_x+0.07, 0.95, '  Preliminary')
+cms_logo = draw_logo()
+cms_logo.Draw()
 
 c.SaveAs(outdir+'/'+c.GetName()+'.png')
 c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
@@ -912,7 +984,7 @@ hdummy.Delete()
 
 
 # --- DCRNpe vs DCR
-c =  ROOT.TCanvas('c_timeResolutionDCRNpe_vs_DCR_average','c_timeResolutionDCRNpe_vs_DCR_average',650,500)
+c =  ROOT.TCanvas('c_timeResolutionDCRNpe_vs_DCR_average','c_timeResolutionDCRNpe_vs_DCR_average',600,500)
 c.SetGridx()
 c.SetGridy()
 c.cd()    
@@ -941,15 +1013,8 @@ for sipm in sipmTypes:
     outfile.cd() 
     g_DCRNpe_vs_DCR_average[sipm].Write('g_DCRNpe_vs_DCR_average_%s'%sipm)
 
-
-logo = ROOT.TLatex()
-logo.SetNDC()
-logo.SetTextSize(0.045) 
-logo.SetTextFont(62)
-logo.DrawText(logo_x,0.95,'CMS') 
-logo.SetTextFont(52)
-logo.DrawText(logo_x+0.07, 0.95, '  Preliminary')
-
+cms_logo = draw_logo()
+cms_logo.Draw()
 
 c.SaveAs(outdir+'/'+c.GetName()+'.png')
 c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
@@ -961,14 +1026,18 @@ hdummy.Delete()
 
 
 # SR and best threshold vs Vov
-leg2 = ROOT.TLegend(0.20,0.70,0.45,0.89)
+leg2 = ROOT.TLegend(0.40,0.65,0.85,0.9)
 leg2.SetBorderSize(0)
 leg2.SetFillStyle(0)
-i = 0
+
+bar = barsIntersection[0]
+for sipm in sipmTypes:
+    leg2.AddEntry(g_SR_vs_Vov[sipm][bar], '%s'%labels[sipm], 'PL')
+
 for bar in range(0,16):
     if (bar not in g_data[sipm].keys()): continue
     if (g_data[sipm][bar].GetN()==0): continue     
-    c = ROOT.TCanvas('c_slewRate_vs_Vov_bar%02d'%(bar),'c_slewRate_vs_Vov_bar%02d'%(bar),650,500)
+    c = ROOT.TCanvas('c_slewRate_vs_Vov_bar%02d'%(bar),'c_slewRate_vs_Vov_bar%02d'%(bar),600,500)
     c.SetGridy()
     c.cd()
     xmin = 0.0
@@ -980,8 +1049,6 @@ for bar in range(0,16):
     hdummy.Draw()
     for sipm in sipmTypes:
         if (bar not in g_SR_vs_Vov[sipm].keys()): continue
-        if (i==0):
-            leg2.AddEntry(g_SR_vs_Vov[sipm][bar], '%s'%labels[sipm], 'PL')
         g_SR_vs_Vov[sipm][bar].SetMarkerStyle(markers[sipm])
         g_SR_vs_Vov[sipm][bar].SetMarkerColor(cols[sipm])
         g_SR_vs_Vov[sipm][bar].SetLineColor(cols[sipm])
@@ -995,7 +1062,7 @@ for bar in range(0,16):
     i=i+1
 
 
-    c = ROOT.TCanvas('c_slewRate_vs_GainNpe_bar%02d'%(bar),'c_slewRate_vs_GainNpe_bar%02d'%(bar),650,500)
+    c = ROOT.TCanvas('c_slewRate_vs_GainNpe_bar%02d'%(bar),'c_slewRate_vs_GainNpe_bar%02d'%(bar),600,500)
     c.SetGridy()
     c.cd()
     hdummy = ROOT.TH2F('hdummy_%d'%(bar),'',100,0,3E09,100,0,35)
@@ -1011,18 +1078,14 @@ for bar in range(0,16):
     leg2.Draw()
 
 
-    logo = ROOT.TLatex()
-    logo.SetNDC()
-    logo.SetTextSize(0.045) 
-    logo.SetTextFont(62)
-    logo.DrawText(logo_x,0.95,'CMS') 
-    logo.SetTextFont(52)
-    logo.DrawText(logo_x+0.07, 0.95, '  Preliminary')
+    cms_logo = draw_logo()
+    cms_logo.Draw()
+
     c.SaveAs(outdir+'/slewRate_vs_GainNpe_perBar/'+c.GetName()+'.png')
     c.SaveAs(outdir+'/slewRate_vs_GainNpe_perBar/'+c.GetName()+'.pdf')
     hdummy.Delete()
 
-    c = ROOT.TCanvas('c_bestTh_vs_Vov_bar%02d'%(bar),'c_bestTh_vs_Vov_bar%02d'%(bar),650,500)
+    c = ROOT.TCanvas('c_bestTh_vs_Vov_bar%02d'%(bar),'c_bestTh_vs_Vov_bar%02d'%(bar),600,500)
     c.SetGridy()
     c.cd()
     hdummy = ROOT.TH2F('hdummy_%d'%(bar),'',100,xmin,xmax,100,0,20)
@@ -1039,14 +1102,8 @@ for bar in range(0,16):
         g_bestTh_vs_Vov[sipm][bar].Draw('plsame')
 
 
-
-    logo = ROOT.TLatex()
-    logo.SetNDC()
-    logo.SetTextSize(0.045) 
-    logo.SetTextFont(62)
-    logo.DrawText(logo_x,0.95,'CMS') 
-    logo.SetTextFont(52)
-    logo.DrawText(logo_x+0.07, 0.95, '  Preliminary')
+    cms_logo = draw_logo()
+    cms_logo.Draw()
 
     c.SaveAs(outdir+'/bestTh/'+c.GetName()+'.png')
     c.SaveAs(outdir+'/bestTh/'+c.GetName()+'.pdf')
@@ -1058,7 +1115,7 @@ for bar in range(0,16):
 
 
 # average slew rate vs OV
-c =  ROOT.TCanvas('c_slewRate_vs_Vov_average','c_slewRate_vs_Vov_average',650,500)
+c =  ROOT.TCanvas('c_slewRate_vs_Vov_average','c_slewRate_vs_Vov_average',600,500)
 c.SetGridx()
 c.SetGridy()
 c.cd()    
@@ -1076,14 +1133,10 @@ for sipm in sipmTypes:
     g_SR_vs_Vov_average[sipm].Write('g_SR_vs_Vov_average_%s'%(sipm))
 leg2.Draw()
 
-logo = ROOT.TLatex()
-logo.SetNDC()
-logo.SetTextSize(0.045) 
-logo.SetTextFont(62)
-logo.DrawText(logo_x,0.95,'CMS') 
-logo.SetTextFont(52)
-logo.DrawText(logo_x+0.07, 0.95, '  Preliminary')
 
+
+cms_logo = draw_logo()
+cms_logo.Draw()
 c.SaveAs(outdir+'/'+c.GetName()+'.png')
 c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
 hdummy.Delete()
@@ -1095,11 +1148,11 @@ hdummy.Delete()
 
 # --------------------------------------------
 # ---- average DCR vs average slew rate --------
-c =  ROOT.TCanvas('c_DCR_vs_SR_average','c_DCR_vs_SR_average',650,500)
+c =  ROOT.TCanvas('c_DCR_vs_SR_average','c_DCR_vs_SR_average',600,500)
 c.SetGridx()
 c.SetGridy()
 c.cd()    
-hdummy = ROOT.TH2F('hdummy','',20, 0, 35 ,100, 0, 30)
+hdummy = ROOT.TH2F('hdummy','',20, 0, 35,100, 0, 30)
 hdummy.GetXaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
 hdummy.GetYaxis().SetTitle('#sigma_{t, DCR}/#sqrt{DCR} [ps]')
 hdummy.Draw()
@@ -1113,13 +1166,9 @@ for sipm in sipmTypes:
     g_DCR_vs_SR_average[sipm].Write('g_DCR_vs_SR_average_%s'%(sipm))
 leg2.Draw()
 
-logo = ROOT.TLatex()
-logo.SetNDC()
-logo.SetTextSize(0.045) 
-logo.SetTextFont(62)
-logo.DrawText(logo_x,0.95,'CMS') 
-logo.SetTextFont(52)
-logo.DrawText(logo_x+0.07, 0.95, '  Preliminary')
+
+cms_logo = draw_logo()
+cms_logo.Draw()
 
 c.SaveAs(outdir+'/'+c.GetName()+'.png')
 c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
@@ -1136,7 +1185,7 @@ hdummy.Delete()
 
 
 # average time resolution vs Npe
-c =  ROOT.TCanvas('c_timeResolution_vs_Npe_average','c_timeResolution_vs_Npe_average',650,500)
+c =  ROOT.TCanvas('c_timeResolution_vs_Npe_average','c_timeResolution_vs_Npe_average',600,500)
 c.SetGridx()
 c.SetGridy()
 c.cd()    
@@ -1155,14 +1204,9 @@ for sipm in sipmTypes:
     g_data_vs_Npe[sipm].Write('g_data_vs_Npe_average_%s'%(sipm))
 leg2.Draw()  
 
+cms_logo = draw_logo()
+cms_logo.Draw()
 
-logo = ROOT.TLatex()
-logo.SetNDC()
-logo.SetTextSize(0.045) 
-logo.SetTextFont(62)
-logo.DrawText(logo_x,0.95,'CMS') 
-logo.SetTextFont(52)
-logo.DrawText(logo_x+0.07, 0.95, '  Preliminary')
 
 c.SaveAs(outdir+'/'+c.GetName()+'.png')
 c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
@@ -1172,7 +1216,7 @@ hdummy.Delete()
 # average time resolution vs DCR
 ########################################
 
-c =  ROOT.TCanvas('c_timeResolution_vs_DCR_average','c_timeResolution_vs_DCR_average',650,500)
+c =  ROOT.TCanvas('c_timeResolution_vs_DCR_average','c_timeResolution_vs_DCR_average',600,500)
 c.SetGridx()
 c.SetGridy()
 c.cd()    
@@ -1190,13 +1234,8 @@ for sipm in sipmTypes:
     g_data_vs_DCR[sipm].Write('g_data_vs_DCR_average_%s'%(sipm))
 leg2.Draw()  
 
-logo = ROOT.TLatex()
-logo.SetNDC()
-logo.SetTextSize(0.045) 
-logo.SetTextFont(62)
-logo.DrawText(logo_x,0.95,'CMS') 
-logo.SetTextFont(52)
-logo.DrawText(logo_x+0.07, 0.95, '  Preliminary')
+cms_logo = draw_logo()
+cms_logo.Draw()
 
 c.SaveAs(outdir+'/'+c.GetName()+'.png')
 c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
@@ -1204,7 +1243,7 @@ hdummy.Delete()
 
 
 # average time resolution vs static power
-c =  ROOT.TCanvas('c_timeResolution_vs_staticPower_average','c_timeResolution_vs_staticPower_average',650,500)
+c =  ROOT.TCanvas('c_timeResolution_vs_staticPower_average','c_timeResolution_vs_staticPower_average',600,500)
 c.SetGridx()
 c.SetGridy()
 c.cd()    
@@ -1224,20 +1263,15 @@ for sipm in sipmTypes:
     g_data_vs_staticPower[sipm].Write('g_data_vs_staticPower_average_%s'%(sipm))
 leg2.Draw()  
 
-logo = ROOT.TLatex()
-logo.SetNDC()
-logo.SetTextSize(0.045) 
-logo.SetTextFont(62)
-logo.DrawText(logo_x,0.95,'CMS') 
-logo.SetTextFont(52)
-logo.DrawText(logo_x+0.07, 0.95, '  Preliminary')
+cms_logo = draw_logo()
+cms_logo.Draw()
 
 c.SaveAs(outdir+'/'+c.GetName()+'.png')
 c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
 hdummy.Delete()
 
 # average time resolution vs GainxNpe
-c =  ROOT.TCanvas('c_timeResolution_vs_GainNpe_average','c_timeResolution_vs_GainNpe_average',650,500)
+c =  ROOT.TCanvas('c_timeResolution_vs_GainNpe_average','c_timeResolution_vs_GainNpe_average',600,500)
 c.SetGridx()
 c.SetGridy()
 c.cd()    
@@ -1254,13 +1288,8 @@ for sipm in sipmTypes:
     g_data_vs_GainNpe[sipm].Draw('plsame')
 leg2.Draw()  
 
-logo = ROOT.TLatex()
-logo.SetNDC()
-logo.SetTextSize(0.045) 
-logo.SetTextFont(62)
-logo.DrawText(logo_x,0.95,'CMS') 
-logo.SetTextFont(52)
-logo.DrawText(logo_x+0.07, 0.95, '  Preliminary')
+cms_logo = draw_logo()
+cms_logo.Draw()
 
 c.SaveAs(outdir+'/'+c.GetName()+'.png')
 c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
@@ -1269,18 +1298,18 @@ hdummy.Delete()
 
 # average tRes
 for sipm in sipmTypes:
-    latex = ROOT.TLatex(0.18,0.88,'%s'%(labels[sipm]))
+    latex = ROOT.TLatex(0.18,0.84,'%s'%(labels[sipm]))
     latex.SetNDC()
     latex.SetTextSize(0.05)
     latex.SetTextFont(42)
-    c =  ROOT.TCanvas('c_timeResolution_vs_Vov_average_%s'%(sipm),'c_timeResolution_vs_Vov_average_%s'%(sipm),650,500)
-    c.SetGridx()
-    c.SetGridy()
+    c =  ROOT.TCanvas('c_timeResolution_vs_Vov_average_%s'%(sipm),'c_timeResolution_vs_Vov_average_%s'%(sipm),600,500)
     c.cd()
     hdummy = ROOT.TH2F('hdummy','',100, 0., 2.,100,0,120)
-    hdummy.GetXaxis().SetTitle('V_{OV}^{eff} [V]')
+    hdummy.GetXaxis().SetTitle('V_{OV} [V]')
     hdummy.GetYaxis().SetTitle('time resolution [ps]')
     hdummy.Draw()
+    
+    ROOT.gPad.SetTicks(1)
     g_data_average[sipm].SetMarkerStyle(20)
     g_data_average[sipm].SetMarkerSize(1)
     g_data_average[sipm].SetMarkerColor(1)
@@ -1311,7 +1340,7 @@ for sipm in sipmTypes:
     g_TotExp_vs_Vov_average[sipm].SetFillColor(ROOT.kRed+1)
     g_TotExp_vs_Vov_average[sipm].SetFillColorAlpha(ROOT.kRed+1,0.5)
     g_TotExp_vs_Vov_average[sipm].SetFillStyle(3001)
-    g_TotExp_vs_Vov_average[sipm].Draw('E3lsame')
+    # g_TotExp_vs_Vov_average[sipm].Draw('E3lsame')
     leg[sipm].Draw()
 
     latex.Draw()
@@ -1321,185 +1350,220 @@ for sipm in sipmTypes:
     g_DCR_vs_Vov_average[sipm].Write('g_Stoch_vs_Vov_average_%s'%sipm)
     g_TotExp_vs_Vov_average[sipm].Write('g_Tot_vs_Vov_average_%s'%sipm)
 
-    logo = ROOT.TLatex()
-    logo.SetNDC()
-    logo.SetTextSize(0.045) 
-    logo.SetTextFont(62)
-    logo.DrawText(logo_x,0.95,'CMS') 
-    logo.SetTextFont(52)
-    logo.DrawText(logo_x+0.07, 0.95, '  Preliminary')
+
+    cms_logo = draw_logo()
+    cms_logo.Draw()
     c.SaveAs(outdir+'/'+c.GetName()+'.png')
     c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
     hdummy.Delete()
 
 
+
+
+
+
 # SR and best threshold vs bar
-for sipm in sipmTypes:
-    for ov in Vovs[sipm]:
-        if (ov not in g_SR_vs_bar[sipm].keys()): continue
-        ovEff = Vovs_eff(sipm, ov)        
-        c = ROOT.TCanvas('c_slewRate_vs_bar_%s_Vov%.2f'%(sipm,ovEff),'c_slewRate_vs_bar_%s_Vov%.2f'%(sipm,ovEff),650,500)
-        c.SetGridy()
-        c.cd()
-        #hdummy = ROOT.TH2F('hdummy5_%d'%(ov),'',100,-0.5,15.5,100,0,15)
-        hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,35)
-        hdummy.GetXaxis().SetTitle('bar')
-        hdummy.GetYaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
-        hdummy.Draw()
+for ov in VovsUnion:
+    c = ROOT.TCanvas('c_slewRate_vs_bar_%s_Vov%.2f'%(sipm,ov),'c_slewRate_vs_bar_%s_Vov%.2f'%(sipm,ov),600,500)
+    c.SetGridy()
+    c.cd()
+    hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,35)
+    hdummy.GetXaxis().SetTitle('bar')
+    hdummy.GetYaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
+    hdummy.Draw()
+    for j, sipm in enumerate(sipmTypes):
+        if ov not in g_SR_vs_bar[sipm].keys():
+            continue
         g_SR_vs_bar[sipm][ov].SetMarkerStyle(markers[sipm])
         g_SR_vs_bar[sipm][ov].SetMarkerColor(cols[sipm])
 
         g_SR_vs_bar[sipm][ov].SetLineColor(cols[sipm])
         g_SR_vs_bar[sipm][ov].Draw('psame')
-        leg2.Draw()
-        c.SaveAs(outdir+'/slewRate_vs_bar_perVov/'+c.GetName()+'.png')
-        c.SaveAs(outdir+'/slewRate_vs_bar_perVov/'+c.GetName()+'.pdf')
-        hdummy.Delete()
+    leg2.Draw()
+    lat = latex_vov(ov)
+    lat.Draw()
+    c.SaveAs(outdir+'/slewRate_vs_bar_perVov/'+c.GetName()+'.png')
+    c.SaveAs(outdir+'/slewRate_vs_bar_perVov/'+c.GetName()+'.pdf')
+    hdummy.Delete()
 
-        c = ROOT.TCanvas('c_bestTh_vs_bar_%s_Vov%.2f'%(sipm,ovEff),'c_bestTh_vs_bar_%s_Vov%.2f'%(sipm,ovEff),650,500)
-        c.SetGridy()
-        c.cd()
-        hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,20)
-        hdummy.GetXaxis().SetTitle('bar')
-        hdummy.GetYaxis().SetTitle('timing threshold [DAC]')
-        hdummy.Draw()
+
+    c = ROOT.TCanvas('c_bestTh_vs_bar_%s_Vov%.2f'%(sipm,ov),'c_bestTh_vs_bar_%s_Vov%.2f'%(sipm,ov),600,500)
+    c.SetGridy()
+    c.cd()
+    hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,20)
+    hdummy.GetXaxis().SetTitle('bar')
+    hdummy.GetYaxis().SetTitle('timing threshold [DAC]')
+    hdummy.Draw()
+    for j, sipm in enumerate(sipmTypes):
+        if ov not in g_bestTh_vs_bar[sipm].keys():
+            continue
         g_bestTh_vs_bar[sipm][ov].SetMarkerStyle(markers[sipm])
         g_bestTh_vs_bar[sipm][ov].SetMarkerColor(cols[sipm])
         g_bestTh_vs_bar[sipm][ov].SetLineColor(cols[sipm])
         g_bestTh_vs_bar[sipm][ov].Draw('plsame')
-        leg2.Draw()        
-        c.SaveAs(outdir+'/bestTh/'+c.GetName()+'.png')
-        c.SaveAs(outdir+'/bestTh/'+c.GetName()+'.pdf')
-        hdummy.Delete()
+    leg2.Draw()        
+    lat = latex_vov(ov)
+    lat.Draw()
+    c.SaveAs(outdir+'/bestTh/'+c.GetName()+'.png')
+    c.SaveAs(outdir+'/bestTh/'+c.GetName()+'.pdf')
+    hdummy.Delete()
 
-        c = ROOT.TCanvas('c_noise_vs_bar_%s_Vov%.2f'%(sipm,ovEff),'c_noise_vs_bar_%s_Vov%.2f'%(sipm,ovEff),650,500)
-        c.SetGridy()
-        c.cd()
-        hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,80)
-        hdummy.GetXaxis().SetTitle('bar')
-        hdummy.GetYaxis().SetTitle('#sigma_{t, noise} [ps]')
-        hdummy.Draw()
+    c = ROOT.TCanvas('c_noise_vs_bar_%s_Vov%.2f'%(sipm,ov),'c_noise_vs_bar_%s_Vov%.2f'%(sipm,ov),600,500)
+    c.SetGridy()
+    c.cd()
+    hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,80)
+    hdummy.GetXaxis().SetTitle('bar')
+    hdummy.GetYaxis().SetTitle('#sigma_{t, noise} [ps]')
+    hdummy.Draw()
+    for j, sipm in enumerate(sipmTypes):
+        if ov not in g_Noise_vs_bar[sipm].keys():
+            continue
         g_Noise_vs_bar[sipm][ov].SetMarkerStyle( markers[sipm] )
         g_Noise_vs_bar[sipm][ov].SetMarkerColor(cols[sipm])
         g_Noise_vs_bar[sipm][ov].SetLineColor(cols[sipm])
         g_Noise_vs_bar[sipm][ov].Draw('psame')
-        leg2.Draw()
-        c.SaveAs(outdir+'/tRes_vs_bar_perVov/'+c.GetName()+'.png')
-        c.SaveAs(outdir+'/tRes_vs_bar_perVov/'+c.GetName()+'.pdf')
-        hdummy.Delete()
+    leg2.Draw()
+    lat = latex_vov(ov)
+    lat.Draw()
+    c.SaveAs(outdir+'/tRes_vs_bar_perVov/'+c.GetName()+'.png')
+    c.SaveAs(outdir+'/tRes_vs_bar_perVov/'+c.GetName()+'.pdf')
+    hdummy.Delete()
 
-        c = ROOT.TCanvas('c_stoch_vs_bar_%s_Vov%.2f'%(sipm,ovEff),'c_stoch_vs_bar_%s_Vov%.2f'%(sipm,ovEff),650,500)
-        c.SetGridy()
-        c.cd()
-        hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,80)
-        hdummy.GetXaxis().SetTitle('bar')
-        hdummy.GetYaxis().SetTitle('#sigma_{t, stoch} [ps]')
-        hdummy.Draw()
+    c = ROOT.TCanvas('c_stoch_vs_bar_%s_Vov%.2f'%(sipm,ov),'c_stoch_vs_bar_%s_Vov%.2f'%(sipm,ov),600,500)
+    c.SetGridy()
+    c.cd()
+    hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,80)
+    hdummy.GetXaxis().SetTitle('bar')
+    hdummy.GetYaxis().SetTitle('#sigma_{t, stoch} [ps]')
+    hdummy.Draw()
+    for j, sipm in enumerate(sipmTypes):
+        if ov not in g_Stoch_vs_bar[sipm].keys():
+            continue
         g_Stoch_vs_bar[sipm][ov].SetMarkerStyle( markers[sipm] )
         g_Stoch_vs_bar[sipm][ov].SetMarkerColor(cols[sipm])
         g_Stoch_vs_bar[sipm][ov].SetLineColor(cols[sipm])
         g_Stoch_vs_bar[sipm][ov].Draw('psame')
-        leg2.Draw()
-        c.SaveAs(outdir+'/tRes_vs_bar_perVov/'+c.GetName()+'.png')
-        c.SaveAs(outdir+'/tRes_vs_bar_perVov/'+c.GetName()+'.pdf')
-        hdummy.Delete()
+    leg2.Draw()
+    lat = latex_vov(ov)
+    lat.Draw()
+    c.SaveAs(outdir+'/tRes_vs_bar_perVov/'+c.GetName()+'.png')
+    c.SaveAs(outdir+'/tRes_vs_bar_perVov/'+c.GetName()+'.pdf')
+    hdummy.Delete()
 
-        c = ROOT.TCanvas('c_DCR_vs_bar_%s_Vov%.2f'%(sipm,ovEff),'c_DCR_vs_bar_%s_Vov%.2f'%(sipm,ovEff),650,500)
-        c.SetGridy()
-        c.cd()
-        hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,140)
-        hdummy.GetXaxis().SetTitle('bar')
-        hdummy.GetYaxis().SetTitle('#sigma_{t, DCR} [ps]')
-        hdummy.Draw()
+    c = ROOT.TCanvas('c_DCR_vs_bar_%s_Vov%.2f'%(sipm,ov),'c_DCR_vs_bar_%s_Vov%.2f'%(sipm,ov),600,500)
+    c.SetGridy()
+    c.cd()
+    hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,140)
+    hdummy.GetXaxis().SetTitle('bar')
+    hdummy.GetYaxis().SetTitle('#sigma_{t, DCR} [ps]')
+    hdummy.Draw()
+    for j, sipm in enumerate(sipmTypes):
+        if ov not in g_DCR_vs_bar[sipm].keys():
+            continue
         g_DCR_vs_bar[sipm][ov].SetMarkerStyle( markers[sipm] )
         g_DCR_vs_bar[sipm][ov].SetMarkerColor(cols[sipm])
         g_DCR_vs_bar[sipm][ov].SetLineColor(cols[sipm])
         g_DCR_vs_bar[sipm][ov].Draw('psame')
-        leg2.Draw()
-        c.SaveAs(outdir+'/tRes_vs_bar_perVov/'+c.GetName()+'.png')
-        c.SaveAs(outdir+'/tRes_vs_bar_perVov/'+c.GetName()+'.pdf')
-        hdummy.Delete()
+    leg2.Draw()
+    lat = latex_vov(ov)
+    lat.Draw()
+    c.SaveAs(outdir+'/tRes_vs_bar_perVov/'+c.GetName()+'.png')
+    c.SaveAs(outdir+'/tRes_vs_bar_perVov/'+c.GetName()+'.pdf')
+    hdummy.Delete()
 
 
 
 
 
 #------- vs SR -------
-for sipm in sipmTypes:
-    for ov in Vovs[sipm]:
-        if (ov not in g_Stoch_vs_SR[sipm].keys()): continue
-        ovEff = Vovs_eff(sipm, ov)        
-        c = ROOT.TCanvas('c_stoch_vs_SR_%s_Vov%.2f'%(sipm,ovEff),'c_stoch_vs_SR_%s_Vov%.2f'%(sipm,ovEff),650,500)
-        c.SetGridy()
-        c.cd()
-        hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,0,35.5,100,0,60)
-        hdummy.GetXaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
-        hdummy.GetYaxis().SetTitle('#sigma_{stoch} [ps]')
-        hdummy.Draw()
 
+for ov in VovsUnion:
+    c = ROOT.TCanvas('c_stoch_vs_SR_%s_Vov%.2f'%(sipm,ov),'c_stoch_vs_SR_%s_Vov%.2f'%(sipm,ov),600,500)
+    c.SetGridy()
+    c.cd()
+    hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,0,35.5,100,0,60)
+    hdummy.GetXaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
+    hdummy.GetYaxis().SetTitle('#sigma_{stoch} [ps]')
+    hdummy.Draw()
+    for j, sipm in enumerate(sipmTypes):
+        if ov not in g_Stoch_vs_SR[sipm].keys():
+            continue
         g_Stoch_vs_SR[sipm][ov].SetMarkerStyle(markers[sipm])
         g_Stoch_vs_SR[sipm][ov].SetMarkerColor(cols[sipm])
         g_Stoch_vs_SR[sipm][ov].SetLineColor(cols[sipm])
         g_Stoch_vs_SR[sipm][ov].Draw('psame')
+    leg2.Draw()
+    lat = latex_vov(ov)
+    lat.Draw()
+    c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.png')
+    c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.pdf')
+    hdummy.Delete()
 
-        leg2.Draw()
-        c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.png')
-        c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.pdf')
-        hdummy.Delete()
 
-
-        c = ROOT.TCanvas('c_noise_vs_SR_%s_Vov%.2f'%(sipm,ovEff),'c_noise_vs_SR_%s_Vov%.2f'%(sipm,ovEff),650,500)
-        c.SetGridy()
-        c.cd()
-        hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,0,35,100,0,60)
-        hdummy.GetXaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
-        hdummy.GetYaxis().SetTitle('#sigma_{noise} [ps]')
-        hdummy.Draw()
-
+    c = ROOT.TCanvas('c_noise_vs_SR_%s_Vov%.2f'%(sipm,ov),'c_noise_vs_SR_%s_Vov%.2f'%(sipm,ov),600,500)
+    c.SetGridy()
+    c.cd()
+    hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,0,35,100,0,60)
+    hdummy.GetXaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
+    hdummy.GetYaxis().SetTitle('#sigma_{noise} [ps]')
+    hdummy.Draw()
+    for j, sipm in enumerate(sipmTypes):
+        if ov not in g_Noise_vs_SR[sipm].keys():
+            continue
         g_Noise_vs_SR[sipm][ov].SetMarkerStyle(markers[sipm])
         g_Noise_vs_SR[sipm][ov].SetMarkerColor(cols[sipm])
         g_Noise_vs_SR[sipm][ov].SetLineColor(cols[sipm])
         g_Noise_vs_SR[sipm][ov].Draw('plsame')
-        leg2.Draw()        
-        c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.png')
-        c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.pdf')
-        hdummy.Delete()
+    leg2.Draw()        
+    lat = latex_vov(ov)
+    lat.Draw()
+    c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.png')
+    c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.pdf')
+    hdummy.Delete()
 
 
-        c = ROOT.TCanvas('c_DCR_vs_SR_%s_Vov%.2f'%(sipm,ovEff),'c_DCR_vs_SR_%s_Vov%.2f'%(sipm,ovEff),650,500)
-        c.SetGridy()
-        c.cd()
-        hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,0,35,100,0,60)
-        hdummy.GetXaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
-        hdummy.GetYaxis().SetTitle('#sigma_{DCR}  [ps]')
-        hdummy.Draw()
-
+    c = ROOT.TCanvas('c_DCR_vs_SR_%s_Vov%.2f'%(sipm,ov),'c_DCR_vs_SR_%s_Vov%.2f'%(sipm,ov),600,500)
+    c.SetGridy()
+    c.cd()
+    hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,0,35,100,0,60)
+    hdummy.GetXaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
+    hdummy.GetYaxis().SetTitle('#sigma_{DCR}  [ps]')
+    hdummy.Draw()
+    for j, sipm in enumerate(sipmTypes):
+        if ov not in g_DCR_vs_SR[sipm].keys():
+            continue
         g_DCR_vs_SR[sipm][ov].SetMarkerStyle( markers[sipm] )
         g_DCR_vs_SR[sipm][ov].SetMarkerColor(cols[sipm])
         g_DCR_vs_SR[sipm][ov].SetLineColor(cols[sipm])
         g_DCR_vs_SR[sipm][ov].Draw('psame')
-        leg2.Draw()
-        c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.png')
-        c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.pdf')
-        hdummy.Delete()
+    leg2.Draw()
+    lat = latex_vov(ov)
+    lat.Draw()
+    c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.png')
+    c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.pdf')
+    hdummy.Delete()
 
 
-        c = ROOT.TCanvas('c_data_vs_SR_%s_Vov%.2f'%(sipm,ovEff),'c_data_vs_SR_%s_Vov%.2f'%(sipm,ovEff),650,500)
-        c.SetGridy()
-        c.cd()
-        hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,140)
-        hdummy.GetXaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
-        hdummy.GetYaxis().SetTitle('#sigma_{t} [ps]')
-        hdummy.Draw()
-
+    c = ROOT.TCanvas('c_data_vs_SR_%s_Vov%.2f'%(sipm,ov),'c_data_vs_SR_%s_Vov%.2f'%(sipm,ov),600,500)
+    c.SetGridy()
+    c.cd()
+    hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,140)
+    hdummy.GetXaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
+    hdummy.GetYaxis().SetTitle('#sigma_{t} [ps]')
+    hdummy.Draw()
+    for j, sipm in enumerate(sipmTypes):
+        if ov not in g_data_vs_SR[sipm].keys():
+            continue
         g_data_vs_SR[sipm][ov].SetMarkerStyle( markers[sipm] )
         g_data_vs_SR[sipm][ov].SetMarkerColor(cols[sipm])
         g_data_vs_SR[sipm][ov].SetLineColor(cols[sipm])
         g_data_vs_SR[sipm][ov].Draw('psame')
-        leg2.Draw()
-        c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.png')
-        c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.pdf')
-        hdummy.Delete()
+    leg2.Draw()
+    lat = latex_vov(ov)
+    lat.Draw()
+    c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.png')
+    c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.pdf')
+    hdummy.Delete()
 
 outfile.Close()
 

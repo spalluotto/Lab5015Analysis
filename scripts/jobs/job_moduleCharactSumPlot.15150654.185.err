@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "moduleCharacterizationSummaryPlots.py", line 161, in <module>
+    VovsEff[vov] = Vovs_eff(args.outFolder,vov)
+  File "/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/macros/moduleDict.py", line 352, in Vovs_eff
+    if 'non-irr' in irradiation(module):
+  File "/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/macros/moduleDict.py", line 275, in irradiation
+    if 'nonIrr' in sipm_(module):
+TypeError: argument of type 'NoneType' is not iterable

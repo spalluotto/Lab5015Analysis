@@ -190,3 +190,17 @@ python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO528_Vov1.25_
 python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO528_Vov1.50_angle52_T5C -o HPK_nonIrr_LYSO528_Vov1.50_angle52_T5C
 python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO528_Vov2.00_angle52_T5C -o HPK_nonIrr_LYSO528_Vov2.00_angle52_T5C
 python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO528_Vov3.50_angle52_T5C -o HPK_nonIrr_LYSO528_Vov3.50_angle52_T5C
+python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO818_Vov0.60_angle52_checkGoodBeam_T5C -o HPK_nonIrr_LYSO818_Vov0.60_angle52_checkGoodBeam_T5C
+python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO818_Vov0.80_angle52_checkGoodBeam_T5C -o HPK_nonIrr_LYSO818_Vov0.80_angle52_checkGoodBeam_T5C
+python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO818_Vov1.00_angle52_checkGoodBeam_T5C -o HPK_nonIrr_LYSO818_Vov1.00_angle52_checkGoodBeam_T5C
+python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO818_Vov1.25_angle52_checkGoodBeam_T5C -o HPK_nonIrr_LYSO818_Vov1.25_angle52_checkGoodBeam_T5C
+python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO818_Vov1.50_angle52_checkGoodBeam_T5C -o HPK_nonIrr_LYSO818_Vov1.50_angle52_checkGoodBeam_T5C
+python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO818_Vov2.00_angle52_checkGoodBeam_T5C -o HPK_nonIrr_LYSO818_Vov2.00_angle52_checkGoodBeam_T5C
+python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO818_Vov3.50_angle52_checkGoodBeam_T5C -o HPK_nonIrr_LYSO818_Vov3.50_angle52_checkGoodBeam_T5C
+python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO816_Vov0.60_angle64_T5C -o HPK_nonIrr_LYSO816_Vov0.60_angle64_T5C
+python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO816_Vov1.25_angle64_T5C -o HPK_nonIrr_LYSO816_Vov1.25_angle64_T5C
+python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO816_Vov0.80_angle64_T5C -o HPK_nonIrr_LYSO816_Vov0.80_angle64_T5C
+python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO816_Vov1.00_angle64_T5C -o HPK_nonIrr_LYSO816_Vov1.00_angle64_T5C
+python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO816_Vov1.50_angle64_T5C -o HPK_nonIrr_LYSO816_Vov1.50_angle64_T5C
+python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO816_Vov2.00_angle64_T5C -o HPK_nonIrr_LYSO816_Vov2.00_angle64_T5C
+python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO816_Vov3.50_angle64_T5C -o HPK_nonIrr_LYSO816_Vov3.50_angle64_T5C

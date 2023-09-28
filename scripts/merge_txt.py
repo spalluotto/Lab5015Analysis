@@ -1,7 +1,13 @@
 # Creating a list of filenames
 filenames = [
-    'list_cfg_moduleCharacterization_LYSO815.txt',
-    'list_cfg_moduleCharacterization_LYSO100056.txt'
+    'list_cfg_moduleCharacterization_LYSO813.txt',
+    'list_cfg_moduleCharacterization_LYSO816.txt',
+    'list_cfg_moduleCharacterization_LYSO200104.txt',
+    'list_cfg_moduleCharacterization_LYSO819.txt',
+    'list_cfg_moduleCharacterization_LYSO820.txt',
+    'list_cfg_moduleCharacterization_LYSO825.txt',
+    'list_cfg_moduleCharacterization_LYSO528.txt'
+
 ]
 
 outfile = 'mergedfiles_moduleCharacterization.txt'

@@ -26,6 +26,19 @@ compareNum = int(args.comparisonNumber)
 #-------------
 
 
+def draw_logo():
+    logo_x = 0.16
+    logo = ROOT.TLatex()
+    logo.SetNDC()
+    logo.SetTextSize(0.045) 
+    logo.SetTextFont(62)
+    logo.DrawText(logo_x,0.95,'CMS') 
+    logo.SetTextFont(52)
+    logo.DrawText(logo_x+0.07, 0.95, '  Phase-2 Preliminary')
+    return logo
+
+
+
 #set the tdr style                                                                                                                                   
 tdrstyle.setTDRStyle()
 ROOT.gStyle.SetOptStat(0)
@@ -38,7 +51,7 @@ ROOT.gStyle.SetTitleSize(0.07,'Y')
 ROOT.gStyle.SetTitleOffset(1.05,'X')
 ROOT.gStyle.SetTitleOffset(1.1,'Y')
 ROOT.gStyle.SetLegendFont(42)
-ROOT.gStyle.SetLegendTextSize(0.040)
+ROOT.gStyle.SetLegendTextSize(0.045)
 ROOT.gStyle.SetPadTopMargin(0.07)
 ROOT.gROOT.SetBatch(True)
 ROOT.gErrorIgnoreLevel = ROOT.kWarning   
@@ -53,22 +66,33 @@ plotsdir = '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots'
 
 marker_code = True
 color_code = True
+specific_position = False
 
-
-# ----- LYSO 813 ------
 if compareNum == 1:
-    sipmTypes = ['HPK_nonIrr_LYSO813','HPK_nonIrr_LYSO813']
-    nameComparison = 'HPK_nonIrr_LYSO813_old'
-    extraLabel = ['','','']
-    extraName = ['_angle52_T-30C','_angle52_T-35C','_angle52_T-40C']
+    sipmTypes = ['HPK_nonIrr_LYSO818', 'HPK_nonIrr_LYSO818']
+    nameComparison = 'HPK_nonIrr_LYSO818_Sep_vs_Mar'
+    extraLabel = [' CERN',' FNAL']
+    extraName = ['_angle52_T5C','_angle52_T12C']
+    specific_position = True
+    plots_special = ['%s'%plotsdir, '/eos/home-s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/plots']
 
 
 elif compareNum == 2:
-    sipmTypes = ['HPK_2E14_LYSO815', 'HPK_2E14_LYSO815', 'HPK_2E14_LYSO815']
-    nameComparison = 'HPK_2E14_LYSO815_angles_T-35C'
-    extraLabel = ['  32^{o}','  52^{o}','  64^{o}']
-    extraName = ['_angle32_T-35C','_angle52_T-35C','_angle64_T-35C']
+    sipmTypes = ['HPK_2E14_LYSO100056', 'HPK_2E14_LYSO815', 'HPK_2E14_LYSO300032']
+    nameComparison = 'HPK_2E14_angle64_T-35C_types'
+    extraLabel = ['','','']
+    extraName = ['_angle64_T-35C','_angle64_T-35C','_angle64_T-35C']
+    color_code = False
+    color_map = [417,2,1]
 
+
+elif compareNum == 3:
+    sipmTypes = ['HPK_2E14_LYSO100056', 'HPK_2E14_LYSO300032']
+    nameComparison = 'HPK_2E14_angle64_T-35C_types_1-3'
+    extraLabel = ['','','']
+    extraName = ['_angle64_T-35C','_angle64_T-35C']
+    color_code = False
+    color_map = [417,1]
 
 
 #-----------------------
@@ -101,7 +125,10 @@ colors = {}
 markers = {}
 
 for it, sipm in enumerate(sipmTypes):
-    fnames[sipm] = '%s/summaryPlots_%s.root'%(plotsdir,sipm)
+    if specific_position:
+        fnames[sipm] = '%s/summaryPlots_%s.root'%(plots_special[it], sipm)
+    else:
+        fnames[sipm] = '%s/summaryPlots_%s.root'%(plotsdir,sipm)
     labels[sipm] = label_(sipm) + extraLabel[it]
 
     print 'sipm : ', sipm, '     label: ', label_(sipm)
@@ -132,24 +159,25 @@ for j,sipm in enumerate(sipmTypes):
         print 'values :    ', Vovs_eff(sipm,vov), fitFun.GetParameter(0)
 
         g[sipm].SetPoint(g[sipm].GetN(), Vovs_eff(sipm,vov), fitFun.GetParameter(0))
-        g[sipm].SetPointError( g[sipm].GetN()-1, 0, gg.GetRMS(2) )# use RMS as error on the points
+        #g[sipm].SetPointError( g[sipm].GetN()-1, 0, gg.GetRMS(2) )# use RMS as error on the points
         
 
 print '\ndraw plots'
 
 # --- draw tRes vs vov ----
-c1 =  ROOT.TCanvas('c_timeResolution_bestTh_vs_Vov','c_timeResolution_bestTh_vs_Vov',900,700)
+c1 =  ROOT.TCanvas('c_timeResolution_bestTh_vs_Vov','c_timeResolution_bestTh_vs_Vov',600,500)
 c1.SetGridx()
 c1.SetGridy()
+ROOT.gPad.SetTicks(1)
 c1.cd()
 jsipm= 1
 if len(sipmTypes)==1: jsipm = 0 
 n = g[sipmTypes[jsipm]].GetN()
-xmax = 3
+xmax = 2.5
 xmin = 0
 
 ymin = 0
-ymax = 140
+ymax = 120
 
 hdummy = ROOT.TH2F('hdummy','',100,xmin,xmax,100,ymin,ymax)
 hdummy.GetXaxis().SetTitle('V_{OV}^{eff} [V]')
@@ -169,15 +197,8 @@ for i,sipm in enumerate(sipmTypes):
     leg.AddEntry( g[sipm], labels[sipm], 'PL')
 leg.Draw('same')
 
-
-logo = ROOT.TLatex()
-logo.SetNDC()
-logo.SetTextSize(0.045) 
-logo.SetTextFont(62)
-logo.DrawText(0.16,0.95,'CMS') 
-logo.SetTextFont(52)
-logo.DrawText(0.22, 0.95, '  Preliminary')
-    
+cms_logo = draw_logo()
+cms_logo.Draw()    
 
 c1.SaveAs(outdir+c1.GetName()+'_%s.png'%nameComparison)
 
