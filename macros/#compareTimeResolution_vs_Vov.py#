@@ -122,7 +122,7 @@ elif compareNum == 6:
 
 # 2E14 sipm cell sizes
 elif compareNum == 7:
-    sipmTypes = ['HPK_2E14_LYSO200104', '']
+    sipmTypes = ['HPK_2E14_LYSO200104', 'HPK_2E14_LYSO815', 'HPK_2E14_LYSO825', '']
 
 
 

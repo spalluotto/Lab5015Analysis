@@ -148,7 +148,7 @@ int main(int argc, char** argv)
 	{
 	  while ((diread = readdir(dir_ptr)) != nullptr) 
 	  {
-	    //std::cout << diread->d_name << std::endl;
+	    std::cout << diread->d_name << std::endl;
 	    std::string fname(diread->d_name);
 	    filenames.push_back(fname);
 	  }
@@ -156,7 +156,7 @@ int main(int argc, char** argv)
 	}
 	for (auto fname: filenames) 
 	{
-	  //std::cout << fname.c_str() << std::endl;;
+	  std::cout << fname.c_str() << std::endl;;
 	  if (fname == ".") continue;
 	  if (fname == "..") continue;
 	  // -- check if Vov selected
