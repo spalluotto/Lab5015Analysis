@@ -5,11 +5,11 @@
 # ------ ANGLE 52 --------  
 #---- config 50.00       T5
 
-python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_50.00     -e angle52      -ov 3.5   -r 6001
-python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_50.00     -e angle52      -ov 0.6   -r 6004
-python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_50.00     -e angle52      -ov 0.8   -r 6005
-python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_50.00     -e angle52      -ov 1.0   -r 6006
-python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_50.00     -e angle52      -ov 1.5   -r 6007
+# python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_50.00     -e angle52      -ov 3.5   -r 6001
+# python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_50.00     -e angle52      -ov 0.6   -r 6004
+# python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_50.00     -e angle52      -ov 0.8   -r 6005
+# python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_50.00     -e angle52      -ov 1.0   -r 6006
+# python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_50.00     -e angle52      -ov 1.5   -r 6007
 
 
 
@@ -21,15 +21,15 @@ python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_50.00  
 # ------ ANGLE 52 --------   
 #----- config 51.00       T-40
 
-# -- delayT scan
-python create_config.py     -t -40     -ml HPK_2E14_LYSO100056    -c config_51.00    -ov 1.25      -e angle52_delayT0b00000111   -r 6008
-python create_config.py     -t -40     -ml HPK_2E14_LYSO100056    -c config_51.00    -ov 1.25      -e angle52_delayT0b00011111   -r 6010
-python create_config.py     -t -40     -ml HPK_2E14_LYSO100056    -c config_51.00    -ov 1.25      -e angle52_delayT0b01111111   -r 6011
-python create_config.py     -t -40     -ml HPK_2E14_LYSO100056    -c config_51.00    -ov 1.25      -e angle52_delayT0b10000001   -r 6012
-python create_config.py     -t -40     -ml HPK_2E14_LYSO100056    -c config_51.00    -ov 1.25      -e angle52_delayT0b10000111   -r 6013
-python create_config.py     -t -40     -ml HPK_2E14_LYSO100056    -c config_51.00    -ov 1.25      -e angle52_delayT0b10011111   -r 6014
-python create_config.py     -t -40     -ml HPK_2E14_LYSO100056    -c config_51.00    -ov 1.25      -e angle52_delayT0b11111111   -r 6015
-python create_config.py     -t -40     -ml HPK_2E14_LYSO100056    -c config_51.00    -ov 1.25      -e angle52_delayT0b00000111   -r 6016
+# # -- delayT scan
+# python create_config.py     -t -40     -ml HPK_2E14_LYSO100056    -c config_51.00    -ov 1.25      -e angle52_delayT0b00000111   -r 6008
+# python create_config.py     -t -40     -ml HPK_2E14_LYSO100056    -c config_51.00    -ov 1.25      -e angle52_delayT0b00011111   -r 6010
+# python create_config.py     -t -40     -ml HPK_2E14_LYSO100056    -c config_51.00    -ov 1.25      -e angle52_delayT0b01111111   -r 6011
+# python create_config.py     -t -40     -ml HPK_2E14_LYSO100056    -c config_51.00    -ov 1.25      -e angle52_delayT0b10000001   -r 6012
+# python create_config.py     -t -40     -ml HPK_2E14_LYSO100056    -c config_51.00    -ov 1.25      -e angle52_delayT0b10000111   -r 6013
+# python create_config.py     -t -40     -ml HPK_2E14_LYSO100056    -c config_51.00    -ov 1.25      -e angle52_delayT0b10011111   -r 6014
+# python create_config.py     -t -40     -ml HPK_2E14_LYSO100056    -c config_51.00    -ov 1.25      -e angle52_delayT0b11111111   -r 6015
+# python create_config.py     -t -40     -ml HPK_2E14_LYSO100056    -c config_51.00    -ov 1.25      -e angle52_delayT0b00000111   -r 6016
 
 
 #----- config 51.03       T-40 
@@ -96,7 +96,7 @@ python create_config.py     -t -35     -ml HPK_2E14_LYSO100056    -c config_51.0
 python create_config.py     -t -35     -ml HPK_2E14_LYSO815    -c config_52.00    -e angle64         -r 6075                    -ov 0.6
 python create_config.py     -t -35     -ml HPK_2E14_LYSO815    -c config_52.00    -e angle64         -r 6075                    -ov 0.8
 python create_config.py     -t -35     -ml HPK_2E14_LYSO815    -c config_52.00    -e angle64         -r 6075                    -ov 1.0
-python create_config.py     -t -35     -ml HPK_2E14_LYSO815    -c config_52.00    -e angle64         -r 6075,6076,6077          -ov 1.25
+python create_config.py     -t -35     -ml HPK_2E14_LYSO815    -c config_52.00    -e angle64         -r 6076,6077               -ov 1.25
 python create_config.py     -t -35     -ml HPK_2E14_LYSO815    -c config_52.00    -e angle64         -r 6077                    -ov 1.5
 python create_config.py     -t -35     -ml HPK_2E14_LYSO815    -c config_52.00    -e angle64         -r 6078                    -ov 2.0
 
@@ -387,7 +387,7 @@ python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_59.00  
 python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_59.00        -e angle64      -r 6199            -ov 1.0
 python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_59.00        -e angle64      -r 6199            -ov 1.25
 python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_59.00        -e angle64      -r 6200            -ov 1.5
-python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_59.00        -e angle64      -r 6199            -ov 2.0
+python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_59.00        -e angle64      -r 6200            -ov 2.0
 
 
 

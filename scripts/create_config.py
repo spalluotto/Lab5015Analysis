@@ -117,6 +117,9 @@ for line in baseCfg:
    elif 'confNumber' in line:
       newCfg.write(line.replace('confNumber', '%s'%args.config))
       print 'config : ', args.config
+   elif 'vovLabel' in line:
+      newCfg.write(line.replace('vovLabel', '%s'%args.Vov))
+
 
    else:
       newCfg.write(line)
