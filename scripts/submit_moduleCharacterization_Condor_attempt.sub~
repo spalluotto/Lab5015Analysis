@@ -1,0 +1,8 @@
+executable            = moduleCharacterizationCondor.sh
+arguments             = $(cfg)
+output                = /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/scripts/jobs/job_moduleCharact.$(ClusterId).$(ProcId).out
+error                 = /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/scripts/jobs/job_moduleCharact.$(ClusterId).$(ProcId).err
+log                   = /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/scripts/jobs/job_moduleCharact.$(ClusterId).$(ProcId).log
+output_destination    = root://eosuser.cern.ch//eos/user/
++JobFlavour = "longlunch"
+queue cfg from tmp.txt

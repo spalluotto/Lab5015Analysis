@@ -1,0 +1,60 @@
+Error in <TSystem::ExpandFileName>: input: $HOME/.root.mimes, output: $HOME/.root.mimes
+Error in <TSystem::ExpandFileName>: input: $HOME/.root.mimes, output: $HOME/.root.mimes
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TCanvas::Range>: illegal world coordinates range: x1=0.842500, y1=-0.160494, x2=0.842500, y2=1.074074
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=0.842500, ymin=0.000000, xmax=0.842500, ymax=1.000000
+Error in <TCanvas::Range>: illegal world coordinates range: x1=0.842500, y1=-0.160494, x2=0.842500, y2=1.074074
+Error in <TCanvas::RangeAxis>: illegal axis coordinates range: xmin=0.842500, ymin=0.000000, xmax=0.842500, ymax=1.000000
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed

@@ -1,0 +1,16 @@
+Error in <TSystem::ExpandFileName>: input: $HOME/.root.mimes, output: $HOME/.root.mimes
+Error in <TSystem::ExpandFileName>: input: $HOME/.root.mimes, output: $HOME/.root.mimes
+libpng error: Write Error
+Error in <TASImage::WriteImage>: error writing file /eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/ModuleCharacterization/HPK_nonIrr_LYSO820_Vov3.50_angle52_T5C//energy/c_energy_external__Vov3.50_th25.png
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed
+Error in <TDecompChol::Decompose()>: matrix not positive definite
+Error in <TDecompChol::Solve()>: Decomposition failed
+Error in <TLinearFitter::Eval>: Matrix inversion failed

@@ -8,7 +8,7 @@ def sipm_type(lyso_):
     if '828' in lyso_ or '824' in lyso_ or '826' in lyso_:
         return 'HPK-ES3-25um'
 
-    elif '818' in lyso_ or '813' in lyso_ or '816' in lyso_ or '828' in lyso_ or '826' in lyso_ or '815' in lyso_ or '819' in lyso_ or '817' in lyso_ or '829' in lyso_:
+    elif '818' in lyso_ or '813' in lyso_ or '816' in lyso_ or '828' in lyso_ or '826' in lyso_ or '815' in lyso_ or '819' in lyso_ or '817' in lyso_ or '829' in lyso_ or '100056' in lyso_ or '300032' in lyso_:
         return 'HPK-ES2-25um'
 
     elif '814' in lyso_ or '825' in lyso_:
@@ -17,7 +17,7 @@ def sipm_type(lyso_):
     elif '824' in lyso_:
         return 'HPK-ES3-25um'
 
-    elif '820' in lyso_:
+    elif '820' in lyso_ or '200104' in lyso_:
         return 'HPK-ES2-30um'
 
     elif '528' in lyso_:
@@ -61,7 +61,7 @@ def PDE_(ov, sipm, flag='1'):
     elif type == 'HPK-ES3-25um':
         return k * 0.638 * ( 1. - math.exp(-1.*0.589*ov) )
     else:
-        print 'CANNOT FIND PDE'
+        print('CANNOT FIND PDE')
 
 
 
@@ -93,7 +93,7 @@ def Gain_(Vov,sipm,flag='1'):
     elif type == 'HPK-ES2-25um':
         return k * 7.044E04 + 2.895E05*Vov
     elif type == 'HPK-ES2-30um':
-        return k * 9.067E04 + 4.020E05*ov
+        return k * 9.067E04 + 4.020E05*Vov
 
     # -- low Cg --
     elif type == 'HPK-ES3-20um':
@@ -101,7 +101,7 @@ def Gain_(Vov,sipm,flag='1'):
     elif type == 'HPK-ES3-25um':
         return k * 7.857E04 + 2.836E05*Vov
     else:
-        print 'CANNOT FIND GAIN'
+        print('CANNOT FIND GAIN')
 
 
 

@@ -41,6 +41,11 @@ def lyso_(module):
     elif 'LYSO200104' in module:
         return 'LYSO200104'
 
+    elif 'LYSO814' in module:
+        return 'LYSO814'
+    elif 'LYSO528' in module:
+        return 'LYSO528'
+
 
 
 def sipm_(module):
@@ -70,6 +75,12 @@ def sipm_(module):
     elif 'LYSO200104' in module:
         return 'HPK_2E14'
 
+    elif 'LYSO814' in module:
+        return 'HPK_nonIrr'
+    elif 'LYSO528' in module:
+        return 'HPK_nonIrr'
+
+
 
 def sipm_cell_size(module):
     if 'LYSO818' in module:
@@ -98,16 +109,22 @@ def sipm_cell_size(module):
         return 'HPK 30#mum'
 
 
+    elif 'LYSO814' in module:
+        return 'HPK 20#mum'
+    elif 'LYSO528' in module:
+        return 'HPK 15#mum'
+
+
 def thickness(module):
     lyso_ref = lyso_(module)
     if 'LYSO818' == lyso_ref or 'LYSO819' == lyso_ref or 'LYSO829' == lyso_ref or 'LYSO100056' == lyso_ref:
         return 3.75
-    elif 'LYSO813' == lyso_ref or 'LYSO815'==lyso_ref  or 'LYSO825' == lyso_ref or 'LYSO820' == lyso_ref or 'LYSO200104' == lyso_ref:
+    elif 'LYSO813' == lyso_ref or 'LYSO815'==lyso_ref  or 'LYSO825' == lyso_ref or 'LYSO820' == lyso_ref or 'LYSO200104' == lyso_ref or 'LYSO814' == lyso_ref or 'LYSO528' == lyso_ref:
         return 3
     elif 'LYSO816' == lyso_ref or 'LYSO817' == lyso_ref or 'LYSO300032' == lyso_ref:
         return 2.4
     else:
-        print 'ERROR CANNOT FIND THICKNESS'
+        print('ERROR CANNOT FIND THICKNESS')
         return 'ERROR'
         
 
@@ -138,6 +155,11 @@ def light_output(module):
     elif 'LYSO200104' in module:
         return 2300
 
+    elif 'LYSO814' in module:
+        return 2400
+    elif 'LYSO528' in module:
+        return 1500
+
 
 
 # ------ stoch ref -----
@@ -157,7 +179,7 @@ def stoch_reference(module):
     elif 'LYSO817' in module:
         return 35
     elif 'LYSO820' in module:
-        return 30
+        return 0
     elif 'LYSO829' in module:
         return 35
     elif 'LYSO100056' in module:
@@ -166,6 +188,12 @@ def stoch_reference(module):
         return 35
     elif 'LYSO200104' in module:
         return 30
+
+    elif 'LYSO814' in module:
+        return 0
+    elif 'LYSO528' in module:
+        return 0
+
 
 
 def ov_reference(module):
@@ -193,6 +221,11 @@ def ov_reference(module):
         return 1
     elif 'LYSO200104' in module:
         return 1
+
+    elif 'LYSO814' in module:
+        return 3.5
+    elif 'LYSO528' in module:
+        return 3.5
 
 
 
@@ -224,6 +257,10 @@ def color_(module):
     elif 'LYSO200104' in module:
         return 50
 
+    elif 'LYSO814' in module:
+        return 52
+    elif 'LYSO528' in module:
+        return 54
 
 
 
@@ -278,7 +315,7 @@ def irradiation(module):
         tmp = sipm_(module).split('_')[1]
         return 'irr '+tmp
     else:
-        print 'not sure. Which irradiation?'
+        print('not sure. Which irradiation?')
         return 0
 
         return 'ERROR'
@@ -290,7 +327,7 @@ def temperature_(module):
         tmp = module.split("_T")[1].split("C")[0]
         return tmp
     else:
-        print 'ERROR: CANNOT FIND TEMPERATURE IN THE NAME'
+        print('ERROR: CANNOT FIND TEMPERATURE IN THE NAME')
         return 'ERROR'
 
 
@@ -299,7 +336,7 @@ def angle_(module):
         tmp = module.split("_angle")[1]
         return tmp
     else:
-        print 'ERROR: CANNOT FIND TEMPERATURE IN THE NAME'
+        print('ERROR: CANNOT FIND TEMPERATURE IN THE NAME')
         return 'ERROR'
 
 
@@ -316,35 +353,34 @@ def getVovEffDCR(module, ov) :
 
     irrad = irradiation(module)
     temp = temperature_(module)
-    return([float(ov_set),0]) 
     
-    # if 'non-irr' in irrad:
-    #     return([ov_set,0])
+    if 'non-irr' in irrad:
+        return([ov_set,0])
 
-    # elif 'irr' in irrad:
-    #     # Import file with VovEff and DCR
-    #     with open('/eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_H8_Sep2023/VovsEff_TOFHIR2C.json', 'r') as f:
-    #         data = json.load(f) 
-    #     if not data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_A'][ov_set][0]:
-    #         print 'ERROR:   ',module,'  not in json file!!!'
-    #         return ([ov_set,0,0])
-    #     else:
-    #         ov_eff_A = float(data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_A'][ov_set][0])
-    #         dcr_A    = float(data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_A'][ov_set][1])
-    #         ov_eff_B = float(data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_B'][ov_set][0])
-    #         dcr_B    = float(data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_B'][ov_set][1])
+    elif 'irr' in irrad:
+        # Import file with VovEff and DCR
+        with open('/eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_H8_Sep2023/VovsEff_TOFHIR2C.json', 'r') as f:
+            data = json.load(f) 
+        if not data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_A'][ov_set][0]:
+            print('ERROR:   ',module,'  not in json file!!!')
+            return ([ov_set,0,0])
+        else:
+            ov_eff_A = float(data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_A'][ov_set][0])
+            dcr_A    = float(data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_A'][ov_set][1])
+            ov_eff_B = float(data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_B'][ov_set][0])
+            dcr_B    = float(data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_B'][ov_set][1])
 
-    #         current_A= float(data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_A'][ov_set][2])
-    #         current_B= float(data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_B'][ov_set][2])
-    #         current = 0.5*(current_A+current_B)
+            current_A= float(data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_A'][ov_set][2])
+            current_B= float(data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_B'][ov_set][2])
+            current = 0.5*(current_A+current_B)
 
-    #         ov_eff =  0.5*(ov_eff_A+ov_eff_B)
-    #         dcr    =  0.5*(dcr_A+dcr_B)
-    #         return ([ov_eff, dcr, current])      
+            ov_eff =  0.5*(ov_eff_A+ov_eff_B)
+            dcr    =  0.5*(dcr_A+dcr_B)
+            return ([ov_eff, dcr, current])      
 
-    # else:
-    #     print 'ERROR: CANNOT FIND WHICH IRRADIATION'
-    #     return 'ERROR'
+    else:
+        print('ERROR: CANNOT FIND WHICH IRRADIATION')
+        return 'ERROR'
 
 
 def Vovs_eff(module, ov):
@@ -385,7 +421,7 @@ def type_(module):
     elif thickness(module) == 2.4:
         return 3
     else:
-        print 'ERROR: TYPE NOT DEFINED'
+        print('ERROR: TYPE NOT DEFINED')
         return 'ERROR'
 
 
@@ -427,7 +463,7 @@ def good_bars(module, ovs, bars):
         good_bars_[1.25] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
         good_bars_[1.00] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
         good_bars_[0.80] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
-        good_bars_[0.60] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+        good_bars_[0.60] = [0,1,2,6,7,8,9,10,11]
         
     elif '813' in module:
         good_bars_[3.50] = [2,3,4,5,6,7,8,9,10,11,12,13,14,15]
@@ -439,7 +475,7 @@ def good_bars(module, ovs, bars):
         good_bars_[0.60] = [2,3,4,5,6,7,8,9,10,11,12,13,14,15]
         
     elif '818' in module:
-        good_bars_[3.50] = [7,8,9,10,11,12,13]
+        good_bars_[3.50] = [8,9,10,11]
         good_bars_[2.00] = [2,3,4,5,6,7,8,9,10,11,12,13,14,15]
         good_bars_[1.50] = [2,3,4,5,6,7,8,9,10,11,12,13,14,15]
         good_bars_[1.25] = [2,3,4,5,6,7,8,9,10,11,12,13,14,15]

@@ -1,3 +1,0 @@
-Error in <TSystem::ExpandFileName>: input: $HOME/.root.mimes, output: $HOME/.root.mimes
-Error in <TSystem::ExpandFileName>: input: $HOME/.root.mimes, output: $HOME/.root.mimes
-SysError in <TFile::Flush>: error flushing file /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/moduleCharacterization_step2_HPK_2E14_LYSO300032_Vov1.25_angle64_T-35C.root No such file or directory

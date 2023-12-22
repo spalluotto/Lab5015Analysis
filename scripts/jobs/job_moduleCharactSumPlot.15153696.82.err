@@ -1,5 +1,0 @@
-mkdir: cannot create directory ‘/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/ModuleCharacterization/HPK_2E14_LYSO825_Vov1.50_angle52_T-30C/summaryPlots/’: File exists
-mkdir: cannot create directory ‘/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/ModuleCharacterization/HPK_2E14_LYSO825_Vov1.50_angle52_T-30C/summaryPlots/tot/’: File exists
-mkdir: cannot create directory ‘/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/ModuleCharacterization/HPK_2E14_LYSO825_Vov1.50_angle52_T-30C/summaryPlots/energy/’: File exists
-mkdir: cannot create directory ‘/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/ModuleCharacterization/HPK_2E14_LYSO825_Vov1.50_angle52_T-30C/summaryPlots/timeResolution/’: File exists
-mkdir: cannot create directory ‘/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/ModuleCharacterization/HPK_2E14_LYSO825_Vov1.50_angle52_T-30C/summaryPlots/timeResolution/fit/’: File exists

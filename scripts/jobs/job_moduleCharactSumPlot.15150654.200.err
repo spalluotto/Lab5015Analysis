@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "moduleCharacterizationSummaryPlots.py", line 339, in <module>
-    if (bar not in goodBars[vov]): continue
-KeyError: 1.25

@@ -6,71 +6,121 @@ import sys
 import ROOT
 
 
+ithmode = 0.313   # equivalence threshold amplitude in uA
 
+#######
 def getSlewRateFromPulseShape(g1, timingThreshold, npoints, gtemp, canvas=None):
-    if ( g1.GetN() < npoints): return (-1, -1)
+    """
+    Fit the slope of the pulse's rising edge in a TGraph.
 
-    # find index at the timing threshold
+    Args:
+        g1 (TGraph): The input TGraph representing the pulse.
+        timingThreshold (float): The timing threshold value.
+        npoints (int): Number of points to include in the fit.
+        gtemp (TGraph): Temporary TGraph for fitting.
+        canvas (TCanvas, optional): Canvas to display the fit (default: None).
+
+    Returns:
+        Tuple[float, float]: Slew rate and its error after excluding points with negative slopes.
+    """
+
+    if g1.GetN() < npoints:
+        print("not enough points in the pulse shape")
+        return (-1, -1)  # not enough points in the pulse shape
+
+    # Find index at the timing threshold
     itiming = 0
     for i in range(0,g1.GetN()):
-        if (round(g1.GetY()[i]/0.313) == timingThreshold):
+        if (round(g1.GetY()[i]/ithmode) == timingThreshold):
             itiming = i
             break
+
+    if itiming == -1:
+        print("timing threshold not found")
+        return (-1, -1)  # Timing threshold not found
 
     ifirst = ROOT.TMath.LocMin(g1.GetN(), g1.GetX())
     imin = max(0, itiming-2)
     if ( imin >= 0 and g1.GetX()[imin+1] < g1.GetX()[imin] ): imin = ifirst
     tmin = g1.GetX()[imin]
-    tmax = 3
-    
-    if ((imin+npoints) < g1.GetN()): 
-        tmax = min(g1.GetX()[imin+npoints],max(g1.GetX()))
-        nmax = imin+npoints+1
-    else:
-        tmax = max(g1.GetX())
-        nmax = g1.GetN()-1
+    tmax = 4
 
-    for i in range(imin, nmax):
-        gtemp.SetPoint(gtemp.GetN(), g1.GetX()[i], g1.GetY()[i])
-        gtemp.SetPointError(gtemp.GetN()-1, g1.GetErrorX(i), g1.GetErrorY(i))
-    fitSR = ROOT.TF1('fitSR', 'pol1', tmin, tmax)
-    fitSR.SetLineColor(g1.GetMarkerColor()+1)
-    fitSR.SetRange(tmin,tmax)
-    fitSR.SetParameters(0, 10)
-    fitStatus = int(gtemp.Fit(fitSR, 'QRS+'))
+    ndf = 0
+
+    while ndf==0:
+        if tmax<=2:
+            print("insufficient points")
+            return (-1,-1)
+        print("loop on tmax")
+        gtemp = ROOT.TGraphErrors()
+        tmax = tmax-1
+        if ((imin+npoints) < g1.GetN()): 
+            tmax = min(g1.GetX()[imin+npoints],max(g1.GetX()))
+            nmax = imin+npoints+1
+        else:
+            tmax = max(g1.GetX())
+            nmax = g1.GetN()-1
+
+        for i in range(imin, nmax):
+            gtemp.SetPoint(gtemp.GetN(), g1.GetX()[i], g1.GetY()[i])
+            gtemp.SetPointError(gtemp.GetN()-1, g1.GetErrorX(i), g1.GetErrorY(i))
+        fitSR = ROOT.TF1('fitSR', 'pol1', tmin, tmax)
+        fitSR.SetLineColor(g1.GetMarkerColor()+1)
+        fitSR.SetRange(tmin,tmax)
+        fitSR.SetParameters(0, 10)
+        fitStatus = int(gtemp.Fit(fitSR, 'QRS+'))
+        ndf = fitSR.GetNDF()
+    
+    if fitStatus == 1:
+        print("fit not converged")
+        return (-1, -1)
+
+    chi2 = fitSR.GetChisquare()/fitSR.GetNDF()
+    chi2_th = 30
+
+    if chi2 > chi2_th:
+        print("chi squared > ", chi2_th)
+        return (-1, -1)
+    
     sr = fitSR.Derivative( g1.GetX()[itiming])
     err_sr = fitSR.GetParError(1)
+    if (err_sr == 0):
+        err_sr = 0.05
     if (canvas!=None):
         canvas.cd()
+        #gtemp.SetMarkerStyle(g1.GetMarkerStyle())
+        #gtemp.SetMarkerColor(g1.GetMarkerColor())
         gtemp.SetMarkerStyle(g1.GetMarkerStyle())
-        gtemp.SetMarkerColor(g1.GetMarkerColor())
+        gtemp.SetMarkerColor(g1.GetMarkerColor()+2)
         gtemp.Draw('psames')
         g1.Draw('psames')
         fitSR.Draw('same')
         canvas.Update()
         #ps = g1.FindObject("stats")
         ps = gtemp.FindObject("stats")
-        ps.SetTextColor(g1.GetMarkerColor())
-        if ('L' in g1.GetName()):
-            ps.SetY1NDC(0.85) # new y start position
-            ps.SetY2NDC(0.95)# new y end position
-        if ('R' in g1.GetName()):
-            ps.SetY1NDC(0.73) # new y start position
-            ps.SetY2NDC(0.83)# new y end position
-
+        # Check if 'ps' is not None and is of the TPaveStats class
+        if ps and ps.IsA() == ROOT.TPaveStats.Class():
+            # Cast 'ps' to TPaveStats
+            ps.SetTextColor(g1.GetMarkerColor())
+            if ('L' in g1.GetName()):
+                ps.SetY1NDC(0.85) # new y start position
+                ps.SetY2NDC(0.95)# new y end position
+            if ('R' in g1.GetName()):
+                ps.SetY1NDC(0.73) # new y start position
+                ps.SetY2NDC(0.83)# new y end position
+        else:
+            print("cannot find stats in the ps")
     return(sr,err_sr)
 
 
 
 
-def findTimingThreshold(g2,ov):
+def findTimingThreshold(g2):
     xmin = 0
     ymin = 9999
     for i in range(0, g2.GetN()):
         y = g2.GetY()[i]
         x = g2.GetX()[i]
-
-        # if (ov<=1.5 and x > 5): continue
 
         if ( y < ymin):
             ymin = y
@@ -78,8 +128,13 @@ def findTimingThreshold(g2,ov):
     return xmin
 
 
-def sigma_noise(sr):
-    noise_single = math.sqrt( pow(420./sr,2) + 16.7*16.7 )
+def sigma_noise(sr, tofVersion):
+    if sr < 0 :
+        return 0
+    if '2x' in tofVersion:
+        noise_single = math.sqrt( pow(420./sr,2) + 16.7*16.7 )
+    elif '2c' in tofVersion:
+        noise_single = math.sqrt( pow(278./ pow(sr,0.8) ,2) + 19.1*19.1 )
     return noise_single / math.sqrt(2)
 
 

@@ -1,7 +1,0 @@
-mkdir: cannot create directory ‘/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/ModuleCharacterization/HPK_1E14_LYSO819_Vov1.25_angle52_T-27C/summaryPlots/’: File exists
-mkdir: cannot create directory ‘/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/ModuleCharacterization/HPK_1E14_LYSO819_Vov1.25_angle52_T-27C/summaryPlots/tot/’: File exists
-mkdir: cannot create directory ‘/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/ModuleCharacterization/HPK_1E14_LYSO819_Vov1.25_angle52_T-27C/summaryPlots/energy/’: File exists
-mkdir: cannot create directory ‘/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/ModuleCharacterization/HPK_1E14_LYSO819_Vov1.25_angle52_T-27C/summaryPlots/timeResolution/’: File exists
-mkdir: cannot create directory ‘/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/ModuleCharacterization/HPK_1E14_LYSO819_Vov1.25_angle52_T-27C/summaryPlots/timeResolution/fit/’: File exists
-libpng error: Write Error
-Error in <TASImage::WriteImage>: error writing file /eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/ModuleCharacterization/HPK_1E14_LYSO819_Vov1.25_angle52_T-27C/summaryPlots/timeResolution/c_tRes_energyRatioCorr_bestTh_vs_Vov_bar09_enBin01.png

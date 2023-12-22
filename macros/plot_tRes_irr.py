@@ -17,7 +17,7 @@ from SiPM import *
 from moduleDict import *
 
 
-
+#-------------
 def draw_logo():
     logo_x = 0.16
     logo = ROOT.TLatex()
@@ -35,6 +35,24 @@ def latex_vov(overv):
     latex_tmp.SetTextSize(0.035)
     latex_tmp.SetTextFont(42)
     return latex_tmp
+
+def latex_sipm(sip_):
+    latex_s = ROOT.TLatex(0.17,0.83,'%s'%label_(sip_))
+    latex_s.SetNDC()
+    latex_s.SetTextSize(0.035)
+    latex_s.SetTextFont(42)
+    return latex_s
+
+
+def latex_bar(bar_):
+    latex_b = ROOT.TLatex(0.19,0.65,'bar%02d'%bar_)
+    latex_b.SetNDC()
+    latex_b.SetTextSize(0.035)
+    latex_b.SetTextFont(42)
+    return latex_b
+# ----------------
+
+
 
 parser = argparse.ArgumentParser()  
 parser.add_argument("-n","--comparisonNumber", required = True, type=str, help="comparison number")    
@@ -67,14 +85,13 @@ ROOT.gROOT.SetBatch(True)
 ROOT.gErrorIgnoreLevel = ROOT.kWarning
 
 ROOT.gStyle.SetOptStat(0)
-ROOT.gStyle.SetOptFit(0111)
+ROOT.gStyle.SetOptFit(111)
     
 # =====================================
 
 
 
-#plotsdir = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
-plotsdir = '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
+plotsdir = '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/'
 
 
 
@@ -84,139 +101,120 @@ marker_code = True
 # ------------------ 
 
 
-#   ----- cell size ------
 
-if comparisonNum == 11:
-    modules =       ['LYSO819', 'LYSO819',       'LYSO819',    'LYSO819']
-    temperatures =  ['-22',     '-27',           '-32',        '-37']
-    extraName =     ['_angle52','_angle52',      '_angle52',   '_angle52']
-    extraLabel =    ['',        '',              '',           '']
-    outSuffix =     '1E14_LYSO819_temperatures'
+#  ---------- temperatures ------------
 
+# ----- tof version
+tofhirVersion = '2c'
 
-
-
-elif comparisonNum == 12:
-    modules =       ['LYSO829', 'LYSO829',       'LYSO829',    'LYSO829']
-    temperatures =  ['12',      '0',             '-19',        '-32']
-    extraName =     ['_angle52','_angle52',      '_angle52',   '_angle52']
-    extraLabel =    ['',        '',              '',           '']
-    outSuffix =     '1E13_LYSO829_temperatures'
-
-
-
-
-# ----- LYSO 815
-elif comparisonNum == 13:
-    modules =       ['LYSO815',     'LYSO815',       'LYSO815']
-    temperatures =  ['-30',         '-35',           '-40']
-    extraName =     ['_angle52',    '_angle52',      '_angle52']
-    extraLabel =    ['',            '',              '']
-    outSuffix =     '2E14_LYSO815_temperatures'
-
-
-# ----- LYSO 825
-elif comparisonNum == 14:
-    modules =       ['LYSO825',     'LYSO825',       'LYSO825']
-    temperatures =  ['-30',         '-35',           '-40']
-    extraName =     ['_angle52',    '_angle52',      '_angle52']
-    extraLabel =    ['',            '',              '']
-    outSuffix =     '2E14_LYSO825_temperatures'
-
-
-
-
-# ----- LYSO 825 and LYSO 815
-elif comparisonNum == 15:
-    modules =       ['LYSO825',     'LYSO825',       'LYSO825',   'LYSO815',     'LYSO815',       'LYSO815']
-    temperatures =  ['-30',         '-35',           '-40',       '-30',         '-35',           '-40'  ]
-    extraName =     ['_angle52',    '_angle52',      '_angle52',  '_angle52',    '_angle52',      '_angle52']
-    extraLabel =    ['',            '',              '',          '' ,           '' ,             '']
-    outSuffix =     '2E14_cellSizes'
-    marker_code = False
-    marker_map = [24,24,24,20,20,20]
+if comparisonNum == 1:
+    modules =       ['LYSO815', 'LYSO815'] #,       'LYSO815']
+    temperatures =  ['-40',     '-35'] # ,           '-30']
+    extraName =     ['_angle52','_angle52'] #,      '_angle52']
+    extraLabel =    ['',        ''] # ,              '']
+    outSuffix =     'HPK_2E14_LYSO815_temperatures'
     color_code = False
-    color_map = [2,800,860,2,800,860]
+    color_map = [860,800,2]
 
-
-
-
-
-
-
-
-# ---- comparison T1 vs T3 ------
-elif comparisonNum == 1:
-    modules =       ['LYSO819',   'LYSO817']
-    temperatures =  ['-32',       '-32']
-    extraName =     ['_angle64',  '_angle64']
-    extraLabel =    [' - T1',     ' - T3']
-    outSuffix =     'T1_T3_angle64_BTLlike1E14'
-    color_code =    False
-    color_map  =    [417,1]
 
 
 elif comparisonNum == 2:
-    modules =       ['LYSO819',   'LYSO817']
-    temperatures =  ['-22',       '-22']
-    extraName =     ['_angle64',  '_angle64']
-    extraLabel =    [' - T1',          ' - T3']
-    outSuffix =     'T1_T3_angle64_EoLemulation'
-    color_code =    False
-    color_map =     [417,1]
+    modules =       ['LYSO825', 'LYSO825',       'LYSO825']
+    temperatures =  ['-40',     '-35',           '-30']
+    extraName =     ['_angle52','_angle52',      '_angle52']
+    extraLabel =    ['',        '',              '']
+    outSuffix =     'HPK_2E14_LYSO825_temperatures'
+    color_code = False
+    color_map = [860,800,2]
 
+elif comparisonNum == 3:
+    modules =       ['LYSO200104', 'LYSO200104'] #,       'LYSO200104']
+    temperatures =  ['-40',     '-35'] #,           '-30']
+    extraName =     ['_angle52','_angle52'] #,      '_angle52']
+    extraLabel =    ['',        '' ] #,              '']
+    outSuffix =     'HPK_2E14_LYSO200104_temperatures'
+    color_code = False
+    color_map = [860,800,2]
 
-# ------------------ 
-
-# ---- comparison T1 T2 T3 ------
-# BTL like : equivalent scenario in BTL for a damage rate corresponding to these 1e14 sipms and corresponing emulation of 2e14 (T-40)
-elif comparisonNum == 3: 
-    modules =       ['LYSO819',   'LYSO815',   'LYSO817']
-    temperatures =  ['-32',       '-40',       '-32']
-    extraName =     ['_angle32',  '_angle52' , '_angle64']
-    extraLabel =    [' - T1',     ' - T2',     ' - T3']
-    outSuffix =     'T1_T2_T3_BTLlike1E14' # BTL like for 1e14 irradiation and corresponding emulation of 2e14 --> caveat: temperature does not take into account other damages
-    color_code =    False
-    color_map  =    [417,2,1]
-
-
-# EoL emulation
-elif comparisonNum == 4: 
-    modules =       ['LYSO819',   'LYSO815',   'LYSO817']
-    temperatures =  ['-22',       '-35',       '-22']
-    extraName =     ['_angle32',  '_angle52' , '_angle64']
-    extraLabel =    [' - T1',     ' - T2',     ' - T3']
-    outSuffix =     'T1_T2_T3_EoLemulation'
-    color_code =    False
-    color_map  =    [417,2,1]
-
+elif comparisonNum == 4:
+    modules =       ['LYSO100056', 'LYSO100056',       'LYSO100056']
+    temperatures =  ['-40',     '-35',           '-30']
+    extraName =     ['_angle52','_angle52',      '_angle52']
+    extraLabel =    ['',        '',              '']
+    outSuffix =     'HPK_2E14_LYSO100056_temperatures'
+    color_code = False
+    color_map = [860,800,2]
 
 elif comparisonNum == 5:
-    modules =      ['LYSO819',   'LYSO815' ,    'LYSO817']
-    temperatures = ['-22',       '-35',         '-22']
-    extraName =    ['_angle64',  '_angle64',    '_angle64']
-    extraLabel =   [' - T1',     ' - T2',       ' - T3']
-    outSuffix =    'T1_T2_T3_angle64_EoLemulation'
+    modules =       ['LYSO819', 'LYSO819',       'LYSO819']
+    temperatures =  ['-37',     '-32',           '-27']
+    extraName =     ['_angle52','_angle52',      '_angle52']
+    extraLabel =    ['',        '',              '']
+    outSuffix =     'HPK_2E14_LYSO819_temperatures'
+    color_code = False
+    color_map = [860,800,2]
+
+
+
+
+# ----------- angles ------------
+elif comparisonNum == 6:
+    modules =       ['LYSO100056', 'LYSO100056',       'LYSO100056']
+    temperatures =  ['-35',     '-35',           '-35']
+    extraName =     ['_angle32','_angle52',      '_angle64']
+    extraLabel =    [' 32^{o}',        ' 52^{o}',              ' 64^{o}']
+    outSuffix =     'HPK_2E14_LYSO100056_T-35C_angles'
+
+elif comparisonNum == 7:
+    modules =       ['LYSO819', 'LYSO819',       'LYSO819']
+    temperatures =  ['-32',     '-32',           '-32']
+    extraName =     ['_angle32','_angle52',      '_angle64']
+    extraLabel =    [' 32^{o}',        ' 52^{o}',              ' 64^{o}']
+    outSuffix =     'HPK_2E14_LYSO819_T-32C_angles'
+
+
+
+
+# ----------- types ------------   
+elif comparisonNum == 8:
+    modules =       ['LYSO100056', 'LYSO815',       'LYSO300032']
+    temperatures =  ['-35',     '-35',           '-35']
+    extraName =     ['_angle64','_angle64',      '_angle64']
+    extraLabel =    ['',        '',              '']
+    outSuffix =     'HPK_2E14_T-35C_angle64_types'
     color_code = False
     color_map = [417,2,1]
 
 
 
+# ----------- cell sizes ------------  
+elif comparisonNum == 9:
+    modules =       ['LYSO200104', 'LYSO815',       'LYSO825']
+    temperatures =  ['-35',     '-35',           '-35']
+    extraName =     ['_angle52', '_angle52',      '_angle52']
+    extraLabel =    ['',        '',              '']
+    outSuffix =     'HPK_2E14_T-35C_angle52_cellSize'
 
 
 
 
 
-
-
-
+# ----------- types ------------   
+elif comparisonNum == 10:
+    modules =       ['LYSO100056', 'LYSO815']
+    temperatures =  ['-35',     '-35']
+    extraName =     ['_angle52','_angle52']
+    extraLabel =    ['',        '',              '']
+    outSuffix =     'HPK_2E14_T-35C_angle52_types'
+    color_code = False
+    color_map = [417,2]
 
 
 
 verbose = False
 
 if len(modules) != len(temperatures):
-    print 'ERROR: either one LYSO or temperature is missing'
+    print('ERROR: either one LYSO or temperature is missing')
     sys.exit()
 
 sipmTypes = []
@@ -227,12 +225,12 @@ outfile = ROOT.TFile(outFileName, 'RECREATE')
 
 for it,module in enumerate(modules):
     sipmTypes.append(sipm_(module)+'_'+lyso_(module)+extraName[it]+'_T'+temperatures[it]+'C')
-    print 'test: ', sipmTypes[it], '   temp : ', temperatures[it]
+    print('test: ', sipmTypes[it], '   temp : ', temperatures[it])
     sipmBase.append(sipm_(module)+'_'+lyso_(module))
 
 
 if verbose:
-    print 'module: ', sipmTypes , '\t outfile: ', outfile
+    print('module: ', sipmTypes , '\t outfile: ', outfile)
 
 
 if color_code:
@@ -243,7 +241,7 @@ if marker_code:
 
 
 # ----- output --------
-outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_May23/plot_tRes/%s/'%outSuffix
+outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/plot_tRes/%s/'%outSuffix
 
 if (os.path.exists(outdir)==False):
     os.mkdir(outdir)
@@ -305,7 +303,7 @@ for it, sipm in enumerate(sipmTypes):
 
 
 if verbose:
-    print 'defining graphs'
+    print('defining graphs')
 np         = 3
 errSRsyst  = 0.10 # error on the slew rate
 errPDE     = 0.05 # assumed uncertainty on PDE (5-10%)
@@ -357,14 +355,14 @@ g_data_vs_staticPower = {}
 
 
 if verbose:
-    print 'retrieving bars and ovs'
+    print('retrieving bars and ovs')
 
 # --- retrieve bars and ovs from moduleChar plots
 bars = {}
 Vovs = {}
 for sipm in sipmTypes:
     f = ROOT.TFile.Open(fnames[sipm])
-    print sipm, fnames[sipm]
+    print(sipm, fnames[sipm])
     listOfKeys = [key.GetName().replace('g_deltaT_totRatioCorr_bestTh_vs_vov_','') for key in ROOT.gDirectory.GetListOfKeys() if ( 'g_deltaT_totRatioCorr_bestTh_vs_vov_bar' in key.GetName())]
     bars[sipm] = []
     for k in listOfKeys:
@@ -374,11 +372,8 @@ for sipm in sipmTypes:
     for k in listOfKeys2:
         Vovs[sipm].append( float(k[3:7]) )
 
-    if 'HPK_2E14_LYSO825' in sipm:
-        Vovs[sipm].remove(0.6) # too small signals for reasonable SR fits
-
-    print bars[sipm]
-    print Vovs[sipm]
+    print(bars[sipm])
+    print(Vovs[sipm])
 
 
 VovsUnion = []
@@ -393,7 +388,7 @@ for it, sipm in enumerate(sipmTypes):
         VovsUnion = union(VovsUnion, Vovs[sipm]) 
         barsUnion = union(barsUnion, bars[sipm])
         barsIntersection = intersection(barsIntersection, bars[sipm])
-print 'ovs union: ', VovsUnion, '\t bars union: ', barsUnion
+print('ovs union: ', VovsUnion, '\t bars union: ', barsUnion)
 
 # ------   
 
@@ -411,7 +406,7 @@ gain   = {}
 for it,sipm in enumerate(sipmTypes):
     f[sipm] = ROOT.TFile.Open(fnames[sipm])
     if not f[sipm]:
-        print 'summary plot file not found'
+        print('summary plot file not found')
 
     g_data_average[sipm] = f[sipm].Get('g_deltaT_totRatioCorr_bestTh_vs_vov_enBin01_average')
 
@@ -458,13 +453,13 @@ for it,sipm in enumerate(sipmTypes):
 
 
     if verbose:
-        print 'retrieving pulse shapes'
+        print('retrieving pulse shapes')
 
     fPS[sipm] = {}
     for ov in Vovs[sipm]:
         fPS[sipm][ov] = ROOT.TFile.Open('%s/pulseShape_%s_Vov%.2f%s_T%sC.root'%(plotsdir,sipmBase[it],ov,extraName[it],temperatures[it]))
         if not fPS[sipm][ov]:
-            print 'pulse shape file not found'
+            print('pulse shape file not found')
 
         g_SR_vs_bar[sipm][ov]        = ROOT.TGraphErrors()
         g_bestTh_vs_bar[sipm][ov]    = ROOT.TGraphErrors()
@@ -483,16 +478,16 @@ for it,sipm in enumerate(sipmTypes):
 
 
     if verbose:
-        print 'retrieving summary plots'
+        print('retrieving summary plots')
 
 
     for bar in bars[sipm]:
         g_data[sipm][bar] = f[sipm].Get('g_deltaT_totRatioCorr_bestTh_vs_vov_bar%02d_enBin01'%bar)
 
         if verbose:
-            print '\n check sipm ', sipm , '  bar ', bar
+            print('\n check sipm ', sipm , '  bar ', bar)
             for ipoint in range(g_data[sipm][bar].GetN()):
-                print 'tres ', g_data[sipm][bar].GetPointY(ipoint), '  ov: ', g_data[sipm][bar].GetPointX(ipoint)
+                print('tres ', g_data[sipm][bar].GetPointY(ipoint), '  ov: ', g_data[sipm][bar].GetPointX(ipoint))
 
         g_Noise_vs_Vov[sipm][bar]     = ROOT.TGraphErrors()
         g_Stoch_vs_Vov[sipm][bar]     = ROOT.TGraphErrors()
@@ -513,7 +508,7 @@ for it,sipm in enumerate(sipmTypes):
 
 
         if verbose:
-            print 'starting loop on ov'
+            print('starting loop on ov')
 
     # --- loop on ov ----        g_data = tRes vs vov
         for ov in Vovs[sipm]:
@@ -535,7 +530,7 @@ for it,sipm in enumerate(sipmTypes):
             if (g_psL==None and g_psR==None): continue
             if (g_psL!=None): g_psL.SetName('g_pulseShapeL_bar%02d_Vov%.2f_%s'%(bar,ov,sipm))
             if (g_psR!=None): g_psR.SetName('g_pulseShapeR_bar%02d_Vov%.2f_%s'%(bar,ov,sipm))
-            timingThreshold = findTimingThreshold(f[sipm].Get('g_deltaT_energyRatioCorr_vs_th_bar%02d_Vov%.2f_enBin01'%(bar,ov)), ovEff)
+            timingThreshold = findTimingThreshold(f[sipm].Get('g_deltaT_energyRatioCorr_vs_th_bar%02d_Vov%.2f_enBin01'%(bar,ov)))
             srL     = -1
             srR     = -1
             sr      = -1
@@ -549,8 +544,8 @@ for it,sipm in enumerate(sipmTypes):
             gtempL = ROOT.TGraphErrors()
             gtempR = ROOT.TGraphErrors()
             
-            if ( ov == 0.60 and 'LYSO825' in sipm): np = 2 # reduce npoints for SR fit
-            else: np = 3
+            np = 3
+ 
             if (g_psL!=None): 
                 srL,err_srL = getSlewRateFromPulseShape(g_psL, timingThreshold, np, gtempL, c)
             if (g_psR!=None): 
@@ -584,6 +579,7 @@ for it,sipm in enumerate(sipmTypes):
 
             if (srL>0 and srR>0):
                 # weighted average
+                print('srL ', srL, '  srR ', srR, '   err_srR ', err_srR, '  err_srL ', err_srL)
                 sr =  ( (srL/(err_srL*err_srL) + srR/(err_srR*err_srR) ) / (1./(err_srL*err_srL) + 1./(err_srR*err_srR) ) )
                 errSR = 1./math.sqrt( 1./(err_srL*err_srL)  +  1./(err_srR*err_srR) )
                 errSR = errSR
@@ -614,8 +610,8 @@ for it,sipm in enumerate(sipmTypes):
             g_bestTh_vs_bar[sipm][ov].SetPointError( g_bestTh_vs_bar[sipm][ov].GetN()-1, 0, 0)
 
 
-            s_noise = sigma_noise(sr)
-            err_s_noise =  0.5*(sigma_noise(sr*(1-errSR/sr))-sigma_noise(sr*(1+errSR/sr)))
+            s_noise = sigma_noise(sr, tofhirVersion)
+            err_s_noise =  0.5*(sigma_noise(sr*(1-errSR/sr), tofhirVersion )-sigma_noise(sr*(1+errSR/sr), tofhirVersion) )
 
 
             g_Noise_vs_bar[sipm][ov].SetPoint( g_Noise_vs_bar[sipm][ov].GetN(), bar, s_noise )
@@ -686,7 +682,7 @@ for it,sipm in enumerate(sipmTypes):
 
 
 if verbose:
-    print 'computing average graphs'
+    print('computing average graphs')
 
 
 #  ----------------------------------------
@@ -726,7 +722,7 @@ for sipm in sipmTypes:
         staticCurrent = float(current_(sipm,ov)) * 1E-03
         #staticCurrent = dcr*1E09 * Gain_(ovEff,sipm) * 1.602E-19
         staticPower = staticCurrent * (37. + ovEff) * 1000.    # in mW
-        print 'static power: ', staticPower
+        print('static power: ', staticPower)
 
         if (ov in  g_SR_vs_bar[sipm].keys()): 
 
@@ -739,11 +735,11 @@ for sipm in sipmTypes:
             g_SR_vs_Vov_average[sipm].SetPointError(g_SR_vs_Vov_average[sipm].GetN()-1, 0, fitpol0_sr.GetParError(0))
 
             # noise using average SR
-            g_Noise_vs_Vov_average[sipm].SetPoint(g_Noise_vs_Vov_average[sipm].GetN(), ovEff, sigma_noise(sr))
+            g_Noise_vs_Vov_average[sipm].SetPoint(g_Noise_vs_Vov_average[sipm].GetN(), ovEff, sigma_noise(sr, tofhirVersion))
             sr_err = max(fitpol0_sr.GetParError(0), errSRsyst*sr)
             sr_up   = sr + sr_err 
             sr_down = sr - sr_err 
-            noise_err  = 0.5 * ( sigma_noise(sr_down) - sigma_noise(sr_up) ) 
+            noise_err  = 0.5 * ( sigma_noise(sr_down, tofhirVersion) - sigma_noise(sr_up, tofhirVersion) ) 
             g_Noise_vs_Vov_average[sipm].SetPointError(g_Noise_vs_Vov_average[sipm].GetN()-1, 0, noise_err) 
     
             # average stochastic 
@@ -763,8 +759,8 @@ for sipm in sipmTypes:
             g_DCR_vs_Vov_average[sipm].SetPointError(g_DCR_vs_Vov_average[sipm].GetN()-1, 0, err_s_dcr)
 
             # tot resolution summing noise + stochastic + dcr in quadrature
-            tot = math.sqrt( s_stoch*s_stoch + sigma_noise(sr)*sigma_noise(sr) + s_dcr*s_dcr )
-            err_tot = 1./tot * math.sqrt( pow( err_s_stoch*s_stoch,2) + pow(noise_err*sigma_noise(sr),2) + pow(s_dcr*err_s_dcr, 2) )
+            tot = math.sqrt( s_stoch*s_stoch + sigma_noise(sr, tofhirVersion)*sigma_noise(sr, tofhirVersion) + s_dcr*s_dcr )
+            err_tot = 1./tot * math.sqrt( pow( err_s_stoch*s_stoch,2) + pow(noise_err*sigma_noise(sr, tofhirVersion),2) + pow(s_dcr*err_s_dcr, 2) )
             g_TotExp_vs_Vov_average[sipm].SetPoint(g_TotExp_vs_Vov_average[sipm].GetN(), ovEff, tot)
             g_TotExp_vs_Vov_average[sipm].SetPointError(g_TotExp_vs_Vov_average[sipm].GetN()-1, 0, err_tot)
 
@@ -827,7 +823,7 @@ g_DCR_vs_DCRNpe_average_all.Fit(fitFun_tRes_dcr_model)
 
 
 if verbose:
-    print '\n\nstart drawing'
+    print('\n\nstart drawing')
 
 
 
@@ -922,7 +918,7 @@ for sipm in sipmTypes:
 
 
 # -----------   vs npe  ----------------
-print'Plotting tRes_DCR vs Npe...'
+print('Plotting tRes_DCR vs Npe...')
 
 for bar in range(0,16):      
     c =  ROOT.TCanvas('c_timeResolutionDCR_vs_DCRNpe_bar%02d'%(bar),'c_timeResolutionDCR_vs_DCRNpe_bar%02d'%(bar),600,500)
@@ -1032,6 +1028,9 @@ leg2.SetFillStyle(0)
 
 bar = barsIntersection[0]
 for sipm in sipmTypes:
+    g_SR_vs_Vov[sipm][bar].SetMarkerStyle(markers[sipm])
+    g_SR_vs_Vov[sipm][bar].SetMarkerColor(cols[sipm])
+    g_SR_vs_Vov[sipm][bar].SetLineColor(cols[sipm])
     leg2.AddEntry(g_SR_vs_Vov[sipm][bar], '%s'%labels[sipm], 'PL')
 
 for bar in range(0,16):

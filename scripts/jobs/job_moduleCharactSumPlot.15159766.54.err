@@ -1,0 +1,9 @@
+mkdir: cannot create directory ‘/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/ModuleCharacterization/HPK_2E14_LYSO300032_Vov0.60_angle64_T-35C/summaryPlots/’: File exists
+mkdir: cannot create directory ‘/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/ModuleCharacterization/HPK_2E14_LYSO300032_Vov0.60_angle64_T-35C/summaryPlots/tot/’: File exists
+mkdir: cannot create directory ‘/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/ModuleCharacterization/HPK_2E14_LYSO300032_Vov0.60_angle64_T-35C/summaryPlots/energy/’: File exists
+mkdir: cannot create directory ‘/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/ModuleCharacterization/HPK_2E14_LYSO300032_Vov0.60_angle64_T-35C/summaryPlots/timeResolution/’: File exists
+mkdir: cannot create directory ‘/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/ModuleCharacterization/HPK_2E14_LYSO300032_Vov0.60_angle64_T-35C/summaryPlots/timeResolution/fit/’: File exists
+TFile::Init:0: RuntimeWarning: file /eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots//moduleCharacterization_step2_HPK_2E14_LYSO300032_Vov0.60_angle64_T-35C.root probably not closed, trying to recover
+TFile::Init:0: RuntimeWarning: successfully recovered 480 keys
+TFile::Init:0: RuntimeWarning: file /eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots//moduleCharacterization_step2_HPK_2E14_LYSO300032_Vov0.60_angle64_T-35C.root probably not closed, trying to recover
+TFile::Init:0: RuntimeWarning: successfully recovered 480 keys
