@@ -268,7 +268,7 @@ for it,sipm in enumerate(sipmTypes):
     if add_string:
         sipmTypes[it] = sipm + extraName[it] + add_str[it]
 
-print sipmTypes
+print(sipmTypes)
 #---------
 
 
@@ -288,39 +288,39 @@ for it, sipm in enumerate(sipmTypes):
         fnames[sipm] = '%s/summaryPlots_%s.root'%(plotsdir,sipm)
     labels[sipm] = label_(sipm) + extraLabel[it]
 
-    print 'sipm : ', sipm, '     label: ', label_(sipm)
+    print('sipm : ', sipm, '     label: ', label_(sipm))
     colors[sipm] = color_map[it]
     markers[sipm] = marker_map[it]
 
-print fnames
+print(fnames)
 g = {}
 Vovs = {}
 #--- retrieve plot tRes vs bar and compute average -----
 for j,sipm in enumerate(sipmTypes):
-    print '\n\nsipm : ', sipm
+    print('\n\nsipm : ', sipm)
     f = ROOT.TFile.Open(fnames[sipm])
-    print 'opening file: ', fnames[sipm]
+    print('opening file: ', fnames[sipm])
     g[sipm] = ROOT.TGraphErrors()
     Vovs[sipm] = []
     listOfKeys = [key.GetName().replace('g_deltaT_energyRatioCorr_bestTh_vs_bar_','') for key in ROOT.gDirectory.GetListOfKeys() if key.GetName().startswith('g_deltaT_energyRatioCorr_bestTh_vs_bar_')]
     for k in listOfKeys:
         Vovs[sipm].append( float (k[3:7]) )
     Vovs[sipm].sort()    
-    print sipm, Vovs[sipm]
+    print(sipm, Vovs[sipm])
     for i,vov in enumerate(Vovs[sipm]):
-        print '\nov:  ', vov
+        print('\nov:  ', vov)
         gg = f.Get('g_deltaT_totRatioCorr_bestTh_vs_bar_Vov%.02f_enBin01'%(vov))
         fitFun = ROOT.TF1('fitFun','pol0',0,16)
         if not gg:
             continue
         gg.Fit(fitFun,'QR')
-        print 'values :    ', Vovs_eff(sipm,vov), fitFun.GetParameter(0)
+        print('values :    ', Vovs_eff(sipm,vov), fitFun.GetParameter(0))
 
         g[sipm].SetPoint(g[sipm].GetN(), Vovs_eff(sipm,vov), fitFun.GetParameter(0))
-        #g[sipm].SetPointError( g[sipm].GetN()-1, 0, gg.GetRMS(2) )# use RMS as error on the points
+        g[sipm].SetPointError( g[sipm].GetN()-1, 0, gg.GetRMS(2) )# use RMS as error on the points
         
 
-print '\ndraw plots'
+print('\ndraw plots')
 
 # --- draw tRes vs vov ----
 c1 =  ROOT.TCanvas('c_timeResolution_bestTh_vs_Vov','c_timeResolution_bestTh_vs_Vov',600,500)
@@ -355,7 +355,7 @@ cms_logo.Draw()
 
 c1.SaveAs(outdir+c1.GetName()+'_%s.png'%nameComparison)
 
-print 'saving in ', outdir, '   as ', c1.GetName(), '_', nameComparison
+print('saving in ', outdir, '   as ', c1.GetName(), '_', nameComparison)
 
 
 for sipm in sipmTypes:

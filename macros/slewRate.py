@@ -7,6 +7,7 @@ import ROOT
 
 
 ithmode = 0.313   # equivalence threshold amplitude in uA
+max_xErr = 0.04
 
 #######
 def getSlewRateFromPulseShape(g1, timingThreshold, npoints, gtemp, canvas=None):
@@ -45,42 +46,28 @@ def getSlewRateFromPulseShape(g1, timingThreshold, npoints, gtemp, canvas=None):
     tmin = g1.GetX()[imin]
     tmax = 4
 
-    ndf = 0
+    if tmax<=2:
+        print("insufficient points")
+        return (-1,-1)
 
-    while ndf==0:
-        if tmax<=2:
-            print("insufficient points")
-            return (-1,-1)
-        print("loop on tmax")
-        gtemp = ROOT.TGraphErrors()
-        tmax = tmax-1
-        if ((imin+npoints) < g1.GetN()): 
-            tmax = min(g1.GetX()[imin+npoints],max(g1.GetX()))
-            nmax = imin+npoints+1
-        else:
-            tmax = max(g1.GetX())
-            nmax = g1.GetN()-1
+    gtemp = ROOT.TGraphErrors()
+    tmax = tmax-1
+    if ((imin+npoints) < g1.GetN()): 
+        tmax = min(g1.GetX()[imin+npoints],max(g1.GetX()))
+        nmax = imin+npoints+1
+    else:
+        tmax = max(g1.GetX())
+        nmax = g1.GetN()-1
 
-        for i in range(imin, nmax):
+    for i in range(imin, nmax):
+        if g1.GetErrorX(i) < max_xErr:
             gtemp.SetPoint(gtemp.GetN(), g1.GetX()[i], g1.GetY()[i])
             gtemp.SetPointError(gtemp.GetN()-1, g1.GetErrorX(i), g1.GetErrorY(i))
-        fitSR = ROOT.TF1('fitSR', 'pol1', tmin, tmax)
-        fitSR.SetLineColor(g1.GetMarkerColor()+1)
-        fitSR.SetRange(tmin,tmax)
-        fitSR.SetParameters(0, 10)
-        fitStatus = int(gtemp.Fit(fitSR, 'QRS+'))
-        ndf = fitSR.GetNDF()
-    
-    if fitStatus == 1:
-        print("fit not converged")
-        return (-1, -1)
-
-    chi2 = fitSR.GetChisquare()/fitSR.GetNDF()
-    chi2_th = 30
-
-    if chi2 > chi2_th:
-        print("chi squared > ", chi2_th)
-        return (-1, -1)
+    fitSR = ROOT.TF1('fitSR', 'pol1', tmin, tmax)
+    fitSR.SetLineColor(g1.GetMarkerColor()+1)
+    fitSR.SetRange(tmin,tmax)
+    fitSR.SetParameters(0, 10)
+    fitStatus = int(gtemp.Fit(fitSR, 'QRS+'))
     
     sr = fitSR.Derivative( g1.GetX()[itiming])
     err_sr = fitSR.GetParError(1)
@@ -114,7 +101,6 @@ def getSlewRateFromPulseShape(g1, timingThreshold, npoints, gtemp, canvas=None):
 
 
 
-
 def findTimingThreshold(g2):
     xmin = 0
     ymin = 9999
@@ -134,7 +120,8 @@ def sigma_noise(sr, tofVersion):
     if '2x' in tofVersion:
         noise_single = math.sqrt( pow(420./sr,2) + 16.7*16.7 )
     elif '2c' in tofVersion:
-        noise_single = math.sqrt( pow(278./ pow(sr,0.8) ,2) + 19.1*19.1 )
+        # noise_single = math.sqrt( pow(278./ pow(sr,0.8) ,2) + 19.1*19.1 )
+        noise_single = math.sqrt( pow(463./sr,2) + 19.1*19.1 ) # dal fittone di Andrea
     return noise_single / math.sqrt(2)
 
 

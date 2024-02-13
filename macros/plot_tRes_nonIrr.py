@@ -14,16 +14,16 @@ compareNum = int(args.comparisonNumber)
 
 plotsdir = '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/'
 
+# settings
 marker_code = True
 color_code = True
 compareToModel = False
-
-
 verbose = False
-
 tofhirVersion = '2c'
 
 
+
+# ------ different comparisons ------
 
 # types
 if compareNum == 1:
@@ -218,8 +218,6 @@ for sipm in sipmTypes:
         Vovs[sipm].append( float(k[3:7]) )
     print(bars[sipm])
     print(Vovs[sipm])
-
-    
     goodbars[sipm] = good_bars(sipm,Vovs[sipm],bars[sipm])
     
 VovsUnion = []
@@ -398,9 +396,9 @@ for it,sipm in enumerate(sipmTypes):
                 print('data < noise : skipping bar%02d:  %.1f <  %.1f'%(bar, s_data, s_noise) )
                 continue
         else:
-            print('ov ref was not measured')
-            sys.exit()
-
+            print('!!!!!    -------  >  ov ref was not measured')
+            s_stoch_ref = 0
+            err_s_stoch_ref = 0
 
         # loop over ovs 
         for ov in Vovs[sipm]:
