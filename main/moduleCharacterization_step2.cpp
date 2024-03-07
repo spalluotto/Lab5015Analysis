@@ -631,10 +631,10 @@ int main(int argc, char** argv)
 	    */
 	    
 	    if( opts.GetOpt<int>("Channels.array") == 1){
-	      histo->GetXaxis()->SetRangeUser(minE[std::make_pair(iBar, Vov)], 950);
+	      histo->GetXaxis()->SetRangeUser(minE[std::make_pair(iBar, Vov)], 1024);
 	    }
 	    if( opts.GetOpt<int>("Channels.array") == 0){
-	      histo->GetXaxis()->SetRangeUser(minE[std::make_pair(iBar, Vov)], 950);
+	      histo->GetXaxis()->SetRangeUser(minE[std::make_pair(iBar, Vov)], 1024);
 	    }
 	    float max = histo->GetBinCenter(histo->GetMaximumBin());
 	    histo->GetXaxis()->SetRangeUser(0,1024);
@@ -1075,7 +1075,7 @@ int main(int argc, char** argv)
 	  {
 	    //if (ranges["L-R"][index1]->at(iEnergyBin)<0) continue;
 	    double  index2( 10000000*iEnergyBin+index1 );
-	    if(!p1_deltaT_vs_energyRatio[index2]) continue;
+	    if(!p1_deltaT_vs_energyRatio[index2] || p1_deltaT_vs_energyRatio[index2]->GetEntries() < 100) continue;
 	    
 	    std::string labelLR_energyBin(Form("%s_energyBin%02d",labelLR.c_str(),iEnergyBin));
 	    

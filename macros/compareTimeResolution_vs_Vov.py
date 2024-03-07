@@ -347,7 +347,7 @@ for i,sipm in enumerate(sipmTypes):
     g[sipm].SetLineStyle(1)
     g[sipm].SetLineWidth(1)
     g[sipm].Draw('plsame')
-    leg.AddEntry( g[sipm], labels[sipm], 'PL')
+    leg.AddEntry( g[sipm], labels[sipm], 'Pl')
 leg.Draw('same')
 
 cms_logo = draw_logo()

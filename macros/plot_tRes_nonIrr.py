@@ -21,6 +21,11 @@ compareToModel = False
 verbose = False
 tofhirVersion = '2c'
 
+fnal_dir = '/eos/home-s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/plots'
+may_dir = '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots'
+
+specific_position = False
+add_string = False
 
 
 # ------ different comparisons ------
@@ -43,36 +48,38 @@ elif compareNum == 2:
 
 # sipm cell sizes
 elif compareNum == 3:
-    sipmTypes = ['HPK_nonIrr_LYSO820', 'HPK_nonIrr_LYSO813', 'HPK_nonIrr_LYSO528']
-    nameComparison = 'HPK_nonIrr_angle52_T5C_cellSizes'
-    extraLabel = ['', '', '']
-    extraName = ['_angle52_T5C', '_angle52_T5C', '_angle52_T5C']
-
+    sipmTypes = ['HPK_nonIrr_LYSO820', 'HPK_nonIrr_LYSO813', 'HPK_nonIrr_LYSO814', 'HPK_nonIrr_LYSO528']
+    nameComparison = 'HPK_nonIrr_angle52_cellSizes_withFNAL'
+    extraLabel = ['', '', '  FNAL', '']
+    specific_position = True
+    plots_special = ['%s'%plotsdir, '%s'%plotsdir, '%s'%fnal_dir, '%s'%plotsdir]
+    
+    extraName = ['_angle52_T5C', '_angle52_T5C',  '_angle52_T12C', '_angle52_T5C']
 #--------------------------------------------------------------------------------------
 
-
-
-
-
-
-
+# ---- color settings ----
 if color_code:
     #color_map = [632, 600, 416]
     color_map = [806,896,613,886,597,866,429,846,816,413,629,397,590,611,795,1,2,3,4,5,6,7,8,9,10,11]
 if marker_code:
     marker_map = [20,20,20,20,20,20,20,20]
+# ------------------------
 
 
 
-outFileName = plotsdir+'/plot_tRes_'+nameComparison+'.root'
-outfile = ROOT.TFile(outFileName, 'RECREATE')
-
+# --- summary plots names and pulse shape names ----
+# - sipm_base is necessary for retrieving the pulse shape name which does contain also the Vov (loop basis)
 sipm_base = {}
-
-for it,sipm in enumerate(sipmTypes):
+fnames   = {}
+for it, sipm in enumerate(sipmTypes):
     sipmTypes[it] = sipm + extraName[it]
     sipm_base[it] = sipm
-
+    if specific_position:
+        if add_string and add_str[it] != '':
+            sipmTypes[it] = sipm + extraName[it] + add_str[it]
+        fnames[sipmTypes[it]] = '%s/summaryPlots_%s.root'%(plots_special[it], sipmTypes[it])
+    else:
+        fnames[sipmTypes[it]] = '%s/summaryPlots_%s.root'%(plotsdir, sipmTypes[it])
 
 if verbose:
     print('sipmTypes: ', sipmTypes , '\t outfile: ', outFileName)
@@ -84,10 +91,13 @@ if verbose:
 
 
 #--------------------------------------------------------------------------------------
-
 # ----- output --------
-outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/plot_tRes/%s/'%nameComparison
+# - root file
+outFileName = plotsdir+'/plot_tRes_'+nameComparison+'.root'
+outfile = ROOT.TFile(outFileName, 'RECREATE')
 
+# - plots on web
+outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/plot_tRes/%s/'%nameComparison
 if (os.path.exists(outdir)==False):
     os.mkdir(outdir)
 if (os.path.exists(outdir+'/pulseShape')==False):
@@ -113,7 +123,7 @@ if (os.path.exists(outdir+'/tRes_vs_Vov_perBar')==False):
 
 if (os.path.exists(outdir+'/tRes_vs_slewRate')==False):
     os.mkdir(outdir+'/tRes_vs_slewRate/')
-
+# --------------------------------------------------------------------------------------
 
 
 
@@ -121,7 +131,6 @@ if (os.path.exists(outdir+'/tRes_vs_slewRate')==False):
 
 
 # -------- retrieve module infos --------
-fnames   = {}
 labels   = {}
 cols     = {}
 markers  = {}
@@ -132,7 +141,6 @@ NpeFrac  = {}
 thick    = {}
 
 for it, sipm in enumerate(sipmTypes):
-    fnames[sipm]   = '%s/summaryPlots_%s.root'%(plotsdir,sipm)
     labels[sipm]   = label_(sipm) + extraLabel[it]
     cols[sipm]     = color_map[it]
     markers[sipm]  = marker_map[it]
@@ -291,7 +299,10 @@ for it,sipm in enumerate(sipmTypes):
 
     fPS[sipm] = {}
     for ov in Vovs[sipm]:
-        fPS[sipm][ov] = ROOT.TFile.Open('%s/pulseShape_%s_Vov%.2f%s.root'%(plotsdir,sipm_base[it],ov,extraName[it]))
+        if specific_position:
+            fPS[sipm][ov] = ROOT.TFile.Open('%s/pulseShape_%s_Vov%.2f%s.root'%(plots_special[it],sipm_base[it],ov,extraName[it]))
+        else:
+            fPS[sipm][ov] = ROOT.TFile.Open('%s/pulseShape_%s_Vov%.2f%s.root'%(plotsdir,sipm_base[it],ov,extraName[it]))
         if not fPS[sipm][ov]:
             print('pulse shape file not found')
             sys.exit()
@@ -334,7 +345,9 @@ for it,sipm in enumerate(sipmTypes):
         err_s_stoch_ref = 0
         #ov_ref = ov_reference(sipm) # ----> could be hard-coded here --> for non irradiated is 3.5V
         ov_ref = 3.5
-
+        if 'HPK_nonIrr_LYSO818_angle64' in sipm:
+            ov_ref = 1.0
+        
         if ov_ref in Vovs[sipm]:
             if verbose:
                 print("computing ref stoch ")
@@ -722,12 +735,12 @@ for sipm in sipmTypes:
         g_Noise_vs_Vov[sipm][bar].SetFillStyle(3004)
         g_Noise_vs_Vov[sipm][bar].Draw('E3lsame')
 
-        g_Stoch_vs_Vov[sipm][bar].SetLineWidth(2)
-        g_Stoch_vs_Vov[sipm][bar].SetLineColor(ROOT.kGreen+2)
-        g_Stoch_vs_Vov[sipm][bar].SetFillColor(ROOT.kGreen+2)
-        g_Stoch_vs_Vov[sipm][bar].SetFillStyle(3001)
-        g_Stoch_vs_Vov[sipm][bar].SetFillColorAlpha(ROOT.kGreen+2,0.5)
-        g_Stoch_vs_Vov[sipm][bar].Draw('E3lsame')
+        g_StochExp_vs_Vov[sipm][bar].SetLineWidth(2)
+        g_StochExp_vs_Vov[sipm][bar].SetLineColor(ROOT.kGreen+2)
+        g_StochExp_vs_Vov[sipm][bar].SetFillColor(ROOT.kGreen+2)
+        g_StochExp_vs_Vov[sipm][bar].SetFillStyle(3001)
+        g_StochExp_vs_Vov[sipm][bar].SetFillColorAlpha(ROOT.kGreen+2,0.5)
+        g_StochExp_vs_Vov[sipm][bar].Draw('E3lsame')
 
         g_TotExp_vs_Vov[sipm][bar].SetLineWidth(2)
         g_TotExp_vs_Vov[sipm][bar].SetLineColor(ROOT.kRed+1)
@@ -740,12 +753,13 @@ for sipm in sipmTypes:
         outfile.cd()
         g_data[sipm][bar].Write('g_Data_vs_Vov_%s_bar%02d'%(sipm,  bar))
         g_Noise_vs_Vov[sipm][bar].Write('g_Noise_vs_Vov_%s_bar%02d'%(sipm, bar))
-        g_Stoch_vs_Vov[sipm][bar].Write('g_Stoch_vs_Vov_%s_bar%02d'%(sipm, bar))
+        g_StochExp_vs_Vov[sipm][bar].Write('g_Stoch_vs_Vov_%s_bar%02d'%(sipm, bar))
+        g_Stoch_vs_Vov[sipm][bar].Write('g_StochMeas_vs_Vov_%s_bar%02d'%(sipm, bar))
 
         if (i==0):
             leg[sipm].AddEntry(g_data[sipm][bar], 'data', 'PL')
             leg[sipm].AddEntry(g_Noise_vs_Vov[sipm][bar], 'noise', 'L')
-            leg[sipm].AddEntry(g_Stoch_vs_Vov[sipm][bar], 'stoch', 'L')
+            leg[sipm].AddEntry(g_StochExp_vs_Vov[sipm][bar], 'stoch', 'L')
 
         leg[sipm].Draw('same')
 
@@ -772,6 +786,8 @@ leg2.SetFillStyle(0)
     
 bar = barsIntersection[0]
 for sipm in sipmTypes:
+    g_SR_vs_Vov[sipm][bar].SetMarkerColor(cols[sipm])
+    g_SR_vs_Vov[sipm][bar].SetLineColor(cols[sipm])
     leg2.AddEntry(g_SR_vs_Vov[sipm][bar], '%s'%labels[sipm], 'PL')
 
 #i = 0
@@ -962,12 +978,12 @@ for sipm in sipmTypes:
     g_Noise_vs_Vov_average[sipm].SetFillColorAlpha(ROOT.kBlue,0.5)
     g_Noise_vs_Vov_average[sipm].SetFillStyle(3004)
     g_Noise_vs_Vov_average[sipm].Draw('E3lsame')
-    g_Stoch_vs_Vov_average[sipm].SetLineWidth(2)
-    g_Stoch_vs_Vov_average[sipm].SetLineColor(ROOT.kGreen+2)
-    g_Stoch_vs_Vov_average[sipm].SetFillColor(ROOT.kGreen+2)
-    g_Stoch_vs_Vov_average[sipm].SetFillStyle(3001)
-    g_Stoch_vs_Vov_average[sipm].SetFillColorAlpha(ROOT.kGreen+2,0.5)
-    g_Stoch_vs_Vov_average[sipm].Draw('E3lsame')
+    g_StochExp_vs_Vov_average[sipm].SetLineWidth(2)
+    g_StochExp_vs_Vov_average[sipm].SetLineColor(ROOT.kGreen+2)
+    g_StochExp_vs_Vov_average[sipm].SetFillColor(ROOT.kGreen+2)
+    g_StochExp_vs_Vov_average[sipm].SetFillStyle(3001)
+    g_StochExp_vs_Vov_average[sipm].SetFillColorAlpha(ROOT.kGreen+2,0.5)
+    g_StochExp_vs_Vov_average[sipm].Draw('E3lsame')
     g_TotExp_vs_Vov_average[sipm].SetLineWidth(2)
     g_TotExp_vs_Vov_average[sipm].SetLineColor(ROOT.kRed+1)
     g_TotExp_vs_Vov_average[sipm].SetFillColor(ROOT.kRed+1)
@@ -978,9 +994,11 @@ for sipm in sipmTypes:
 
     lat_s.Draw()
     outfile.cd()
+    g_data_average[sipm].Write('g_data_vs_Vov_average_%s'%sipm)
     g_Noise_vs_Vov_average[sipm].Write('g_Noise_vs_Vov_average_%s'%sipm)
-    g_Stoch_vs_Vov_average[sipm].Write('g_Stoch_vs_Vov_average_%s'%sipm)
-    g_TotExp_vs_Vov_average[sipm].Write('g_Tot_vs_Vov_average_%s'%sipm)
+    g_Stoch_vs_Vov_average[sipm].Write('g_StochMeas_vs_Vov_average_%s'%sipm)
+    g_StochExp_vs_Vov_average[sipm].Write('g_Stoch_vs_Vov_average_%s'%sipm)
+    g_TotExp_vs_Vov_average[sipm].Write('g_TotExp_vs_Vov_average_%s'%sipm)
 
     cms_logo = draw_logo()
     cms_logo.Draw()
@@ -1110,7 +1128,7 @@ for sipm in sipmTypes:
 for ov in VovsUnion:
     c = ROOT.TCanvas('c_noise_vs_bar_Vov%.2f'%(ov),'c_noise_vs_bar_Vov%.2f'%(ov),650,500)
     c.cd()
-    hdummy = ROOT.TH2F('hdummy_Vov%.2f'%(ov),'',100,-0.5,15.5,100,0,80)
+    hdummy = ROOT.TH2F('hdummy_Vov%.2f'%(ov),'',100,-0.5,15.5,100,0,100)
     hdummy.GetXaxis().SetTitle('bar')
     hdummy.GetYaxis().SetTitle('#sigma_{t, noise} [ps]')
     hdummy.Draw()
@@ -1130,17 +1148,17 @@ for ov in VovsUnion:
 
     c = ROOT.TCanvas('c_stoch_vs_bar_Vov%.2f'%(ov),'c_stoch_vs_bar_Vov%.2f'%(ov),650,500)
     c.cd()
-    hdummy = ROOT.TH2F('hdummy_Vov%.2f'%(ov),'',100,-0.5,15.5,100,0,80)
+    hdummy = ROOT.TH2F('hdummy_Vov%.2f'%(ov),'',100,-0.5,15.5,100,0,100)
     hdummy.GetXaxis().SetTitle('bar')
     hdummy.GetYaxis().SetTitle('#sigma_{t, stoch} [ps]')
     hdummy.Draw()
     for j, sipm in enumerate(sipmTypes):
-        if ov not in g_Stoch_vs_bar[sipm].keys():
+        if ov not in g_StochExp_vs_bar[sipm].keys():
             continue
-        g_Stoch_vs_bar[sipm][ov].SetMarkerStyle( markers[sipm] )
-        g_Stoch_vs_bar[sipm][ov].SetMarkerColor(cols[sipm])
-        g_Stoch_vs_bar[sipm][ov].SetLineColor(cols[sipm])
-        g_Stoch_vs_bar[sipm][ov].Draw('psame')
+        g_StochExp_vs_bar[sipm][ov].SetMarkerStyle( markers[sipm] )
+        g_StochExp_vs_bar[sipm][ov].SetMarkerColor(cols[sipm])
+        g_StochExp_vs_bar[sipm][ov].SetLineColor(cols[sipm])
+        g_StochExp_vs_bar[sipm][ov].Draw('psame')
     leg2.Draw()
     lat = latex_vov(ov)
     lat.Draw()

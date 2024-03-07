@@ -1,58 +1,4 @@
-#! /usr/bin/env python
-import os
-import shutil
-import glob
-import math
-import array
-import sys
-import time
-import argparse
-import json                                                                                                                                                                      
-
-import ROOT
-import CMS_lumi, tdrstyle
-
-from slewRate import *
-from SiPM import *
-from moduleDict import *
-
-
-#-------------
-def draw_logo():
-    logo_x = 0.16
-    logo = ROOT.TLatex()
-    logo.SetNDC()
-    logo.SetTextSize(0.045) 
-    logo.SetTextFont(62)
-    logo.DrawText(logo_x,0.95,'CMS') 
-    logo.SetTextFont(52)
-    logo.DrawText(logo_x+0.07, 0.95, '  Phase-2 Preliminary')
-    return logo
-
-def latex_vov(overv):
-    latex_tmp = ROOT.TLatex(0.19,0.88,'Vov%.2f'%overv)
-    latex_tmp.SetNDC()
-    latex_tmp.SetTextSize(0.035)
-    latex_tmp.SetTextFont(42)
-    return latex_tmp
-
-def latex_sipm(sip_):
-    latex_s = ROOT.TLatex(0.17,0.83,'%s'%label_(sip_))
-    latex_s.SetNDC()
-    latex_s.SetTextSize(0.035)
-    latex_s.SetTextFont(42)
-    return latex_s
-
-
-def latex_bar(bar_):
-    latex_b = ROOT.TLatex(0.19,0.65,'bar%02d'%bar_)
-    latex_b.SetNDC()
-    latex_b.SetTextSize(0.035)
-    latex_b.SetTextFont(42)
-    return latex_b
-# ----------------
-
-
+from utils import *
 
 parser = argparse.ArgumentParser()  
 parser.add_argument("-n","--comparisonNumber", required = True, type=str, help="comparison number")    
@@ -60,53 +6,19 @@ args = parser.parse_args()
 
 
 #---- init ---
-
 comparisonNum = int(args.comparisonNumber)
 
 #-------------
-
-
-
-#set the tdr style
-tdrstyle.setTDRStyle()
-ROOT.gStyle.SetOptStat(0)
-ROOT.gStyle.SetOptFit(0)
-ROOT.gStyle.SetOptTitle(0)
-ROOT.gStyle.SetLabelSize(0.055,'X')
-ROOT.gStyle.SetLabelSize(0.055,'Y')
-ROOT.gStyle.SetTitleSize(0.07,'X')
-ROOT.gStyle.SetTitleSize(0.07,'Y')
-ROOT.gStyle.SetTitleOffset(1.05,'X')
-ROOT.gStyle.SetTitleOffset(1.1,'Y')
-ROOT.gStyle.SetLegendFont(42)
-ROOT.gStyle.SetLegendTextSize(0.045)
-ROOT.gStyle.SetPadTopMargin(0.07)
-ROOT.gROOT.SetBatch(True)
-ROOT.gErrorIgnoreLevel = ROOT.kWarning
-
-ROOT.gStyle.SetOptStat(0)
-ROOT.gStyle.SetOptFit(111)
-    
-# =====================================
-
-
-
 plotsdir = '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/'
-
-
-
 color_code = True
 marker_code = True
+tofhirVersion = '2c'
 
 # ------------------ 
 
 
 
 #  ---------- temperatures ------------
-
-# ----- tof version
-tofhirVersion = '2c'
-
 if comparisonNum == 1:
     modules =       ['LYSO815', 'LYSO815'] #,       'LYSO815']
     temperatures =  ['-40',     '-35'] # ,           '-30']
@@ -115,7 +27,6 @@ if comparisonNum == 1:
     outSuffix =     'HPK_2E14_LYSO815_temperatures'
     color_code = False
     color_map = [860,800,2]
-
 
 
 elif comparisonNum == 2:
@@ -150,7 +61,7 @@ elif comparisonNum == 5:
     temperatures =  ['-37',     '-32',           '-27']
     extraName =     ['_angle52','_angle52',      '_angle52']
     extraLabel =    ['',        '',              '']
-    outSuffix =     'HPK_2E14_LYSO819_temperatures'
+    outSuffix =     'HPK_1E14_LYSO819_temperatures'
     color_code = False
     color_map = [860,800,2]
 
@@ -185,22 +96,7 @@ elif comparisonNum == 8:
     color_code = False
     color_map = [417,2,1]
 
-
-
-# ----------- cell sizes ------------  
 elif comparisonNum == 9:
-    modules =       ['LYSO200104', 'LYSO815',       'LYSO825']
-    temperatures =  ['-35',     '-35',           '-35']
-    extraName =     ['_angle52', '_angle52',      '_angle52']
-    extraLabel =    ['',        '',              '']
-    outSuffix =     'HPK_2E14_T-35C_angle52_cellSize'
-
-
-
-
-
-# ----------- types ------------   
-elif comparisonNum == 10:
     modules =       ['LYSO100056', 'LYSO815']
     temperatures =  ['-35',     '-35']
     extraName =     ['_angle52','_angle52']
@@ -208,6 +104,15 @@ elif comparisonNum == 10:
     outSuffix =     'HPK_2E14_T-35C_angle52_types'
     color_code = False
     color_map = [417,2]
+
+
+# ----------- cell sizes ------------  
+elif comparisonNum == 10:
+    modules =       ['LYSO200104', 'LYSO815',       'LYSO825']
+    temperatures =  ['-35',     '-35',           '-35']
+    extraName =     ['_angle52', '_angle52',      '_angle52']
+    extraLabel =    ['',        '',              '']
+    outSuffix =     'HPK_2E14_T-35C_angle52_cellSize'
 
 
 
@@ -359,6 +264,7 @@ if verbose:
 
 # --- retrieve bars and ovs from moduleChar plots
 bars = {}
+goodbars = {}
 Vovs = {}
 for sipm in sipmTypes:
     f = ROOT.TFile.Open(fnames[sipm])
@@ -374,7 +280,8 @@ for sipm in sipmTypes:
 
     print(bars[sipm])
     print(Vovs[sipm])
-
+    goodbars[sipm] = good_bars(sipm,Vovs[sipm],bars[sipm])
+    
 
 VovsUnion = []
 barsUnion = []
@@ -557,22 +464,12 @@ for it,sipm in enumerate(sipmTypes):
             line.Draw('same')
 
             # ---- some labels ----
-            latex = ROOT.TLatex(0.17,0.83,'%s'%label_(sipm))
-            latex.SetNDC()
-            latex.SetTextSize(0.035)
-            latex.SetTextFont(42)
-            latex.Draw('same')
-            latexVov = ROOT.TLatex(0.19,0.75,'Vov%.2f'%ov)
-            latexVov.SetNDC()
-            latexVov.SetTextSize(0.035)
-            latexVov.SetTextFont(42)
-            latexVov.Draw('same')
-            latexBar = ROOT.TLatex(0.19,0.65,'bar%02d'%bar)
-            latexBar.SetNDC()
-            latexBar.SetTextSize(0.035)
-            latexBar.SetTextFont(42)
-            latexBar.Draw('same')
-
+            lat_s = latex_sipm(sipm)
+            lat_s.Draw()
+            lat = latex_vov(ov)
+            lat.Draw()
+            lat_b = latex_bar(bar)
+            lat_b.Draw()
             c.SaveAs(outdir+'/pulseShape/'+c.GetName()+'.png')   
             hdummy.Delete()
 
@@ -592,53 +489,45 @@ for it,sipm in enumerate(sipmTypes):
             if (srL<0 and srR<0): continue
             errSR = math.sqrt(errSR*errSR+errSRsyst*errSRsyst*sr*sr) 
 
-            g_Npe_vs_Vov[sipm].SetPoint(g_Npe_vs_Vov[sipm].GetN(), ovEff, Npe[sipm][ov])
-
-            g_SR_vs_Vov[sipm][bar].SetPoint( g_SR_vs_Vov[sipm][bar].GetN(), ovEff, sr )
-            g_SR_vs_Vov[sipm][bar].SetPointError( g_SR_vs_Vov[sipm][bar].GetN()-1, 0, errSR )
-            
-            g_SR_vs_GainNpe[sipm][bar].SetPoint( g_SR_vs_GainNpe[sipm][bar].GetN(), gain[sipm][ov]*Npe[sipm][ov], sr )
-            g_SR_vs_GainNpe[sipm][bar].SetPointError( g_SR_vs_GainNpe[sipm][bar].GetN()-1, 0, errSR )
-
-            g_bestTh_vs_Vov[sipm][bar].SetPoint( g_bestTh_vs_Vov[sipm][bar].GetN(), ovEff, timingThreshold )
-            g_bestTh_vs_Vov[sipm][bar].SetPointError( g_bestTh_vs_Vov[sipm][bar].GetN()-1, 0, 0 )
-            
-            g_SR_vs_bar[sipm][ov].SetPoint( g_SR_vs_bar[sipm][ov].GetN(), bar, sr )
-            g_SR_vs_bar[sipm][ov].SetPointError( g_SR_vs_bar[sipm][ov].GetN()-1, 0, errSR )
-            
-            g_bestTh_vs_bar[sipm][ov].SetPoint( g_bestTh_vs_bar[sipm][ov].GetN(), bar, timingThreshold )
-            g_bestTh_vs_bar[sipm][ov].SetPointError( g_bestTh_vs_bar[sipm][ov].GetN()-1, 0, 0)
-
-
             s_noise = sigma_noise(sr, tofhirVersion)
             err_s_noise =  0.5*(sigma_noise(sr*(1-errSR/sr), tofhirVersion )-sigma_noise(sr*(1+errSR/sr), tofhirVersion) )
 
-
-            g_Noise_vs_bar[sipm][ov].SetPoint( g_Noise_vs_bar[sipm][ov].GetN(), bar, s_noise )
-            g_Noise_vs_bar[sipm][ov].SetPointError( g_Noise_vs_bar[sipm][ov].GetN()-1, 0,  err_s_noise)
-            
-            g_Noise_vs_Vov[sipm][bar].SetPoint(g_Noise_vs_Vov[sipm][bar].GetN(), ovEff, s_noise)
-            g_Noise_vs_Vov[sipm][bar].SetPointError(g_Noise_vs_Vov[sipm][bar].GetN()-1, 0, err_s_noise)
-            
-            
             # compute s_stoch by scaling the stochastic term measured for non-irradiated SiPMs for sqrt(PDE) 
-
             alpha = 0.50 
             PDE = PDE_(ovEff,sipm)
             PDE_nonIrr = PDE_(ov_reference(module),sipm,'0')
-
             s_stoch = stoch_reference(sipm)/pow( PDE / PDE_nonIrr, alpha )
             # assume 5% uncertainty on PDE...
             s_stoch_up = stoch_reference(sipm)/pow( PDE*(1-errPDE)/PDE_nonIrr, alpha  )
             s_stoch_down = stoch_reference(sipm)/pow( PDE*(1+errPDE)/PDE_nonIrr, alpha  )
             err_s_stoch = 0.5*(s_stoch_up-s_stoch_down)
+            
+            g_SR_vs_GainNpe[sipm][bar].SetPoint( g_SR_vs_GainNpe[sipm][bar].GetN(), gain[sipm][ov]*Npe[sipm][ov], sr )
+            g_SR_vs_GainNpe[sipm][bar].SetPointError( g_SR_vs_GainNpe[sipm][bar].GetN()-1, 0, errSR )
+            
+            # fill graph vs vov 
+            g_Npe_vs_Vov[sipm].SetPoint(g_Npe_vs_Vov[sipm].GetN(), ovEff, Npe[sipm][ov])
+            g_SR_vs_Vov[sipm][bar].SetPoint( g_SR_vs_Vov[sipm][bar].GetN(), ovEff, sr )
+            g_SR_vs_Vov[sipm][bar].SetPointError( g_SR_vs_Vov[sipm][bar].GetN()-1, 0, errSR )
+            g_bestTh_vs_Vov[sipm][bar].SetPoint( g_bestTh_vs_Vov[sipm][bar].GetN(), ovEff, timingThreshold )
+            g_bestTh_vs_Vov[sipm][bar].SetPointError( g_bestTh_vs_Vov[sipm][bar].GetN()-1, 0, 0 )
+            g_Noise_vs_Vov[sipm][bar].SetPoint(g_Noise_vs_Vov[sipm][bar].GetN(), ovEff, s_noise)
+            g_Noise_vs_Vov[sipm][bar].SetPointError(g_Noise_vs_Vov[sipm][bar].GetN()-1, 0, err_s_noise)
 
+            # vs bar
+            if bar in goodbars[sipm][ov]:
+                g_SR_vs_bar[sipm][ov].SetPoint( g_SR_vs_bar[sipm][ov].GetN(), bar, sr )
+                g_SR_vs_bar[sipm][ov].SetPointError( g_SR_vs_bar[sipm][ov].GetN()-1, 0, errSR )
+                g_bestTh_vs_bar[sipm][ov].SetPoint( g_bestTh_vs_bar[sipm][ov].GetN(), bar, timingThreshold )
+                g_bestTh_vs_bar[sipm][ov].SetPointError( g_bestTh_vs_bar[sipm][ov].GetN()-1, 0, 0)
+                g_Noise_vs_bar[sipm][ov].SetPoint( g_Noise_vs_bar[sipm][ov].GetN(), bar, s_noise )
+                g_Noise_vs_bar[sipm][ov].SetPointError( g_Noise_vs_bar[sipm][ov].GetN()-1, 0,  err_s_noise)
+                g_Stoch_vs_bar[sipm][ov].SetPoint( g_Stoch_vs_bar[sipm][ov].GetN(), bar, s_stoch )
+                g_Stoch_vs_bar[sipm][ov].SetPointError( g_Stoch_vs_bar[sipm][ov].GetN()-1, 0,  err_s_stoch)
 
             g_Stoch_vs_Vov[sipm][bar].SetPoint(g_Stoch_vs_Vov[sipm][bar].GetN(), ovEff, s_stoch)
             g_Stoch_vs_Vov[sipm][bar].SetPointError(g_Stoch_vs_Vov[sipm][bar].GetN()-1, 0, err_s_stoch)
 
-            g_Stoch_vs_bar[sipm][ov].SetPoint( g_Stoch_vs_bar[sipm][ov].GetN(), bar, s_stoch )
-            g_Stoch_vs_bar[sipm][ov].SetPointError( g_Stoch_vs_bar[sipm][ov].GetN()-1, 0,  err_s_stoch)
 
             # compute sigma_DCR as difference in quadrature between measured tRes and noise, stoch
             if ( s_data*s_data - s_stoch*s_stoch - s_noise*s_noise > 0):

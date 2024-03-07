@@ -120,8 +120,8 @@ def sigma_noise(sr, tofVersion):
     if '2x' in tofVersion:
         noise_single = math.sqrt( pow(420./sr,2) + 16.7*16.7 )
     elif '2c' in tofVersion:
+        noise_single = math.sqrt( pow(463./sr,2) + 16.7*16.7 ) # dal fittone di Andrea
         # noise_single = math.sqrt( pow(278./ pow(sr,0.8) ,2) + 19.1*19.1 )
-        noise_single = math.sqrt( pow(463./sr,2) + 19.1*19.1 ) # dal fittone di Andrea
     return noise_single / math.sqrt(2)
 
 
