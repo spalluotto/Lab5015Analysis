@@ -121,7 +121,7 @@ def thickness(module):
     elif 'LYSO816' == lyso_ref or 'LYSO817' == lyso_ref:
         return 2.4
     else:
-        print 'ERROR CANNOT FIND THICKNESS'
+        print('ERROR CANNOT FIND THICKNESS')
         return 'ERROR'
         
 
@@ -339,7 +339,7 @@ def irradiation(module):
         tmp = sipm_(module).split('_')[1]
         return 'irr '+tmp
     else:
-        print 'not sure. Which irradiation?'
+        print('not sure. Which irradiation?')
         return 0
 
         return 'ERROR'
@@ -351,7 +351,7 @@ def temperature_(module):
         tmp = module.split("_T")[1].split("C")[0]
         return tmp
     else:
-        print 'ERROR: CANNOT FIND TEMPERATURE IN THE NAME'
+        print('ERROR: CANNOT FIND TEMPERATURE IN THE NAME')
         return 'ERROR'
 
 
@@ -360,7 +360,7 @@ def angle_(module):
         tmp = module.split("_angle")[1]
         return tmp
     else:
-        print 'ERROR: CANNOT FIND TEMPERATURE IN THE NAME'
+        print('ERROR: CANNOT FIND TEMPERATURE IN THE NAME')
         return 'ERROR'
 
 
@@ -388,7 +388,7 @@ def getVovEffDCR(module, ov) :
             data = json.load(f) 
 
         if not data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_A'][ov_set][0]:
-            print 'ERROR:   ',module,'  not in json file!!!'
+            print('ERROR:   ',module,'  not in json file!!!')
             return ([ov_set,0,0])
         else:
             ov_eff_A = float(data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_A'][ov_set][0])
@@ -405,7 +405,7 @@ def getVovEffDCR(module, ov) :
             return ([ov_eff, dcr, current])      
 
     else:
-        print 'ERROR: CANNOT FIND WHICH IRRADIATION'
+        print('ERROR: CANNOT FIND WHICH IRRADIATION')
         return 'ERROR'
 
 
@@ -447,7 +447,7 @@ def type_(module):
     elif thickness(module) == 2.4:
         return 3
     else:
-        print 'ERROR: TYPE NOT DEFINED'
+        print('ERROR: TYPE NOT DEFINED')
         return 'ERROR'
 
 

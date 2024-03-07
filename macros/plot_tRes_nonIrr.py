@@ -1098,8 +1098,6 @@ for sipm in sipmTypes:
     latex.SetTextSize(0.05)
     latex.SetTextFont(42)
     c =  ROOT.TCanvas('c_timeResolution_vs_Vov_average_%s'%(sipm),'c_timeResolution_vs_Vov_average_%s'%(sipm),650,500)
-    c.SetGridx()
-    c.SetGridy()
     c.cd()
     hdummy = ROOT.TH2F('hdummy','',100, 0., 4.,100,0,120)
     hdummy.GetXaxis().SetTitle('V_{OV}^{eff} [V]')
@@ -1255,7 +1253,6 @@ for sipm in sipmTypes:
 # --- stoch and noise term vs bar - all sipms on same canvas
 for ov in VovsUnion:
     c = ROOT.TCanvas('c_noise_vs_bar_Vov%.2f'%(ov),'c_noise_vs_bar_Vov%.2f'%(ov),650,500)
-    c.SetGridy()
     c.cd()
     hdummy = ROOT.TH2F('hdummy_Vov%.2f'%(ov),'',100,-0.5,15.5,100,0,80)
     hdummy.GetXaxis().SetTitle('bar')
@@ -1274,7 +1271,6 @@ for ov in VovsUnion:
     hdummy.Delete()
 
     c = ROOT.TCanvas('c_stoch_vs_bar_Vov%.2f'%(ov),'c_stoch_vs_bar_Vov%.2f'%(ov),650,500)
-    c.SetGridy()
     c.cd()
     hdummy = ROOT.TH2F('hdummy_Vov%.2f'%(ov),'',100,-0.5,15.5,100,0,80)
     hdummy.GetXaxis().SetTitle('bar')
