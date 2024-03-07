@@ -29,7 +29,6 @@ add_string = False
 
 
 # ------ different comparisons ------
-
 # types
 if compareNum == 1:
     sipmTypes = ['HPK_nonIrr_LYSO818','HPK_nonIrr_LYSO813','HPK_nonIrr_LYSO816']
@@ -56,6 +55,7 @@ elif compareNum == 3:
     
     extraName = ['_angle52_T5C', '_angle52_T5C',  '_angle52_T12C', '_angle52_T5C']
 #--------------------------------------------------------------------------------------
+
 
 # ---- color settings ----
 if color_code:
@@ -343,15 +343,17 @@ for it,sipm in enumerate(sipmTypes):
 
         s_stoch_ref = 0
         err_s_stoch_ref = 0
+
+
         #ov_ref = ov_reference(sipm) # ----> could be hard-coded here --> for non irradiated is 3.5V
         ov_ref = 3.5
         if 'HPK_nonIrr_LYSO818_angle64' in sipm:
-            ov_ref = 1.0
-        
+            ov_ref = 1.0        
         if ov_ref in Vovs[sipm]:
             if verbose:
                 print("computing ref stoch ")
 
+                
             #-------------
             # here I only want to consider the values for ov = 3.5  --> to extract the ref stochastic
             s_data = g_data[sipm][bar].Eval(ov_ref)
