@@ -8,8 +8,7 @@ import sys
 import time
 import argparse
 import json
-from ROOT import *
-
+import ROOT
 
 def lyso_(module):
     if 'LYSO818' in module:
@@ -179,6 +178,42 @@ def color_(module):
         return 42
     elif 'LYSO829' in module:
         return 44
+
+
+
+
+
+
+
+
+def lumi_eq(module):
+    irr = irradiation(module)
+    temp = temperature_(module)
+    
+    if '2E14' in irr and temp == '-40':
+        lumi = '1900'
+    elif '2E14' in irr and temp == '-35':
+        lumi = '2700'
+    elif '2E14' in irr and temp == '-30':
+        lumi = '3700'
+
+    elif '1E14' in irr and temp == '-37':
+        lumi = '1000'
+    elif '1E14' in irr and temp == '-32':
+        lumi = '1300'
+    elif '1E14' in irr and temp == '-27':
+        lumi = '1800'
+    elif '1E14' in irr and temp == '-22':
+        lumi = '2500'
+
+        
+
+    else:
+        lumi = ''
+
+    return lumi
+
+
 
 
 
@@ -354,7 +389,14 @@ def Npe_frac(module):
 
 # ---- style -----
 def label_(module):
-    tmp = 'T'+str(type_(module))+': '+sipm_cell_size(module)+' '+irradiation(module)+'+ '+lyso_(module)+' + T'+temperature_(module)+'C'
+    sipm_tmp = sipm_cell_size(module).split('HPK')[1]
+    if "" == lumi_eq(module):
+        lumi_tmp = ''
+    else:
+        lumi_tmp = '  -  L_{eq. DCR} = '+lumi_eq(module)+' fb^{-1}'
+        #lumi_tmp = ''
+    tmp = ' '+sipm_tmp+' '+ lumi_tmp
+    # tmp = 'T'+str(type_(module))+': '+sipm_cell_size(module)+' '+irradiation(module)+'+ '+lyso_(module)+' + T'+temperature_(module)+'C'
     #tmp = 'T'+str(type_(module))+'  :  '+sipm_cell_size(module)+'   +   '+lyso_(module)
     return tmp
 
@@ -388,8 +430,10 @@ def good_bars(module, ovs, bars):
         good_bars_[3.50] = [0,1,2,3,4,5,7,8,9,10,11,12,13] 
         good_bars_[2.00] = [0,1,2,3,4,5,7,8,9,10,11,12,13] 
         good_bars_[1.50] = [0,1,2,3,4,5,7,8,9,10,11,12,13] 
+        good_bars_[1.25] = [0,1,2,3,4,5,7,8,9,10,11,12,13] 
         good_bars_[1.00] = [0,2,3,4,5,7,8,9,10,11,12,13] 
         good_bars_[0.80] = [0,2,3,4,5,7,8,9,10,11,12,13]
+        good_bars_[0.60] = [0,3,4,5,7,8,10,11,12]
         good_bars_[0.50] = [0,3,4,5,7,8,10,11,12]
         
     elif '818' in module:
@@ -425,10 +469,10 @@ def good_bars(module, ovs, bars):
     elif '825' in module:
         good_bars_[2.50] = [0,3,4,5,7,8,9,10,11,12,13,15]
         good_bars_[2.00] = [0,3,4,5,7,8,9,10,11,12,13,15]
-        good_bars_[1.50] = [0,3,4,5,7,8,9,11,12,13,15]
-        good_bars_[1.25] = [0,3,4,5,7,8,9,11,12,13,15]
+        good_bars_[1.50] = [0,3,5,7,8,9,11,12,13,15]
+        good_bars_[1.25] = [0,3,5,7,8,9,11,12,13,15]
         good_bars_[1.00] = [0,3,4,5,7,8,11,12,13,15]
-        good_bars_[0.80] = [0,3,4,5,7,12,13]
+        good_bars_[0.80] = [0,3,5,7,12,13]
         good_bars_[0.60] = [0,4,5,7,12]
             
     elif '819' in module:
@@ -458,7 +502,7 @@ def good_bars(module, ovs, bars):
         good_bars_[1.25] = [0,3,4,5,7,8,9,10,11,12,13,15]
         good_bars_[1.00] = [0,3,4,5,7,8,9,11,12,13,15]
         good_bars_[0.80] = [0,3,4,5,7,8,9,12,13,15]
-        good_bars_[0.60] = [0,3,4,5,7,8,12,13]
+        good_bars_[0.60] = [0,3,4,5,7,8,12]
 
 
     elif '820' in module:
@@ -473,3 +517,21 @@ def good_bars(module, ovs, bars):
             good_bars_[vov] = bars 
 
     return good_bars_
+
+
+
+
+
+
+# ---------- utils ---------
+
+def draw_logo():
+    logo_x = 0.16
+    logo = ROOT.TLatex()
+    logo.SetNDC()
+    logo.SetTextSize(0.045) 
+    logo.SetTextFont(62)
+    logo.DrawText(logo_x,0.95,'CMS') 
+    logo.SetTextFont(52)
+    logo.DrawText(logo_x+0.07, 0.95, '  Phase-2 Preliminary')
+    return logo

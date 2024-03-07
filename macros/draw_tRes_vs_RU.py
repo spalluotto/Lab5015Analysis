@@ -214,13 +214,6 @@ for ov in Vovs_tot:
     latex.Draw('same')
 
 
-    logo = ROOT.TLatex()
-    logo.SetNDC()
-    logo.SetTextSize(0.045) 
-    logo.SetTextFont(62)
-    logo.DrawText(0.16,0.95,'CMS') 
-    logo.SetTextFont(52)
-    logo.DrawText(0.22, 0.95, '  Preliminary')
-
-        
+    cms_logo = draw_logo()
+    cms_logo.Draw()
     c.SaveAs(outdir+'/'+c.GetName()+'.png')

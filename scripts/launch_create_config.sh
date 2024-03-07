@@ -8,7 +8,7 @@ python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_23.00  
 python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_23.00     -ov 0.5         -r 5476   -e angle52 
 
 #--- angle scan
-python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_23.00     -ov 3.5         -r 5477  -e angle52
+#python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_23.00     -ov 3.5         -r 5477  -e angle52
 python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_23.00     -ov 3.5         -r 5478  -e angle40
 python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_23.00     -ov 3.5         -r 5479  -e angle30
 python create_config.py     -t 5     -ml HPK_nonIrr_LYSO813    -c config_23.00     -ov 3.5         -r 5480  -e angle20
