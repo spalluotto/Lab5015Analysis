@@ -7,7 +7,8 @@ import ROOT
 
 
 ithmode = 0.313   # equivalence threshold amplitude in uA
-max_xErr = 0.04
+max_xErr = 0.02
+min_x = -20.
 
 #######
 def getSlewRateFromPulseShape(g1, timingThreshold, npoints, gtemp, canvas=None):
@@ -60,7 +61,7 @@ def getSlewRateFromPulseShape(g1, timingThreshold, npoints, gtemp, canvas=None):
         nmax = g1.GetN()-1
 
     for i in range(imin, nmax):
-        if g1.GetErrorX(i) < max_xErr:
+        if g1.GetErrorX(i) < max_xErr and g1.GetX()[i]>min_x:
             gtemp.SetPoint(gtemp.GetN(), g1.GetX()[i], g1.GetY()[i])
             gtemp.SetPointError(gtemp.GetN()-1, g1.GetErrorX(i), g1.GetErrorY(i))
     fitSR = ROOT.TF1('fitSR', 'pol1', tmin, tmax)

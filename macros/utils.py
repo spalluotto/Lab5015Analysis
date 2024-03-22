@@ -17,7 +17,6 @@ import CMS_lumi, tdrstyle
 from slewRate import *
 from SiPM import *
 from moduleDict import *
-from utils import *
 
 def draw_logo():
     logo_x = 0.16

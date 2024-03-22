@@ -55,7 +55,7 @@ if compareNum == 1:
     nameComparison = '2E14_cellSizes'
     labelComparison = '2 #times 10^{14} 1 MeV n_{eq}/cm^{2}'  
     pars = [15, 20, 25, 30]
-    pars_to_scale = [15, 25, 30]
+    pars_to_scale = [20, 25, 30]
     angle_true = 49
 
     fnames = { 30 : '/eos/user/m/malberti/www/MTD/TOFHIR2C/MTDTB_CERN_Sep23/timeResolution_2E14_20um_25um_30um_T2/plots_timeResolution_2E14_20um_25um_30um_T2_TBSep23_TOFHIR2C.root',
@@ -133,11 +133,34 @@ elif compareNum == 3:
     ymax = 80.
 
 
+elif compareNum == 4: 
+    nameComparison = 'nonIrr_angles'
+    labelComparison = 'non irradiated'
+    pars = ['32', '52', '64']
+    pars_to_scale = pars
+    angle_true = [29, 49, 61]
+
+    fnames = { '32' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_nonIrr_LYSO818_T5C_angles.root',
+               '52' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_nonIrr_LYSO818_T5C_angles.root',
+               '64' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_nonIrr_LYSO818_T5C_angles.root'
+               }
+
+    labels = { '32' : 'HPK_nonIrr_LYSO818_angle32_T5C',
+               '52' : 'HPK_nonIrr_LYSO818_angle52_T5C',
+               '64' : 'HPK_nonIrr_LYSO818_angle64_T5C'
+              }
+
+    plotAttrs = { 
+                  '32' : [20, ROOT.kGreen+2,  '32^{o}'],
+                  '52' : [21, ROOT.kBlue,     '52^{o}'],
+                  '64' : [22, ROOT.kRed,      '64^{o}']}
+    ymax = 80.
+
 
 
 
 # ---- TO BE FIXED !!!! devo sistemare plot tres irr in modo da fare si che lo stocastico sia quello atteso e non quello misurato +  controllare pulse shape etc
-elif compareNum == 4:
+elif compareNum == 5:
     nameComparison = '2E14_types'
     labelComparison = '2 #times 10^{14} 1 MeV n_{eq}/cm^{2}'
     pars = ['T1', 'T2', 'T3']
@@ -162,9 +185,18 @@ elif compareNum == 4:
 
 
     
+enScale = {}
 
-angle_target = angle_true + angle_offset
-enScale = math.cos(math.radians(angle_true)) / math.cos(math.radians(angle_target))
+for it,par in enumerate(pars):
+    if not isinstance(angle_true, list):
+        ang_true = angle_true
+        angle_target = angle_true + angle_offset
+    else:
+        ang_true = angle_true[it]
+        angle_target = angle_true[it] + angle_offset
+    enScale[par] = math.cos(math.radians(ang_true)) / math.cos(math.radians(angle_target))
+    
+    
 
 
 
@@ -214,26 +246,25 @@ for par in pars:
     gStoch[par] = f[par].Get('g_Stoch_vs_Vov_average_%s'%labels[par])
     gDCR[par]   = f[par].Get('g_DCR_vs_Vov_average_%s'%labels[par])
     gSR[par]   = f[par].Get('g_SR_vs_Vov_average_%s'%labels[par])
-    # if 15 um from June22 TB non need to scale for angle offset.
-    if ('TBJun22' in fnames[par] ): enScale = 1.
+
     for i in range(0, gData[par].GetN()):
         vov = gData[par].GetX()[i]
         sr = gSR[par].Eval(vov)
-        s_noise =  sigma_noise(sr*enScale, '2c')
-        s_stoch = gStoch[par].Eval(vov)/math.sqrt(enScale)
+        s_noise =  sigma_noise(sr*enScale[par], '2c')
+        s_stoch = gStoch[par].Eval(vov)/math.sqrt(enScale[par])
         s_dcr = 0.
         s_tot = math.sqrt(s_noise*s_noise + s_stoch*s_stoch + s_dcr*s_dcr)
         gData_scaled[par].SetPoint(i, vov, s_tot) 
-        gData_scaled[par].SetPointError(i, 0, gData[par].GetErrorY(i)/enScale) 
+        gData_scaled[par].SetPointError(i, 0, gData[par].GetErrorY(i)/enScale[par]) 
         gNoise_scaled[par].SetPoint(i, vov, s_noise)  
-        gNoise_scaled[par].SetPointError(i, 0, gNoise[par].GetErrorY(i)/enScale) 
+        gNoise_scaled[par].SetPointError(i, 0, gNoise[par].GetErrorY(i)/enScale[par]) 
         gStoch_scaled[par].SetPoint(i, vov, s_stoch)  
-        gStoch_scaled[par].SetPointError(i, 0, gStoch[par].GetErrorY(i)/math.sqrt(enScale)) 
+        gStoch_scaled[par].SetPointError(i, 0, gStoch[par].GetErrorY(i)/math.sqrt(enScale[par])) 
 
         if not 'nonIrr' in nameComparison:
-            s_dcr = gDCR[par].Eval(vov)/enScale
+            s_dcr = gDCR[par].Eval(vov)/enScale[par]
             gDCR_scaled[par].SetPoint(i, vov, s_dcr)  
-            gDCR_scaled[par].SetPointError(i, 0, gDCR[par].GetErrorY(i)/enScale) 
+            gDCR_scaled[par].SetPointError(i, 0, gDCR[par].GetErrorY(i)/enScale[par]) 
 
 
 # plot        

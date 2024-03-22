@@ -1,20 +1,5 @@
 #! /usr/bin/env python
-import os
-import shutil
-import glob
-import math
-import array
-import sys
-import time
-import argparse
-import json
-import ROOT
-import CMS_lumi, tdrstyle
-
-
-from moduleDict import *
-from slewRate import *
-
+from utils import *
 
 
 # ---- EDIT -----
@@ -36,34 +21,8 @@ parser.add_argument("-o",  "--outFolder",     required=True, type=str, help="out
 args = parser.parse_args()
 
 
-#set the tdr style
-tdrstyle.setTDRStyle()
-ROOT.gStyle.SetOptStat(0)
-ROOT.gStyle.SetOptFit(1)
-ROOT.gStyle.SetOptTitle(0)
-ROOT.gStyle.SetLabelSize(0.055,'X')
-ROOT.gStyle.SetLabelSize(0.055,'Y')
-ROOT.gStyle.SetTitleSize(0.07,'X')
-ROOT.gStyle.SetTitleSize(0.07,'Y')
-ROOT.gStyle.SetTitleOffset(1.05,'X')
-ROOT.gStyle.SetTitleOffset(1.1,'Y')
-ROOT.gStyle.SetLegendFont(42)
-ROOT.gStyle.SetLegendTextSize(0.045)
-ROOT.gStyle.SetPadTopMargin(0.07)
-ROOT.gROOT.SetBatch(True)
-ROOT.gErrorIgnoreLevel = ROOT.kWarning
-
-
-
-# INPUT
-inputdir = '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
-summarydir = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
-# inputdir = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
-source = 'TB'
-
 
 # OUTPUT
-outdir  = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_May23/ModuleCharacterization/'
 outdir=outdir+args.outFolder
 outFileName = summarydir+'/summaryPlots_'+args.outFolder+'.root'
 print('Saving root file ', outFileName)
@@ -390,7 +349,6 @@ for label in label_list:
                h1_deltaT_totCorr.GetYaxis().SetRangeUser(0, h1_deltaT_totCorr.GetBinContent(h1_deltaT_totCorr.GetMaximumBin())*1.2)                
                h1_deltaT_totCorr.Draw()                
                ctemp.SaveAs(outdir+'/summaryPlots/timeResolution/fits/'+'/c_h1_deltaT_totRatioCorr_bar%02dL-R_Vov%.02f_th%02d_energyBin%02d.png'%(bar, vov, thr, enBin))
->>>>>>> f1f8a52 (26.09 - sync new pieces in step1 + new cfg)
 
                # energyRatio + totRatio + phase corr
                if (h1_deltaT_energyCorr_totCorr == None): continue

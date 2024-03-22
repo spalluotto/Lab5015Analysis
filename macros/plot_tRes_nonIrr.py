@@ -6,9 +6,7 @@ args = parser.parse_args()
 
 
 #---- init ---
-
 compareNum = int(args.comparisonNumber)
-
 #-------------
 
 
@@ -36,7 +34,6 @@ if compareNum == 1:
     extraLabel = ['','','']
     extraName = ['_angle64_T5C', '_angle64_T5C', '_angle64_T5C']
 
-
 # angles
 elif compareNum == 2:
     sipmTypes = ['HPK_nonIrr_LYSO818', 'HPK_nonIrr_LYSO818', 'HPK_nonIrr_LYSO818']
@@ -44,15 +41,13 @@ elif compareNum == 2:
     extraLabel = [' 32^{o}',' 52^{o}', ' 64^{o}']
     extraName = ['_angle32_T5C', '_angle52_T5C','_angle64_T5C',]
 
-
 # sipm cell sizes
 elif compareNum == 3:
     sipmTypes = ['HPK_nonIrr_LYSO820', 'HPK_nonIrr_LYSO813', 'HPK_nonIrr_LYSO814', 'HPK_nonIrr_LYSO528']
     nameComparison = 'HPK_nonIrr_angle52_cellSizes_withFNAL'
     extraLabel = ['', '', '  FNAL', '']
     specific_position = True
-    plots_special = ['%s'%plotsdir, '%s'%plotsdir, '%s'%fnal_dir, '%s'%plotsdir]
-    
+    plots_special = ['%s'%plotsdir, '%s'%plotsdir, '%s'%fnal_dir, '%s'%plotsdir]    
     extraName = ['_angle52_T5C', '_angle52_T5C',  '_angle52_T12C', '_angle52_T5C']
 #--------------------------------------------------------------------------------------
 
@@ -423,7 +418,7 @@ for it,sipm in enumerate(sipmTypes):
             indref = [i for i in range(0, g_data[sipm][bar].GetN()) if g_data[sipm][bar].GetPointX(i) == ov]
             if ( len(indref)<1 ): continue
             err_s_meas = g_data[sipm][bar].GetErrorY(indref[0])
-            Npe[sipm][ov]  = 4.2*LO[sipm]*NpeFrac[sipm]*PDE_(ov,sipm)/PDE_(3.5,sipm,'0')
+            Npe[sipm][ov]  = 4.2*LO[sipm]*NpeFrac[sipm]*PDE_(ov,sipm)/PDE_(3.5,sipm,'0') * thick[sipm] / 3.0
             gain[sipm][ov] = Gain_(ov,sipm)
             g_psL = fPS[sipm][ov].Get('g_pulseShapeL_bar%02d_Vov%.2f'%(bar,ov))
             g_psR = fPS[sipm][ov].Get('g_pulseShapeR_bar%02d_Vov%.2f'%(bar,ov))
@@ -499,6 +494,10 @@ for it,sipm in enumerate(sipmTypes):
             
             # vs bar
             if bar in goodbars[sipm][ov]:
+                if ('818' in sipm) and (3.5==ov):
+                    print("SLEW RATE ____  ov ", ov , " bar ", bar, "      sr   ", sr)
+                    if sr < 40:
+                        continue
                 g_SR_vs_bar[sipm][ov].SetPoint( g_SR_vs_bar[sipm][ov].GetN(), bar, sr )
                 g_SR_vs_bar[sipm][ov].SetPointError( g_SR_vs_bar[sipm][ov].GetN()-1, 0, errSR )
                 g_bestTh_vs_bar[sipm][ov].SetPoint( g_bestTh_vs_bar[sipm][ov].GetN(), bar, timingThreshold )
