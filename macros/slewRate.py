@@ -7,11 +7,16 @@ import ROOT
 
 
 ithmode = 0.313   # equivalence threshold amplitude in uA
-max_xErr = 0.02
-min_x = -20.
+
+max_xErr = 0.015 # max error accepted for pulse shape points
+min_x = -5.      # min x value accepted for the pulse shape point
+
+thMin = 0      # min index of the pulse shape required for data taken at ov < 0.8 with irradiated modules
+
 
 #######
-def getSlewRateFromPulseShape(g1, timingThreshold, npoints, gtemp, canvas=None):
+# - modulename -----> ho hardcodato la threshold minima per gli ov bassi
+def getSlewRateFromPulseShape(g1, timingThreshold, npoints, gtemp, vov, name, canvas=None):
     """
     Fit the slope of the pulse's rising edge in a TGraph.
 
@@ -44,6 +49,10 @@ def getSlewRateFromPulseShape(g1, timingThreshold, npoints, gtemp, canvas=None):
     ifirst = ROOT.TMath.LocMin(g1.GetN(), g1.GetX())
     imin = max(0, itiming-2)
     if ( imin >= 0 and g1.GetX()[imin+1] < g1.GetX()[imin] ): imin = ifirst
+
+    if float(vov)<=0.8 and 'E1' in name and imin <thMin:
+        imin = thMin
+    
     tmin = g1.GetX()[imin]
     tmax = 4
 
@@ -101,17 +110,16 @@ def getSlewRateFromPulseShape(g1, timingThreshold, npoints, gtemp, canvas=None):
     return(sr,err_sr)
 
 
-
+# -- g2 is the deltaT vs threshold
 def findTimingThreshold(g2):
     xmin = 0
     ymin = 9999
     for i in range(0, g2.GetN()):
         y = g2.GetY()[i]
         x = g2.GetX()[i]
-
-        if ( y < ymin):
+        if ( y < ymin ):
             ymin = y
-            xmin = x 
+            xmin = x
     return xmin
 
 

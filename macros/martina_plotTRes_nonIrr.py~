@@ -77,7 +77,7 @@ if compareNum == 1:  # USE FILES FROM SIMONA
                   20 : [21, ROOT.kBlue,     '20 #mum'],
                   15 : [22, ROOT.kRed,      '15 #mum']}
 
-    ymax = 120.
+    ymax = 160.
 
     
 elif compareNum == 2:
@@ -124,55 +124,22 @@ elif compareNum == 3:
                   'T1' : [20, ROOT.kGreen+2,  'type 1'],
                   'T2' : [21, ROOT.kBlue,     'type 2'],
                   'T3' : [22, ROOT.kRed,      'type 3']}
-    ymax = 120.
+    ymax = 80.
 
 
 
-elif compareNum == 4: 
-    nameComparison = 'HPK_angles'
-    pars = ['32', '52', '64']
-    pars_to_scale = pars
-    angle_true = [29, 49, 61]
-
-    fnames = { '32' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_nonIrr_LYSO818_T5C_angles.root',
-               '52' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_nonIrr_LYSO818_T5C_angles.root',
-               '64' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_nonIrr_LYSO818_T5C_angles.root'
-               }
-
-    labels = { '32' : 'HPK_nonIrr_LYSO818_angle32_T5C',
-               '52' : 'HPK_nonIrr_LYSO818_angle52_T5C',
-               '64' : 'HPK_nonIrr_LYSO818_angle64_T5C'
-              }
-
-    plotAttrs = { 
-                  '32' : [20, ROOT.kGreen+2,  '32^{o}'],
-                  '52' : [21, ROOT.kBlue,     '52^{o}'],
-                  '64' : [22, ROOT.kRed,      '64^{o}']}
-    ymax = 120.
-
+angle_target = angle_true + angle_offset
+enScale = math.cos(math.radians(angle_true)) / math.cos(math.radians(angle_target))
 
     
-enScale = {}
-
-for it,par in enumerate(pars):
-    if not isinstance(angle_true, list):
-        ang_true = angle_true
-        angle_target = angle_true + angle_offset
-    else:
-        ang_true = angle_true[it]
-        angle_target = angle_true[it] + angle_offset
-    enScale[par] = math.cos(math.radians(ang_true)) / math.cos(math.radians(angle_target))
     
-
 
 
 # define objects
 g = {}
 g_scaled = {}
-g_scaledMeas = {}
 g_Noise = {}
 g_Stoch = {}
-g_StochMeas = {}
 g_SR = {}
 f = {}
 
@@ -182,47 +149,35 @@ for par in pars:
     try:
         f[par] = ROOT.TFile.Open(fnames[par])
         if not f[par]:
-            print(fnames[par])
-            raise FileNotFoundError("File not found")
+            raise FileNotFoundError(f"File not found: {fnames[par]}")
         g[par] = f[par].Get('g_data_vs_Vov_average_%s'%labels[par])
         if not g[par]:
-            print('g_data_vs_Vov_average_',labels[par],'  not found in  ', fnames[par])
-            raise AttributeError("Graph not found in file")
+            raise AttributeError(f"Graph not found in file {fnames[par]} with name {graph_name}")
 
     except (FileNotFoundError, AttributeError) as e:
         print(f"Error: {e}")
     g_scaled[par] = ROOT.TGraphErrors()
     g_scaled[par].SetName('g_data_scaled_vs_Vov_average_%s'%labels[par]) 
 
-    g_scaledMeas[par] = ROOT.TGraphErrors()
-    g_scaledMeas[par].SetName('g_dataMeas_scaled_vs_Vov_average_%s'%labels[par]) 
-
     
 # scale (2C) to take into account angle offset in 2023 Sep TB 
 for par in pars_to_scale:
-    print("\n ", par)
     if par not in pars_to_scale: continue
     g_Noise[par] = f[par].Get('g_Noise_vs_Vov_average_%s'%labels[par])
     g_Stoch[par] = f[par].Get('g_Stoch_vs_Vov_average_%s'%labels[par])
-    g_StochMeas[par] = f[par].Get('g_StochMeas_vs_Vov_average_%s'%labels[par])
     g_SR[par]   = f[par].Get('g_SR_vs_Vov_average_%s'%labels[par])
     for i in range(0, g[par].GetN()):
         vov = g[par].GetX()[i]
-        #s_noise = g_Noise[par].Eval(vov)/enScale[par]
+        #s_noise = g_Noise[par].Eval(vov)/enScale
         sr = g_SR[par].Eval(vov)
-        s_noise =  sigma_noise(sr*enScale[par], '2c')
-        s_stoch = g_Stoch[par].Eval(vov)/math.sqrt(enScale[par])
-        s_stochMeas = g_StochMeas[par].Eval(vov)/math.sqrt(enScale[par])
+        s_noise =  sigma_noise(sr*enScale, '2c')
+        s_stoch = g_Stoch[par].Eval(vov)/math.sqrt(enScale)
         s_dcr = 0.
         s_tot = math.sqrt(s_noise*s_noise + s_stoch*s_stoch + s_dcr*s_dcr)
-        s_totMeas = math.sqrt(s_noise*s_noise + s_stochMeas*s_stochMeas + s_dcr*s_dcr)
         print("tot : ", s_tot, " ---- noise true : ", sigma_noise(sr,"2c"), "  noise scaled: ", s_noise, "  stoch true ", g_Stoch[par].Eval(vov), "  stoch scaled ", s_stoch)
         
         g_scaled[par].SetPoint(i, vov, s_tot) # correct for angle offset 
-        g_scaled[par].SetPointError(i, 0, g[par].GetErrorY(i)/enScale[par]) # correct for angle offset
-
-        g_scaledMeas[par].SetPoint(i, vov, s_totMeas) # correct for angle offset 
-        g_scaledMeas[par].SetPointError(i, 0, g[par].GetErrorY(i)/enScale[par]) # correct for angle offset
+        g_scaled[par].SetPointError(i, 0, g[par].GetErrorY(i)/enScale) # correct for angle offset
 
 # plot    
 leg = ROOT.TLegend(0.60, 0.60, 0.89, 0.89)
@@ -233,7 +188,7 @@ leg.SetTextSize(0.045)
 
 
 c = ROOT.TCanvas('c_timeResolution_%s_nonIrr_vs_Vov'%nameComparison,'c_timeResolution_%s_nonIrr_vs_Vov'%nameComparison, 600, 500)
-hPad = ROOT.gPad.DrawFrame(0.,20.,4.0,ymax)
+hPad = ROOT.gPad.DrawFrame(0.,0.,4.0,ymax)
 hPad.SetTitle(";V_{OV} [V];time resolution [ps]")
 hPad.Draw()
 ROOT.gPad.SetTicks(1)
@@ -244,26 +199,13 @@ for par in pars:
     g_scaled[par].SetMarkerColor(plotAttrs[par][1])
     g_scaled[par].SetLineColor(plotAttrs[par][1])
     leg.AddEntry(g_scaled[par], '%s'%plotAttrs[par][2],'PL')
-
-    # g_scaledMeas[par].SetMarkerSize(1)
-    # if (plotAttrs[par][0] == 22 or plotAttrs[par][0] == 23): g_scaledMeas[par].SetMarkerSize(1.15)
-    # g_scaledMeas[par].SetMarkerStyle(plotAttrs[par][0])
-    # g_scaledMeas[par].SetMarkerColor(plotAttrs[par][1])
-    # g_scaledMeas[par].SetLineColor(plotAttrs[par][1])
-    # g_scaledMeas[par].SetLineStyle(10)
-    # leg.AddEntry(g_scaledMeas[par], '%s'%plotAttrs[par][2],'PL')
-
-
     g[par].SetMarkerStyle(plotAttrs[par][0])
     g[par].SetMarkerColor(plotAttrs[par][1])
     g[par].SetMarkerSize(1.15)
     g[par].SetLineColor(plotAttrs[par][1])
     g[par].SetLineWidth(1)
-    
     if par in pars_to_scale:
         g_scaled[par].Draw('plsame')
-        #g_scaledMeas[par].Draw('plsame')
-        
     else:
         g[par].Draw('plsame')
 leg.Draw()

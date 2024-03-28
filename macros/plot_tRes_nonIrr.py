@@ -370,8 +370,8 @@ for it,sipm in enumerate(sipmTypes):
             timingThreshold = findTimingThreshold(f[sipm].Get('g_deltaT_totRatioCorr_vs_th_bar%02d_Vov%.2f_enBin01'%(bar,ov_ref)))
             gtempL = ROOT.TGraphErrors()
             gtempR = ROOT.TGraphErrors()
-            srL,err_srL = getSlewRateFromPulseShape(g_psL, timingThreshold, np, gtempL)
-            srR,err_srR = getSlewRateFromPulseShape(g_psR, timingThreshold, np, gtempR)
+            srL,err_srL = getSlewRateFromPulseShape(g_psL, timingThreshold, np, gtempL, ov, sipm)
+            srR,err_srR = getSlewRateFromPulseShape(g_psR, timingThreshold, np, gtempR, ov, sipm)
             
             if verbose:
                 print("slew rate: \t left: ", srL, '\t right: ', srR)
@@ -441,8 +441,8 @@ for it,sipm in enumerate(sipmTypes):
             hdummy.Draw()
             gtempL = ROOT.TGraphErrors()
             gtempR = ROOT.TGraphErrors()
-            srL,err_srL = getSlewRateFromPulseShape(g_psL, timingThreshold, np, gtempL, c)
-            srR,err_srR = getSlewRateFromPulseShape(g_psR, timingThreshold, np, gtempR, c) 
+            srL,err_srL = getSlewRateFromPulseShape(g_psL, timingThreshold, np, gtempL, ov, sipm, c)
+            srR,err_srR = getSlewRateFromPulseShape(g_psR, timingThreshold, np, gtempR, ov, sipm, c) 
             line = ROOT.TLine(min(g_psL.GetX())-1., timingThreshold*0.313, 30., timingThreshold*0.313)
             line.SetLineStyle(7)
             line.SetLineWidth(2)

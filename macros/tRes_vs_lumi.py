@@ -157,13 +157,13 @@ for typ in ['T2', 'T1']:
 
                 if irr == '0': x = 3.5 # OV
 
-                print '\n    ----- >  ', gnames[(typ, cell, irr, temp)]
+                print('\n    ----- >  ', gnames[(typ, cell, irr, temp)])
                 
                 timeRes = g.Eval(x)
-                print 'time  ', timeRes
+                print('time  ', timeRes)
                 if angle_correction and temp != 12:
                     timeRes = timeRes/angle_cor_val
-                    print 'time cor ', timeRes 
+                    print('time cor ', timeRes )
 
                 g_vs_lumi[(typ,cell)].SetPoint( g_vs_lumi[(typ,cell)].GetN(), lumiMap[(irr, temp)], timeRes)
                 g_vs_lumi[(typ,cell)].SetPointError( g_vs_lumi[(typ,cell)].GetN()-1, 0.1*lumiMap[(irr, temp)], 1)
@@ -190,7 +190,7 @@ hPad.Draw()
 
 box = ROOT.TBox(0, 30, 4000, 60)
 box.SetFillColorAlpha(ROOT.kGreen-10,0.5)
-box.Draw("same")
+#box.Draw("same")
 
 #ROOT.gPad.SetGridx()
 #ROOT.gPad.SetGridy()

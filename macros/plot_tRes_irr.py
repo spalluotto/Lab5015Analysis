@@ -13,7 +13,6 @@ plotsdir = '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/'
 color_code = True
 marker_code = True
 tofhirVersion = '2c'
-
 # ------------------ 
 
 
@@ -56,6 +55,7 @@ elif comparisonNum == 4:
     color_code = False
     color_map = [860,800,2]
 
+    
 elif comparisonNum == 5:
     modules =       ['LYSO819', 'LYSO819',       'LYSO819']
     temperatures =  ['-37',     '-32',           '-27']
@@ -66,28 +66,45 @@ elif comparisonNum == 5:
     color_map = [860,800,2]
 
 
+# ---- MAY TB DATA ------
+elif comparisonNum == 6:
+    plotsdir = '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
+    modules =       ['LYSO829', 'LYSO829',       'LYSO829',    'LYSO829']
+    temperatures =  ['12',      '0',             '-19',        '-32']
+    extraName =     ['_angle52','_angle52',      '_angle52',   '_angle52']
+    extraLabel =    ['',        '',              '',           '']
+    outSuffix =     'HPK_1E13_LYSO829_temperatures'
+
+
+    
 
 
 # ----------- angles ------------
-elif comparisonNum == 6:
+elif comparisonNum == 10:
     modules =       ['LYSO100056', 'LYSO100056',       'LYSO100056']
     temperatures =  ['-35',     '-35',           '-35']
     extraName =     ['_angle32','_angle52',      '_angle64']
     extraLabel =    [' 32^{o}',        ' 52^{o}',              ' 64^{o}']
     outSuffix =     'HPK_2E14_LYSO100056_T-35C_angles'
 
-elif comparisonNum == 7:
-    modules =       ['LYSO819', 'LYSO819',       'LYSO819']
-    temperatures =  ['-32',     '-32',           '-32']
-    extraName =     ['_angle32','_angle52',      '_angle64']
-    extraLabel =    [' 32^{o}',        ' 52^{o}',              ' 64^{o}']
-    outSuffix =     'HPK_2E14_LYSO819_T-32C_angles'
+elif comparisonNum == 11:
+             #   --- angle 32 missing run ---
+    # modules =       ['LYSO819', 'LYSO819',       'LYSO819']
+    # temperatures =  ['-32',     '-32',           '-32']
+    # extraName =     ['_angle32','_angle52',      '_angle64']
+    # extraLabel =    [' 32^{o}',        ' 52^{o}',              ' 64^{o}']
+    # outSuffix =     'HPK_1E14_LYSO819_T-32C_angles'
+    modules =       ['LYSO819',    'LYSO819']
+    temperatures =  ['-32',           '-32']
+    extraName =     ['_angle52',      '_angle64']
+    extraLabel =    [' 52^{o}',       ' 64^{o}']
+    outSuffix =     'HPK_1E14_LYSO819_T-32C_angles'
 
 
 
 
 # ----------- types ------------   
-elif comparisonNum == 8:
+elif comparisonNum == 20:
     modules =       ['LYSO100056', 'LYSO815',       'LYSO300032']
     temperatures =  ['-35',     '-35',           '-35']
     extraName =     ['_angle64','_angle64',      '_angle64']
@@ -96,7 +113,7 @@ elif comparisonNum == 8:
     color_code = False
     color_map = [417,2,1]
 
-elif comparisonNum == 9:
+elif comparisonNum == 21:
     modules =       ['LYSO100056', 'LYSO815']
     temperatures =  ['-35',     '-35']
     extraName =     ['_angle52','_angle52']
@@ -106,8 +123,10 @@ elif comparisonNum == 9:
     color_map = [417,2]
 
 
+    
+
 # ----------- cell sizes ------------  
-elif comparisonNum == 10:
+elif comparisonNum == 30:
     modules =       ['LYSO200104', 'LYSO815',       'LYSO825']
     temperatures =  ['-35',     '-35',           '-35']
     extraName =     ['_angle52', '_angle52',      '_angle52']
@@ -454,9 +473,9 @@ for it,sipm in enumerate(sipmTypes):
             np = 3
  
             if (g_psL!=None): 
-                srL,err_srL = getSlewRateFromPulseShape(g_psL, timingThreshold, np, gtempL, c)
+                srL,err_srL = getSlewRateFromPulseShape(g_psL, timingThreshold, np, gtempL, ov, sipm, c)
             if (g_psR!=None): 
-                srR,err_srR = getSlewRateFromPulseShape(g_psR, timingThreshold, np, gtempR, c) 
+                srR,err_srR = getSlewRateFromPulseShape(g_psR, timingThreshold, np, gtempR, ov, sipm, c) 
             line = ROOT.TLine(min(g_psL.GetX())-1., timingThreshold*0.313, 30., timingThreshold*0.313)
             line.SetLineStyle(7)
             line.SetLineWidth(2)
@@ -476,7 +495,7 @@ for it,sipm in enumerate(sipmTypes):
 
             if (srL>0 and srR>0):
                 # weighted average
-                print('srL ', srL, '  srR ', srR, '   err_srR ', err_srR, '  err_srL ', err_srL)
+                # print('srL ', srL, '  srR ', srR, '   err_srR ', err_srR, '  err_srL ', err_srL)
                 sr =  ( (srL/(err_srL*err_srL) + srR/(err_srR*err_srR) ) / (1./(err_srL*err_srL) + 1./(err_srR*err_srR) ) )
                 errSR = 1./math.sqrt( 1./(err_srL*err_srL)  +  1./(err_srR*err_srR) )
                 errSR = errSR
@@ -536,9 +555,9 @@ for it,sipm in enumerate(sipmTypes):
 
                 g_DCR_vs_Vov[sipm][bar].SetPoint(g_DCR_vs_Vov[sipm][bar].GetN(), ovEff, s_dcr)
                 g_DCR_vs_Vov[sipm][bar].SetPointError(g_DCR_vs_Vov[sipm][bar].GetN()-1, 0, err_s_dcr)
-
-                g_DCR_vs_bar[sipm][ov].SetPoint( g_DCR_vs_bar[sipm][ov].GetN(), bar, s_dcr )
-                g_DCR_vs_bar[sipm][ov].SetPointError( g_DCR_vs_bar[sipm][ov].GetN()-1, 0,  err_s_dcr)
+                if bar in goodbars[sipm][ov]:
+                    g_DCR_vs_bar[sipm][ov].SetPoint( g_DCR_vs_bar[sipm][ov].GetN(), bar, s_dcr )
+                    g_DCR_vs_bar[sipm][ov].SetPointError( g_DCR_vs_bar[sipm][ov].GetN()-1, 0,  err_s_dcr)
                 
                 dcr = DCR(sipm,ovEff)
                 g_DCR_vs_Npe[sipm][bar].SetPoint( g_DCR_vs_Npe[sipm][bar].GetN(), math.sqrt(dcr)/Npe[sipm][ov]/(math.sqrt(30.)/3000.), s_dcr )
@@ -551,10 +570,14 @@ for it,sipm in enumerate(sipmTypes):
                 g_TotExp_vs_Vov[sipm][bar].SetPoint(g_TotExp_vs_Vov[sipm][bar].GetN(), ovEff, s_tot)
                 g_TotExp_vs_Vov[sipm][bar].SetPointError(g_TotExp_vs_Vov[sipm][bar].GetN()-1, 0, err_s_tot)
 
-                g_TotExp_vs_bar[sipm][ov].SetPoint(g_TotExp_vs_bar[sipm][ov].GetN(), bar, s_tot)
-                g_TotExp_vs_bar[sipm][ov].SetPointError(g_TotExp_vs_bar[sipm][ov].GetN()-1, 0, err_s_tot)
+                if bar in goodbars[sipm][ov]:
+                    g_TotExp_vs_bar[sipm][ov].SetPoint(g_TotExp_vs_bar[sipm][ov].GetN(), bar, s_tot)
+                    g_TotExp_vs_bar[sipm][ov].SetPointError(g_TotExp_vs_bar[sipm][ov].GetN()-1, 0, err_s_tot)
 
-            
+                g_DCR_vs_SR[sipm][ov].SetPoint(g_DCR_vs_SR[sipm][ov].GetN(), sr, s_dcr)  #  questo non e normalizzato a sqrt(dcr) !! diverso da quello medio che faccio sotto
+                g_DCR_vs_SR[sipm][ov].SetPointError(g_DCR_vs_SR[sipm][ov].GetN()-1, errSR, err_s_dcr)
+
+                    
             # tRes contributions vs SR
             g_Stoch_vs_SR[sipm][ov].SetPoint(g_Stoch_vs_SR[sipm][ov].GetN(), sr, s_stoch)
             g_Stoch_vs_SR[sipm][ov].SetPointError(g_Stoch_vs_SR[sipm][ov].GetN()-1, errSR, err_s_stoch)
@@ -565,8 +588,6 @@ for it,sipm in enumerate(sipmTypes):
             g_Noise_vs_SR[sipm][ov].SetPoint(g_Noise_vs_SR[sipm][ov].GetN(), sr, s_noise)
             g_Noise_vs_SR[sipm][ov].SetPointError(g_Noise_vs_SR[sipm][ov].GetN()-1, errSR, err_s_noise)
 
-            g_DCR_vs_SR[sipm][ov].SetPoint(g_DCR_vs_SR[sipm][ov].GetN(), sr, s_dcr)  #  questo non e normalizzato a sqrt(dcr) !! diverso da quello medio che faccio sotto
-            g_DCR_vs_SR[sipm][ov].SetPointError(g_DCR_vs_SR[sipm][ov].GetN()-1, errSR, err_s_dcr)
             
 
 
@@ -1233,9 +1254,10 @@ for sipm in sipmTypes:
 
     latex.Draw()
     outfile.cd()
+    g_data_average[sipm].Write('g_data_vs_Vov_average_%s'%sipm)
     g_Noise_vs_Vov_average[sipm].Write('g_Noise_vs_Vov_average_%s'%sipm)
     g_Stoch_vs_Vov_average[sipm].Write('g_Stoch_vs_Vov_average_%s'%sipm)
-    g_DCR_vs_Vov_average[sipm].Write('g_Stoch_vs_Vov_average_%s'%sipm)
+    g_DCR_vs_Vov_average[sipm].Write('g_DCR_vs_Vov_average_%s'%sipm)
     g_TotExp_vs_Vov_average[sipm].Write('g_Tot_vs_Vov_average_%s'%sipm)
 
 

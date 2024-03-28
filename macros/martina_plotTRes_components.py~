@@ -28,7 +28,6 @@ ROOT.gStyle.SetTitleOffset(1.1,'Y')
 ROOT.gStyle.SetLegendFont(42)
 ROOT.gStyle.SetLegendTextSize(0.045)
 ROOT.gStyle.SetPadTopMargin(0.07)
-ROOT.gStyle.SetPadRightMargin(0.07)
 ROOT.gROOT.SetBatch(True)
 ROOT.gErrorIgnoreLevel = ROOT.kWarning
 
@@ -52,10 +51,40 @@ gnames = {}
 labels = {}
 
 
-# non irr cell sizes
-if compareNum == 2:
+if compareNum == 1:
+    nameComparison = '2E14_cellSizes'
+    labelComparison = '2 #times 10^{14} 1 MeV n_{eq}/cm^{2}'  
+    pars = [15, 20, 25, 30]
+    pars_to_scale = [15, 25, 30]
+    angle_true = 49
+
+    fnames = { 30 : '/eos/user/m/malberti/www/MTD/TOFHIR2C/MTDTB_CERN_Sep23/timeResolution_2E14_20um_25um_30um_T2/plots_timeResolution_2E14_20um_25um_30um_T2_TBSep23_TOFHIR2C.root',
+               25 : '/eos/user/m/malberti/www/MTD/TOFHIR2C/MTDTB_CERN_Sep23/timeResolution_2E14_20um_25um_30um_T2/plots_timeResolution_2E14_20um_25um_30um_T2_TBSep23_TOFHIR2C.root',
+               20 : '/eos/user/m/malberti/www/MTD/TOFHIR2C/MTDTB_CERN_Sep23/timeResolution_2E14_20um_25um_30um_T2/plots_timeResolution_2E14_20um_25um_30um_T2_TBSep23_TOFHIR2C.root',
+               15 : '/eos/user/m/malberti/www/MTD/TOFHIR2X/MTDTB_CERN_Jun22/timeResolution_2E14_15um_T2/plots_timeResolution_2E14_15um_T2_TBJune22_TOFHIR2X.root'}
+
+    gnames = { 30 : 'g_data_vs_Vov_average_HPK_2E14_LYSO200104_T-35C_TOFHIR2C',
+               25 : 'g_data_vs_Vov_average_HPK_2E14_LYSO815_T-35C_TOFHIR2C',
+               20 : 'g_data_vs_Vov_average_HPK_2E14_LYSO825_T-35C_TOFHIR2C',
+               15 : 'g_data_vs_Vov_average_HPK_2E14_LYSO796_T-40C'  # less annealing for this module
+              }
+
+    labels = { 30 : 'HPK_2E14_LYSO200104_T-35C_TOFHIR2C',
+               25 : 'HPK_2E14_LYSO815_T-35C_TOFHIR2C',
+               20 : 'HPK_2E14_LYSO825_T-35C_TOFHIR2C',
+               15 : 'HPK_2E14_LYSO796_T-40C'
+              }
+    plotAttrs = { 30 : [23, ROOT.kOrange+1, '30 #mum'],
+                  25 : [20, ROOT.kGreen+2,  '25 #mum'],
+                  20 : [21, ROOT.kBlue,     '20 #mum'],
+                  15 : [22, ROOT.kRed,      '15 #mum']}
+
+    ymax = 160.
+
+    
+elif compareNum == 2:
     nameComparison = 'nonIrr_cellSizes'
-    irr_label = 'non irradiated'
+    labelComparison = 'non irradiated'
     pars = [15, 20, 25, 30]
     pars_to_scale = [15, 25, 30]
     angle_true = 49
@@ -80,10 +109,9 @@ if compareNum == 2:
 
 
 
-# non irr types
 elif compareNum == 3:
     nameComparison = 'nonIrr_types'
-    irr_label = 'non irradiated'
+    labelComparison = 'non irradiated'
     pars = ['T1', 'T2', 'T3']
     pars_to_scale = pars
     angle_true = 61
@@ -104,146 +132,9 @@ elif compareNum == 3:
                   'T3' : [22, ROOT.kRed,      'type 3']}
     ymax = 80.
 
-# non irr angles
-elif compareNum == 4: 
-    nameComparison = 'nonIrr_angles'
-    irr_label = 'non irradiated'
-    pars = ['32', '52', '64']
-    pars_to_scale = pars
-    angle_true = [29, 49, 61]
 
-    fnames = { '32' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_nonIrr_LYSO818_T5C_angles.root',
-               '52' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_nonIrr_LYSO818_T5C_angles.root',
-               '64' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_nonIrr_LYSO818_T5C_angles.root'
-               }
-
-    labels = { '32' : 'HPK_nonIrr_LYSO818_angle32_T5C',
-               '52' : 'HPK_nonIrr_LYSO818_angle52_T5C',
-               '64' : 'HPK_nonIrr_LYSO818_angle64_T5C'
-              }
-
-    plotAttrs = { 
-                  '32' : [20, ROOT.kGreen+2,  '32^{o}'],
-                  '52' : [21, ROOT.kBlue,     '52^{o}'],
-                  '64' : [22, ROOT.kRed,      '64^{o}']}
-    ymax = 80.
-
-
-
-
-
-# 2E14 cell sizes
-elif compareNum == 1:
-    nameComparison = '2E14_cellSizes'
-    irr_label = '2 #times 10^{14} 1 MeV n_{eq}/cm^{2}'  
-    pars = [20, 25, 30]
-    pars_to_scale = pars
-    angle_true = 49
-
-    fnames = { 30 : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_T-35C_angle52_cellSize.root',
-               25 : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_T-35C_angle52_cellSize.root',
-               20 : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_T-35C_angle52_cellSize.root'
-              }
-    labels = { 30 : 'HPK_2E14_LYSO200104_angle52_T-35C',
-               25 : 'HPK_2E14_LYSO815_angle52_T-35C',
-               20 : 'HPK_2E14_LYSO825_angle52_T-35C'
-              }
-    plotAttrs = { 30 : [23, ROOT.kOrange+1, '30 #mum'],
-                  25 : [20, ROOT.kGreen+2,  '25 #mum'],
-                  20 : [21, ROOT.kBlue,     '20 #mum']
-                 }
-    ymax = 120.
-
-
-
-# types - irradiated 2E14
-elif compareNum == 5:
-    nameComparison = '2E14_types'
-    irr_label = '2 #times 10^{14} 1 MeV n_{eq}/cm^{2}'
-    
-    pars = ['T1', 'T2', 'T3']
-    pars_to_scale = pars
-    angle_true = 61
-    fnames = { 'T1' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_T-35C_angle64_types.root',
-               'T2' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_T-35C_angle64_types.root',
-               'T3' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_T-35C_angle64_types.root'
-               }
-    labels = { 'T1' : 'HPK_2E14_LYSO100056_angle64_T-35C',
-               'T2' : 'HPK_2E14_LYSO815_angle64_T-35C',
-               'T3' : 'HPK_2E14_LYSO300032_angle64_T-35C'
-              }
-    plotAttrs = {
-                  'T1' : [20, ROOT.kGreen+2,  'type 1'],
-                  'T2' : [21, ROOT.kBlue,     'type 2'],
-                  'T3' : [22, ROOT.kRed,      'type 3']}
-    ymax = 120.
-
-# 2E14 rr angles
-elif compareNum == 6:
-    nameComparison = '2E14_angles'
-    irr_label = '2 #times 10^{14} 1 MeV n_{eq}/cm^{2}'
-    
-    pars = ['32', '52', '64']
-    pars_to_scale = pars
-    angle_true = [29, 49, 61]
-
-    fnames = { '32' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_LYSO100056_T-35C_angles.root',
-               '52' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_LYSO100056_T-35C_angles.root',
-               '64' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_LYSO100056_T-35C_angles.root'
-               }
-
-    labels = { '32' : 'HPK_2E14_LYSO100056_angle32_T-35C',
-               '52' : 'HPK_2E14_LYSO100056_angle52_T-35C',
-               '64' : 'HPK_2E14_LYSO100056_angle64_T-35C'
-              }
-
-    plotAttrs = { 
-                  '32' : [20, ROOT.kGreen+2,  '32^{o}'],
-                  '52' : [21, ROOT.kBlue,     '52^{o}'],
-                  '64' : [22, ROOT.kRed,      '64^{o}']}
-    ymax = 120.
-
-
-
-
-# TYPE 1 - irradiated 1E14 - temperatures comparison
-elif compareNum == 7:
-    nameComparison  = '1E14_T1_temperatures'
-    irr_label = '1 #times 10^{14} 1 MeV n_{eq}/cm^{2}'
-
-    
-    pars = ['-37', '-32', '-27']
-    pars_to_scale = pars
-    angle_true = 49
-
-    fnames = { '-37' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_1E14_LYSO819_temperatures.root',
-               '-32' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_1E14_LYSO819_temperatures.root',
-               '-27' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_1E14_LYSO819_temperatures.root'
-              }
-    labels = { '-37' : 'HPK_1E14_LYSO819_angle52_T-37C',
-               '-32' : 'HPK_1E14_LYSO819_angle52_T-32C',
-               '-27' : 'HPK_1E14_LYSO819_angle52_T-27C'
-              }
-    plotAttrs = { 
-                  '-37' : [20, ROOT.kGreen+2,  '-37^{o}C'],
-                  '-32' : [21, ROOT.kBlue,     '-32^{o}C'],
-                  '-27' : [22, ROOT.kRed,      '-27^{o}C']
-                 }
-    ymax = 120.
-
-    
-enScale = {}
-
-for it,par in enumerate(pars):
-    if not isinstance(angle_true, list):
-        ang_true = angle_true
-        angle_target = angle_true + angle_offset
-    else:
-        ang_true = angle_true[it]
-        angle_target = angle_true[it] + angle_offset
-    enScale[par] = math.cos(math.radians(ang_true)) / math.cos(math.radians(angle_target))
-    
-    
+angle_target = angle_true + angle_offset
+enScale = math.cos(math.radians(angle_true)) / math.cos(math.radians(angle_target))
 
 
 
@@ -288,38 +179,36 @@ for par in pars:
         
 # scale contributions to take into account angle offset in 2023 Sep TB 
 for par in pars:
-    print("\n ", par)
     if (par not in fnames.keys()): continue
     gNoise[par] = f[par].Get('g_Noise_vs_Vov_average_%s'%labels[par])
     gStoch[par] = f[par].Get('g_Stoch_vs_Vov_average_%s'%labels[par])
     gDCR[par]   = f[par].Get('g_DCR_vs_Vov_average_%s'%labels[par])
     gSR[par]   = f[par].Get('g_SR_vs_Vov_average_%s'%labels[par])
-
+    # if 15 um from June22 TB non need to scale for angle offset.
+    if ('TBJun22' in fnames[par] ): enScale = 1.
     for i in range(0, gData[par].GetN()):
         vov = gData[par].GetX()[i]
         sr = gSR[par].Eval(vov)
-        s_noise =  sigma_noise(sr*enScale[par], '2c')
-        s_stoch = gStoch[par].Eval(vov)/math.sqrt(enScale[par])
+        s_noise =  sigma_noise(sr*enScale, '2c')
+        s_stoch = gStoch[par].Eval(vov)/math.sqrt(enScale)
         s_dcr = 0.
-        gNoise_scaled[par].SetPoint(i, vov, s_noise)  
-        gNoise_scaled[par].SetPointError(i, 0, gNoise[par].GetErrorY(i)/enScale[par]) 
-        gStoch_scaled[par].SetPoint(i, vov, s_stoch)  
-        gStoch_scaled[par].SetPointError(i, 0, gStoch[par].GetErrorY(i)/math.sqrt(enScale[par])) 
-
-        if not 'nonIrr' in nameComparison:
-            s_dcr = gDCR[par].Eval(vov)/enScale[par]
-            gDCR_scaled[par].SetPoint(i, vov, s_dcr)  
-            gDCR_scaled[par].SetPointError(i, 0, gDCR[par].GetErrorY(i)/enScale[par]) 
-
         s_tot = math.sqrt(s_noise*s_noise + s_stoch*s_stoch + s_dcr*s_dcr)
         gData_scaled[par].SetPoint(i, vov, s_tot) 
-        gData_scaled[par].SetPointError(i, 0, gData[par].GetErrorY(i)/enScale[par]) 
+        gData_scaled[par].SetPointError(i, 0, gData[par].GetErrorY(i)/enScale) 
+        gNoise_scaled[par].SetPoint(i, vov, s_noise)  
+        gNoise_scaled[par].SetPointError(i, 0, gNoise[par].GetErrorY(i)/enScale) 
+        gStoch_scaled[par].SetPoint(i, vov, s_stoch)  
+        gStoch_scaled[par].SetPointError(i, 0, gStoch[par].GetErrorY(i)/math.sqrt(enScale)) 
 
-        print("tot : ", s_tot, " ---- noise true : ", sigma_noise(sr,"2c"), "  noise scaled: ", s_noise, "  stoch true ", gStoch[par].Eval(vov), "  stoch scaled ", s_stoch, ' dcr true : ', gDCR[par].Eval(vov), ' dcr scaled : ', s_dcr)
+        if not 'nonIrr' in nameComparison:
+            s_dcr = gDCR[par].Eval(vov)/enScale
+            gDCR_scaled[par].SetPoint(i, vov, s_dcr)  
+            gDCR_scaled[par].SetPointError(i, 0, gDCR[par].GetErrorY(i)/enScale) 
+
 
 # plot        
 for par in pars:
-    c = ROOT.TCanvas('c_timeResolution_components_%s_%s_vs_Vov'%(par, nameComparison), 'c_timeResolution_components_%s_%s_vs_Vov'%(par, nameComparison), 650, 500)
+    c = ROOT.TCanvas('c_timeResolution_components_%s_%s_vs_Vov'%(par, nameComparison), 'c_timeResolution_components_%s_%s_vs_Vov'%(par, nameComparison), 600, 500)
     hPad = ROOT.gPad.DrawFrame(0., 0., 4.0, ymax)
     #if (nameComparison == '2E14'): hPad = ROOT.gPad.DrawFrame(0., 0., 2., 160.)
     if '2E14' in nameComparison:
@@ -350,10 +239,11 @@ for par in pars:
         gDCR_scaled[par].SetLineWidth(2)
         gDCR_scaled[par].SetLineColor(ROOT.kOrange+2)
         gDCR_scaled[par].SetFillColor(ROOT.kOrange+2)
-        gDCR_scaled[par].SetFillStyle(3005)
+        gDCR_scaled[par].SetFillStyle(3001)
+        gDCR_scaled[par].SetFillColorAlpha(ROOT.kOrange+2,0.5)
         gDCR_scaled[par].Draw('E3lsame')
 
-    leg = ROOT.TLegend(0.60, 0.60, 0.89, 0.89)
+    leg = ROOT.TLegend(0.70, 0.60, 0.89, 0.89)
     leg.SetBorderSize(0)
     leg.SetFillColor(0)
     leg.SetTextFont(42)
@@ -375,7 +265,7 @@ for par in pars:
     tl3.SetNDC()
     tl3.SetTextFont(42)
     tl3.SetTextSize(0.050)
-    tl3.DrawLatex(0.20,0.80,'{}'.format(irr_label))
+    tl3.DrawLatex(0.20,0.80,'{}'.format(labelComparison))
 
     cms_logo = draw_logo()
     cms_logo.Draw()
