@@ -1,1 +1,0 @@
-find /path/to/search -type f -newermt "YYYY-MM-DD" ! -newermt "YYYY-MM-DD" -exec

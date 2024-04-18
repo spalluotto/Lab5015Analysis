@@ -40,6 +40,8 @@ angle_offset = 3
 
 
 
+ymin = 20.
+
 parser = argparse.ArgumentParser()  
 parser.add_argument("-n","--comparisonNumber", required = True, type=str, help="comparison number")    
 args = parser.parse_args()   
@@ -72,39 +74,17 @@ if compareNum == 1:  # USE FILES FROM SIMONA
                15 : 'HPK_nonIrr_LYSO528_angle52_T5C',
               }
 
+    label_on_top = 'HPK'
     plotAttrs = { 30 : [23, ROOT.kOrange+1, '30 #mum'],
                   25 : [20, ROOT.kGreen+2,  '25 #mum'],
                   20 : [21, ROOT.kBlue,     '20 #mum'],
                   15 : [22, ROOT.kRed,      '15 #mum']}
 
-    ymax = 120.
-
+    ymax = 160.
+    ymin = 0.
     
-elif compareNum == 2:
-    nameComparison = 'FBK_cellSizes'
-    pars = [15, 20, 25, 30]
-    pars_to_scale = [15, 25, 30]
-    angle_true = 49
-    
-    fnames = { 30 : '',
-               25 : '',
-               20 : '',
-               15 : '/eos/user/m/malberti/www/MTD/TOFHIR2X/MTDTB_CERN_Jun22/timeResolution_nonIrr/plots_timeResolution_HPK_FBK_nonIrr_TBJun22_TOFHIR2X.root'}
 
-    labels = { 30 : '',
-               25 : '',
-               20 : '',
-               15 : 'FBK_nonIrr_LYSO800_T10C',
-              }
-    plotAttrs = { 30 : [23, ROOT.kOrange+1, '30 #mum'],
-                  25 : [20, ROOT.kGreen+2,  '25 #mum'],
-                  20 : [21, ROOT.kBlue,     '20 #mum'],
-                  15 : [22, ROOT.kRed,      '15 #mum']}
-    ymax = 120.
-
-
-
-elif compareNum == 3: 
+elif compareNum == 2: 
     nameComparison = 'HPK_types'
     pars = ['T1', 'T2', 'T3']
     pars_to_scale = pars
@@ -119,16 +99,16 @@ elif compareNum == 3:
                'T2' : 'HPK_nonIrr_LYSO813_angle64_T5C',
                'T3' : 'HPK_nonIrr_LYSO816_angle64_T5C'
               }
-
+    label_on_top = 'HPK, 25 #mum'
     plotAttrs = { 
                   'T1' : [20, ROOT.kGreen+2,  'type 1'],
                   'T2' : [21, ROOT.kBlue,     'type 2'],
                   'T3' : [22, ROOT.kRed,      'type 3']}
-    ymax = 120.
+    ymax = 80.
 
 
 
-elif compareNum == 4: 
+elif compareNum == 3: 
     nameComparison = 'HPK_angles'
     pars = ['32', '52', '64']
     pars_to_scale = pars
@@ -143,6 +123,7 @@ elif compareNum == 4:
                '52' : 'HPK_nonIrr_LYSO818_angle52_T5C',
                '64' : 'HPK_nonIrr_LYSO818_angle64_T5C'
               }
+    label_on_top = 'HPK, 25 #mum'
 
     plotAttrs = { 
                   '32' : [20, ROOT.kGreen+2,  '32^{o}'],
@@ -225,7 +206,7 @@ for par in pars_to_scale:
         g_scaledMeas[par].SetPointError(i, 0, g[par].GetErrorY(i)/enScale[par]) # correct for angle offset
 
 # plot    
-leg = ROOT.TLegend(0.60, 0.60, 0.89, 0.89)
+leg = ROOT.TLegend(0.70, 0.65, 0.89, 0.89)
 leg.SetBorderSize(0)
 leg.SetFillStyle(0)
 leg.SetTextFont(42)
@@ -233,7 +214,7 @@ leg.SetTextSize(0.045)
 
 
 c = ROOT.TCanvas('c_timeResolution_%s_nonIrr_vs_Vov'%nameComparison,'c_timeResolution_%s_nonIrr_vs_Vov'%nameComparison, 600, 500)
-hPad = ROOT.gPad.DrawFrame(0.,20.,4.0,ymax)
+hPad = ROOT.gPad.DrawFrame(0.,ymin,4.0,ymax)
 hPad.SetTitle(";V_{OV} [V];time resolution [ps]")
 hPad.Draw()
 ROOT.gPad.SetTicks(1)
@@ -272,13 +253,14 @@ tl2 = ROOT.TLatex()
 tl2.SetNDC()
 tl2.SetTextFont(42)
 tl2.SetTextSize(0.045)
-tl2.DrawLatex(0.20,0.20,'%s'%nameComparison.split('_')[0])
+tl2.DrawLatex(0.20,0.86,'%s'%label_on_top)
+#tl2.DrawLatex(0.20,0.86,'%s'%nameComparison.split('_')[0])
 
 tl = ROOT.TLatex()
 tl.SetNDC()
 tl.SetTextFont(42)
 tl.SetTextSize(0.045)
-tl.DrawLatex(0.58,0.20,'non-irradiated')
+tl.DrawLatex(0.20,0.80,'non-irradiated')
 
 cms_logo = draw_logo()
 cms_logo.Draw()

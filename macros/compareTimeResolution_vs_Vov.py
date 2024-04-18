@@ -237,6 +237,17 @@ elif compareNum == 22:
     add_string = True 
     add_str = ['','_may','','']
 
+
+
+elif compareNum == 23:
+    sipmTypes = ['HPK_1E14_LYSO819', 'HPK_1E14_LYSO819','HPK_1E14_LYSO819']
+    nameComparison = 'HPK_1E14_LYSO819_temperatures'
+    extraLabel =    ['',        '',              '']
+    extraName =     ['_angle52_T-37C',        '_angle52_T-32C',              '_angle52_T-27C']
+    marker_code = False
+    marker_map = [20,21,22]
+    color_code = False
+    color_map = [860,800,2]
 #-----------------------
 
 

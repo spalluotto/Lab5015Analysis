@@ -1,7 +1,0 @@
-executable            = summaryPlot_Condor.sh
-arguments	      = $(i) $(o)
-output                = /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/scripts/jobs/job_moduleCharactSumPlot.$(ClusterId).$(ProcId).out
-error                 = /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/scripts/jobs/job_moduleCharactSumPlot.$(ClusterId).$(ProcId).err
-log                   = /afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/scripts/jobs/job_moduleCharactSumPlot.$(ClusterId).$(ProcId).log
-+JobFlavour = "longlunch"
-queue i, o from tmp_sum.txt

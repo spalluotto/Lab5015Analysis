@@ -344,6 +344,11 @@ def angle_(module):
 #----- ovs -------
 
 def getVovEffDCR(module, ov) :
+    if '829' in module or '819' in module:
+        currents = '/eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_H8_May2023/VovsEff_v2.json'
+    else:
+        currents = '/eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_H8_Sep2023/VovsEff_TOFHIR2C.json'
+
     ov_temp = round(5*round(float(ov)/5,2),2)
     ov_set = '%.2f'%float(ov_temp)
 
@@ -355,7 +360,8 @@ def getVovEffDCR(module, ov) :
 
     elif 'irr' in irrad:
         # Import file with VovEff and DCR
-        with open('/eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_H8_Sep2023/VovsEff_TOFHIR2C.json', 'r') as f:
+        #with open('/eos/cms/store/group/dpg_mtd/comm_mtd/TB/MTDTB_H8_Sep2023/VovsEff_TOFHIR2C.json', 'r') as f:
+        with open(currents, 'r') as f:
             data = json.load(f) 
         if not data[sipm_(module)+'_'+lyso_(module)+'_T'+temp+'C_A'][ov_set][0]:
             print('ERROR:   ',module,'  not in json file!!!')
@@ -514,6 +520,7 @@ def good_bars(module, ovs, bars):
         good_bars_[0.60] = [7,8,9,10]
             
     elif '819' in module:
+        good_bars_[2.50] = [6,7,8,9,10,11,12,13]
         good_bars_[2.00] = [6,7,8,9,10,11,12,13]
         good_bars_[1.50] = [6,7,8,9,10,11,12,13]
         good_bars_[1.25] = [6,7,8,9,10,11,12,13]
@@ -522,13 +529,14 @@ def good_bars(module, ovs, bars):
         good_bars_[0.60] = [6,7,8,9,10,11,12,13]
 
     elif '829' in module:
-        good_bars_[3.50] = [2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-        good_bars_[2.00] = [2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-        good_bars_[1.50] = [2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-        good_bars_[1.25] = [2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-        good_bars_[1.00] = [2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-        good_bars_[0.80] = [2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-        good_bars_[0.60] = [2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+        good_bars_[3.00] = [1,2,3,4,5,6,7,10,11,13,14,15]
+        good_bars_[2.50] = [0,1,2,3,4,5,7,8,9,10,11,12]
+        good_bars_[2.00] = [1,2,3,4,5,7,8,9,10,11,12]
+        good_bars_[1.50] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+        good_bars_[1.25] = [0,2,3,4,5,7,8,9,10,11,12]
+        good_bars_[1.00] = [0,2,3,4,5,7,8,9,10,11,12,]
+        good_bars_[0.80] = [0,3,4,5,7,8,9,10,11,12,13,15]
+        good_bars_[0.60] = [0,2,3,4,5,7,8,9,10,11,12]
             
     elif '817' in module:
         good_bars_[3.50] = [2,3,4,5,6,7,8,9,10,11,12,13,14,15]

@@ -37,6 +37,7 @@ ROOT.gErrorIgnoreLevel = ROOT.kWarning
 # ---- EDIT ---- 
 outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/for_paper/'
 angle_offset = 3
+pars_to_scale = []
 # -------------
 
 #---- init ---
@@ -211,30 +212,60 @@ elif compareNum == 7:
     nameComparison  = '1E14_T1_temperatures'
     irr_label = '1 #times 10^{14} 1 MeV n_{eq}/cm^{2}'
 
-    
-    pars = ['-37', '-32', '-27']
-    pars_to_scale = pars
-    angle_true = 49
-
-    fnames = { '-37' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_1E14_LYSO819_temperatures.root',
-               '-32' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_1E14_LYSO819_temperatures.root',
-               '-27' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_1E14_LYSO819_temperatures.root'
+    pars = ['-37', '-32', '-27', '-22']
+    fnames = { '-37' : '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/plot_tRes_HPK_1E14_LYSO819_temperatures.root',
+               '-32' : '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/plot_tRes_HPK_1E14_LYSO819_temperatures.root',
+               '-27' : '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/plot_tRes_HPK_1E14_LYSO819_temperatures.root',
+               '-22' : '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/plot_tRes_HPK_1E14_LYSO819_temperatures.root'
               }
     labels = { '-37' : 'HPK_1E14_LYSO819_angle52_T-37C',
                '-32' : 'HPK_1E14_LYSO819_angle52_T-32C',
-               '-27' : 'HPK_1E14_LYSO819_angle52_T-27C'
+               '-27' : 'HPK_1E14_LYSO819_angle52_T-27C',
+               '-22' : 'HPK_1E14_LYSO819_angle52_T-22C'
               }
     plotAttrs = { 
-                  '-37' : [20, ROOT.kGreen+2,  '-37^{o}C'],
-                  '-32' : [21, ROOT.kBlue,     '-32^{o}C'],
-                  '-27' : [22, ROOT.kRed,      '-27^{o}C']
+                  '-37' : [20, 860,  '-37^{o}C'],
+                  '-32' : [21, 870,     '-32^{o}C'],
+                  '-27' : [22, 800,      '-27^{o}C'],
+                  '-22' : [23,   2,      '-22^{o}C']
                  }
     ymax = 120.
 
+
+# TYPE 1 - irradiated 1E13 - temperatures comparison
+elif compareNum == 8:
+    nameComparison = '1E13_T1_temperatures'
+    pars = ['-32','-19','0','12']
+
+    irr_label = '1 #times 10^{13} 1 MeV n_{eq}/cm^{2}'
+    fnames = {
+        '-32' : '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/plot_tRes_HPK_1E13_LYSO829_temperatures.root',
+        '-19' : '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/plot_tRes_HPK_1E13_LYSO829_temperatures.root',
+        '0'   : '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/plot_tRes_HPK_1E13_LYSO829_temperatures.root',
+        '12'  : '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/plot_tRes_HPK_1E13_LYSO829_temperatures.root',
+              }
+    labels = {
+        '-32' : 'HPK_1E13_LYSO829_angle52_T-32C',
+        '-19' : 'HPK_1E13_LYSO829_angle52_T-19C',
+        '0'   : 'HPK_1E13_LYSO829_angle52_T0C',
+        '12'  : 'HPK_1E13_LYSO829_angle52_T12C',
+              }
+    plotAttrs = { 
+        '-32' : [20,  860, '-32^{o}C'],
+        '-19' : [21,  870, '-19^{o}C'],
+        '0'   : [22,  800, '0^{o}C'],
+        '12'  : [23,   2,  '12^{o}C'],
+                 }
+    ymax = 120.
+
+
+
+
+    
     
 enScale = {}
 
-for it,par in enumerate(pars):
+for it,par in enumerate(pars_to_scale):
     if not isinstance(angle_true, list):
         ang_true = angle_true
         angle_target = angle_true + angle_offset
@@ -248,16 +279,22 @@ for it,par in enumerate(pars):
 
 
 
-gData = {}
-gNoise = {}
-gStoch = {}
-gDCR = {}
-gSR = {}
+g_data = {}
+g_noise = {}
+g_stoch = {}
+g_dcr = {}
+g_sr = {}
 
-gData_scaled = {}
-gNoise_scaled = {}
-gStoch_scaled = {}
-gDCR_scaled = {}
+g_data_scaled = {}
+g_noise_scaled = {}
+g_stoch_scaled = {}
+g_dcr_scaled = {}
+
+
+g_data_final = {}
+g_noise_final = {}
+g_stoch_final = {}
+g_dcr_final = {}
 
 f = {}
 
@@ -266,23 +303,24 @@ for par in pars:
         f[par] = ROOT.TFile.Open(fnames[par])
         if not f[par]:
             raise FileNotFoundError(f"File not found: {fnames[par]}")
-        gData[par] = f[par].Get('g_data_vs_Vov_average_%s'%labels[par])
-        if not gData[par]:
+        g_data[par] = f[par].Get('g_data_vs_Vov_average_%s'%labels[par])
+        if not g_data[par]:
             raise AttributeError(f"Graph not found in file {fnames[par]} with name {graph_name}")
     except (FileNotFoundError, AttributeError) as e:
         print(f"Error: {e}")
 
-    gData_scaled[par] = ROOT.TGraphErrors()
-    gNoise_scaled[par] = ROOT.TGraphErrors()
-    gStoch_scaled[par] = ROOT.TGraphErrors()
+    if par in pars_to_scale:
+        g_data_scaled[par] = ROOT.TGraphErrors()
+        g_noise_scaled[par] = ROOT.TGraphErrors()
+        g_stoch_scaled[par] = ROOT.TGraphErrors()
 
-    gData_scaled[par].SetName('g_data_scaled_vs_Vov_average_%s'%labels[par]) 
-    gNoise_scaled[par].SetName('g_Noise_scaled_vs_Vov_average_%s'%labels[par]) 
-    gStoch_scaled[par].SetName('g_Stoch_scaled_vs_Vov_average_%s'%labels[par]) 
+        g_data_scaled[par].SetName('g_data_scaled_vs_Vov_average_%s'%labels[par]) 
+        g_noise_scaled[par].SetName('g_Noise_scaled_vs_Vov_average_%s'%labels[par]) 
+        g_stoch_scaled[par].SetName('g_Stoch_scaled_vs_Vov_average_%s'%labels[par]) 
 
-    if not 'nonIrr' in nameComparison:
-        gDCR_scaled[par] = ROOT.TGraphErrors()
-        gDCR_scaled[par].SetName('g_DCR_scaled_vs_Vov_average_%s'%labels[par]) 
+        if not 'nonIrr' in nameComparison:
+            g_dcr_scaled[par] = ROOT.TGraphErrors()
+            g_dcr_scaled[par].SetName('g_DCR_scaled_vs_Vov_average_%s'%labels[par]) 
 
         
         
@@ -290,86 +328,106 @@ for par in pars:
 for par in pars:
     print("\n ", par)
     if (par not in fnames.keys()): continue
-    gNoise[par] = f[par].Get('g_Noise_vs_Vov_average_%s'%labels[par])
-    gStoch[par] = f[par].Get('g_Stoch_vs_Vov_average_%s'%labels[par])
-    gDCR[par]   = f[par].Get('g_DCR_vs_Vov_average_%s'%labels[par])
-    gSR[par]   = f[par].Get('g_SR_vs_Vov_average_%s'%labels[par])
+    g_noise[par] = f[par].Get('g_Noise_vs_Vov_average_%s'%labels[par])
+    g_stoch[par] = f[par].Get('g_Stoch_vs_Vov_average_%s'%labels[par])
+    if not 'nonIrr' in nameComparison:
+        g_dcr[par]   = f[par].Get('g_DCR_vs_Vov_average_%s'%labels[par])
+    g_sr[par]   = f[par].Get('g_SR_vs_Vov_average_%s'%labels[par])
 
-    for i in range(0, gData[par].GetN()):
-        vov = gData[par].GetX()[i]
-        sr = gSR[par].Eval(vov)
-        s_noise =  sigma_noise(sr*enScale[par], '2c')
-        s_stoch = gStoch[par].Eval(vov)/math.sqrt(enScale[par])
-        s_dcr = 0.
-        gNoise_scaled[par].SetPoint(i, vov, s_noise)  
-        gNoise_scaled[par].SetPointError(i, 0, gNoise[par].GetErrorY(i)/enScale[par]) 
-        gStoch_scaled[par].SetPoint(i, vov, s_stoch)  
-        gStoch_scaled[par].SetPointError(i, 0, gStoch[par].GetErrorY(i)/math.sqrt(enScale[par])) 
+    for i in range(0, g_data[par].GetN()):
+        vov = g_data[par].GetX()[i]
+        sr = g_sr[par].Eval(vov)
+        if par in pars_to_scale:
+            s_noise =  sigma_noise(sr*enScale[par], '2c')
+            s_stoch = g_stoch[par].Eval(vov)/math.sqrt(enScale[par])
+            g_noise_scaled[par].SetPoint(i, vov, s_noise)  
+            g_noise_scaled[par].SetPointError(i, 0, g_noise[par].GetErrorY(i)/enScale[par]) 
+            g_stoch_scaled[par].SetPoint(i, vov, s_stoch)  
+            g_stoch_scaled[par].SetPointError(i, 0, g_stoch[par].GetErrorY(i)/math.sqrt(enScale[par])) 
+            s_dcr = 0.
 
+            if not 'nonIrr' in nameComparison:
+                s_dcr = g_dcr[par].Eval(vov)/enScale[par]
+                g_dcr_scaled[par].SetPoint(i, vov, s_dcr)  
+                g_dcr_scaled[par].SetPointError(i, 0, g_dcr[par].GetErrorY(i)/enScale[par]) 
+
+            s_tot = math.sqrt(s_noise*s_noise + s_stoch*s_stoch + s_dcr*s_dcr)
+            g_data_scaled[par].SetPoint(i, vov, s_tot) 
+            g_data_scaled[par].SetPointError(i, 0, g_data[par].GetErrorY(i)/enScale[par]) 
+
+            
+
+            #print("tot : ", s_tot, " ---- noise true : ", sigma_noise(sr,"2c"), "  noise scaled: ", s_noise, "  stoch true ", g_stoch[par].Eval(vov), "  stoch scaled ", s_stoch, ' dcr true : ', g_dcr[par].Eval(vov), ' dcr scaled : ', s_dcr)
+
+for par in pars:
+    if par in pars_to_scale:
+        g_data_final[par] = g_data_scaled[par]
+        g_stoch_final[par] = g_stoch_scaled[par]
+        g_noise_final[par] = g_noise_scaled[par]
         if not 'nonIrr' in nameComparison:
-            s_dcr = gDCR[par].Eval(vov)/enScale[par]
-            gDCR_scaled[par].SetPoint(i, vov, s_dcr)  
-            gDCR_scaled[par].SetPointError(i, 0, gDCR[par].GetErrorY(i)/enScale[par]) 
+            g_dcr_final[par] = g_dcr_scaled[par]
+    else:
+        g_data_final[par] = g_data[par]
+        g_stoch_final[par] = g_stoch[par]
+        g_noise_final[par] = g_noise[par]
+        if not 'nonIrr' in nameComparison:
+            g_dcr_final[par] = g_dcr[par]
 
-        s_tot = math.sqrt(s_noise*s_noise + s_stoch*s_stoch + s_dcr*s_dcr)
-        gData_scaled[par].SetPoint(i, vov, s_tot) 
-        gData_scaled[par].SetPointError(i, 0, gData[par].GetErrorY(i)/enScale[par]) 
 
-        print("tot : ", s_tot, " ---- noise true : ", sigma_noise(sr,"2c"), "  noise scaled: ", s_noise, "  stoch true ", gStoch[par].Eval(vov), "  stoch scaled ", s_stoch, ' dcr true : ', gDCR[par].Eval(vov), ' dcr scaled : ', s_dcr)
-
+        
 # plot        
 for par in pars:
     c = ROOT.TCanvas('c_timeResolution_components_%s_%s_vs_Vov'%(par, nameComparison), 'c_timeResolution_components_%s_%s_vs_Vov'%(par, nameComparison), 650, 500)
     hPad = ROOT.gPad.DrawFrame(0., 0., 4.0, ymax)
     #if (nameComparison == '2E14'): hPad = ROOT.gPad.DrawFrame(0., 0., 2., 160.)
     if '2E14' in nameComparison:
-        hPad = ROOT.gPad.DrawFrame(gData_scaled[par].GetX()[0] - 0.2, 0., gData_scaled[par].GetX()[0] + 1.2, ymax)
+        hPad = ROOT.gPad.DrawFrame(g_data_scaled[par].GetX()[0] - 0.2, 0., g_data_scaled[par].GetX()[0] + 1.2, ymax)
     hPad.SetTitle(";V_{OV} [V];time resolution [ps]")
     hPad.Draw()
     ROOT.gPad.SetTicks(1)
     
-    gData_scaled[par].SetMarkerStyle(20)
-    gData_scaled[par].SetMarkerSize(1)
-    gData_scaled[par].SetMarkerColor(1)
-    gData_scaled[par].SetLineColor(1)
-    gData_scaled[par].SetLineWidth(2)
-    gData_scaled[par].Draw('plsame')
-    gNoise_scaled[par].SetLineWidth(2)
-    gNoise_scaled[par].SetLineColor(ROOT.kBlue)
-    gNoise_scaled[par].SetFillColor(ROOT.kBlue)
-    gNoise_scaled[par].SetFillColorAlpha(ROOT.kBlue,0.5)
-    gNoise_scaled[par].SetFillStyle(3004)
-    gNoise_scaled[par].Draw('E3lsame')
-    gStoch_scaled[par].SetLineWidth(2)
-    gStoch_scaled[par].SetLineColor(ROOT.kGreen+2)
-    gStoch_scaled[par].SetFillColor(ROOT.kGreen+2)
-    gStoch_scaled[par].SetFillStyle(3001)
-    gStoch_scaled[par].SetFillColorAlpha(ROOT.kGreen+2,0.5)
-    gStoch_scaled[par].Draw('E3lsame')
+    g_data_final[par].SetMarkerStyle(20)
+    g_data_final[par].SetMarkerSize(1)
+    g_data_final[par].SetMarkerColor(1)
+    g_data_final[par].SetLineColor(1)
+    g_data_final[par].SetLineWidth(2)
+    g_data_final[par].Draw('plsame')
+    g_noise_final[par].SetLineWidth(2)
+    g_noise_final[par].SetLineColor(ROOT.kBlue)
+    g_noise_final[par].SetFillColor(ROOT.kBlue)
+    g_noise_final[par].SetFillColorAlpha(ROOT.kBlue,0.5)
+    g_noise_final[par].SetFillStyle(3004)
+    g_noise_final[par].Draw('E3lsame')
+    g_stoch_final[par].SetLineWidth(2)
+    g_stoch_final[par].SetLineColor(ROOT.kGreen+2)
+    g_stoch_final[par].SetFillColor(ROOT.kGreen+2)
+    g_stoch_final[par].SetFillStyle(3001)
+    g_stoch_final[par].SetFillColorAlpha(ROOT.kGreen+2,0.5)
+    g_stoch_final[par].Draw('E3lsame')
     if not 'nonIrr' in nameComparison:
-        gDCR_scaled[par].SetLineWidth(2)
-        gDCR_scaled[par].SetLineColor(ROOT.kOrange+2)
-        gDCR_scaled[par].SetFillColor(ROOT.kOrange+2)
-        gDCR_scaled[par].SetFillStyle(3005)
-        gDCR_scaled[par].Draw('E3lsame')
+        g_dcr_final[par].SetLineWidth(2)
+        g_dcr_final[par].SetLineColor(ROOT.kOrange+2)
+        g_dcr_final[par].SetFillColor(ROOT.kOrange+2)
+        g_dcr_final[par].SetFillStyle(3005)
+        g_dcr_final[par].Draw('E3lsame')
 
     leg = ROOT.TLegend(0.60, 0.60, 0.89, 0.89)
     leg.SetBorderSize(0)
     leg.SetFillColor(0)
     leg.SetTextFont(42)
     leg.SetTextSize(0.050)
-    leg.AddEntry(gData_scaled[par], 'data', 'PL')
-    leg.AddEntry(gNoise_scaled[par], 'noise', 'FL')
-    leg.AddEntry(gStoch_scaled[par], 'stochastic', 'FL')    
+    leg.AddEntry(g_data_final[par], 'data', 'PL')
+    leg.AddEntry(g_noise_final[par], 'noise', 'FL')
+    leg.AddEntry(g_stoch_final[par], 'stochastic', 'FL')    
     if not 'nonIrr' in nameComparison:
-        leg.AddEntry(gDCR_scaled[par], 'DCR', 'FL')    
+        leg.AddEntry(g_dcr_final[par], 'DCR', 'FL')    
     leg.Draw()
     
     tl = ROOT.TLatex()
     tl.SetNDC()
     tl.SetTextFont(42)
     tl.SetTextSize(0.050)
-    tl.DrawLatex(0.20,0.86,'%s'%plotAttrs[par][2])
+    tl.DrawLatex(0.20,0.86,'HPK, %s'%plotAttrs[par][2])
 
     tl3 = ROOT.TLatex()
     tl3.SetNDC()

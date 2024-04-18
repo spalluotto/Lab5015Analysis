@@ -13,6 +13,8 @@ plotsdir = '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/'
 color_code = True
 marker_code = True
 tofhirVersion = '2c'
+
+verbose = True
 # ------------------ 
 
 
@@ -57,24 +59,35 @@ elif comparisonNum == 4:
 
     
 elif comparisonNum == 5:
-    modules =       ['LYSO819', 'LYSO819',       'LYSO819']
-    temperatures =  ['-37',     '-32',           '-27']
-    extraName =     ['_angle52','_angle52',      '_angle52']
-    extraLabel =    ['',        '',              '']
+    print("!! -- WARNING -- !!\nHARD-CODED : 819 and 829 currents and data taken from may TB") # moduleDict includes a "if statement" to take may current 
+    tofhirVersion = '2x'
+    plotsdir = '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
+    modules =       ['LYSO819', 'LYSO819',       'LYSO819', 'LYSO819']
+    temperatures =  ['-37',     '-32',           '-27', '-22']
+    extraName =     ['_angle52','_angle52',      '_angle52', '_angle52']
+    extraLabel =    ['',        '',              '', '']
     outSuffix =     'HPK_1E14_LYSO819_temperatures'
     color_code = False
-    color_map = [860,800,2]
+    color_map = [860,870,800,2]
+    # modules =       ['LYSO819', 'LYSO819',       'LYSO819']
+    # temperatures =  ['-37',     '-32',           '-27']
+    # extraName =     ['_angle52','_angle52',      '_angle52']
+    # extraLabel =    ['',        '',              '']
 
+    
 
 # ---- MAY TB DATA ------
 elif comparisonNum == 6:
+    print("!! -- WARNING -- !!\nHARD-CODED : 819 and 829 currents taken from may TB")
+    tofhirVersion = '2x'
     plotsdir = '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
     modules =       ['LYSO829', 'LYSO829',       'LYSO829',    'LYSO829']
     temperatures =  ['12',      '0',             '-19',        '-32']
     extraName =     ['_angle52','_angle52',      '_angle52',   '_angle52']
     extraLabel =    ['',        '',              '',           '']
     outSuffix =     'HPK_1E13_LYSO829_temperatures'
-
+    color_code = False
+    color_map = [2,800,870,860]
 
     
 
@@ -135,7 +148,6 @@ elif comparisonNum == 30:
 
 
 
-verbose = False
 
 if len(modules) != len(temperatures):
     print('ERROR: either one LYSO or temperature is missing')
@@ -242,6 +254,7 @@ g_Noise_vs_Vov     = {}
 g_Stoch_vs_Vov     = {}
 g_TotExp_vs_Vov    = {}
 
+g_current_vs_Vov   = {}
 g_DCR_vs_Vov       = {}
 g_bestTh_vs_Vov    = {}
 g_SR_vs_Vov        = {}
@@ -347,6 +360,7 @@ for it,sipm in enumerate(sipmTypes):
     g_TotExp_vs_Vov[sipm]     = {}
 
     g_DCR_vs_Vov[sipm]       = {}
+    g_current_vs_Vov[sipm]   = ROOT.TGraphErrors()
     g_SR_vs_Vov[sipm]        = {}
     g_bestTh_vs_Vov[sipm]    = {}
     g_DCR_vs_Npe[sipm]       = {}
@@ -421,7 +435,6 @@ for it,sipm in enumerate(sipmTypes):
         g_TotExp_vs_Vov[sipm][bar]    = ROOT.TGraphErrors()
         g_DCR_vs_Vov[sipm][bar]       = ROOT.TGraphErrors()
 
-
         g_Stoch_vs_Npe[sipm][bar]     = ROOT.TGraphErrors()
         g_DCR_vs_Npe[sipm][bar]       = ROOT.TGraphErrors()
 
@@ -438,8 +451,15 @@ for it,sipm in enumerate(sipmTypes):
 
     # --- loop on ov ----        g_data = tRes vs vov
         for ov in Vovs[sipm]:
+
+            if verbose:
+                print("\nov: ", ov)
             ovEff = Vovs_eff(sipm, ov)
 
+            # -- current vs ov eff
+            current = getVovEffDCR(sipm, ov)[2]
+            g_current_vs_Vov[sipm].SetPoint(g_current_vs_Vov[sipm].GetN(), ovEff, current)
+            
             # --- get measured t_res
             s_data = g_data[sipm][bar].Eval(ovEff)
             indref = [i for i in range(0, g_data[sipm][bar].GetN()) if g_data[sipm][bar].GetPointX(i) == ovEff]
@@ -508,6 +528,9 @@ for it,sipm in enumerate(sipmTypes):
             if (srL<0 and srR<0): continue
             errSR = math.sqrt(errSR*errSR+errSRsyst*errSRsyst*sr*sr) 
 
+            if errSR>5:
+                continue
+            
             s_noise = sigma_noise(sr, tofhirVersion)
             err_s_noise =  0.5*(sigma_noise(sr*(1-errSR/sr), tofhirVersion )-sigma_noise(sr*(1+errSR/sr), tofhirVersion) )
 
@@ -547,14 +570,21 @@ for it,sipm in enumerate(sipmTypes):
             g_Stoch_vs_Vov[sipm][bar].SetPoint(g_Stoch_vs_Vov[sipm][bar].GetN(), ovEff, s_stoch)
             g_Stoch_vs_Vov[sipm][bar].SetPointError(g_Stoch_vs_Vov[sipm][bar].GetN()-1, 0, err_s_stoch)
 
+            if verbose:
+                print("\nsipm _ ", sipm, '  ov: ', ov)
+                print(' s_data ', s_data, '  s_stoch  ', s_stoch, '   s_noise  ',s_noise)
 
             # compute sigma_DCR as difference in quadrature between measured tRes and noise, stoch
             if ( s_data*s_data - s_stoch*s_stoch - s_noise*s_noise > 0):
                 s_dcr = math.sqrt( s_data*s_data - s_stoch*s_stoch - s_noise*s_noise )
                 err_s_dcr = 1./s_dcr * math.sqrt( pow( err_s_data*s_data,2) + pow( err_s_stoch*s_stoch,2) + pow(err_s_noise*s_noise,2))
+                if verbose:
+                    print("\ncheck : ", s_dcr)
 
+                
                 g_DCR_vs_Vov[sipm][bar].SetPoint(g_DCR_vs_Vov[sipm][bar].GetN(), ovEff, s_dcr)
                 g_DCR_vs_Vov[sipm][bar].SetPointError(g_DCR_vs_Vov[sipm][bar].GetN()-1, 0, err_s_dcr)
+
                 if bar in goodbars[sipm][ov]:
                     g_DCR_vs_bar[sipm][ov].SetPoint( g_DCR_vs_bar[sipm][ov].GetN(), bar, s_dcr )
                     g_DCR_vs_bar[sipm][ov].SetPointError( g_DCR_vs_bar[sipm][ov].GetN()-1, 0,  err_s_dcr)
@@ -588,7 +618,9 @@ for it,sipm in enumerate(sipmTypes):
             g_Noise_vs_SR[sipm][ov].SetPoint(g_Noise_vs_SR[sipm][ov].GetN(), sr, s_noise)
             g_Noise_vs_SR[sipm][ov].SetPointError(g_Noise_vs_SR[sipm][ov].GetN()-1, errSR, err_s_noise)
 
-            
+
+            if verbose:
+                print("end loop")
 
 
 if verbose:
@@ -626,13 +658,14 @@ for sipm in sipmTypes:
 
     g_DCR_vs_SR_average[sipm] = ROOT.TGraphErrors()
 
+    print("\n sipm ", sipm)
     for ov in Vovs[sipm]:
         ovEff = Vovs_eff(sipm, ov) 
         dcr   = DCR(sipm, ov)
         staticCurrent = float(current_(sipm,ov)) * 1E-03
         #staticCurrent = dcr*1E09 * Gain_(ovEff,sipm) * 1.602E-19
         staticPower = staticCurrent * (37. + ovEff) * 1000.    # in mW
-        print('static power: ', staticPower)
+        print('ov   : ',ov ,'static power: ', staticPower)
 
         if (ov in  g_SR_vs_bar[sipm].keys()): 
 
@@ -1020,7 +1053,62 @@ for bar in range(0,16):
 
 
 
+# --- current vs Vov Eff
+c =  ROOT.TCanvas('c_data_average_vs_Vov', 'c_data_average_vs_Vov',600,500)
+c.SetGridx()
+c.SetGridy()
+c.cd()
+hdummy = ROOT.TH2F('hdummy','',16, 0.0, 2.0 ,100, 0,120)
+hdummy.GetXaxis().SetTitle('V_{OV}^{eff} [V]')
+hdummy.GetYaxis().SetTitle('#sigma_{t} [ps]')
+hdummy.Draw()
+for sipm in sipmTypes:
+    g_data_average[sipm].SetMarkerStyle(markers[sipm])
+    g_data_average[sipm].SetMarkerColor(cols[sipm])
+    g_data_average[sipm].SetLineWidth(1)
+    g_data_average[sipm].SetLineColor(cols[sipm])
+    g_data_average[sipm].Draw('plsame')
+    outfile.cd()
+leg2.Draw()
 
+cms_logo = draw_logo()
+cms_logo.Draw()
+c.SaveAs(outdir+'/'+c.GetName()+'.png')
+c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
+hdummy.Delete()
+del hdummy
+del c
+
+
+
+
+# --- current vs Vov Eff
+c =  ROOT.TCanvas('c_current_vs_Vov', 'c_current_vs_Vov',600,500)
+c.SetGridx()
+c.SetGridy()
+c.cd()
+hdummy = ROOT.TH2F('hdummy','',16, 0.0, 2.0 ,100, 0,max(g_current_vs_Vov[sipm].GetY()))
+hdummy.GetXaxis().SetTitle('V_{OV}^{eff} [V]')
+hdummy.GetYaxis().SetTitle('I')
+hdummy.Draw()
+for sipm in sipmTypes:
+    g_current_vs_Vov[sipm].Sort()
+    g_current_vs_Vov[sipm].SetMarkerStyle(markers[sipm])
+    g_current_vs_Vov[sipm].SetMarkerColor(cols[sipm])
+    g_current_vs_Vov[sipm].SetLineWidth(1)
+    g_current_vs_Vov[sipm].SetLineColor(cols[sipm])
+    g_current_vs_Vov[sipm].Draw('plsame')
+    outfile.cd()
+    g_current_vs_Vov[sipm].Write('g_current_vs_Vov_%s'%(sipm))
+leg2.Draw()
+
+cms_logo = draw_logo()
+cms_logo.Draw()
+c.SaveAs(outdir+'/'+c.GetName()+'.png')
+c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
+hdummy.Delete()
+del hdummy
+del c
 
 
 # average slew rate vs OV
