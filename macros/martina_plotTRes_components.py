@@ -27,11 +27,10 @@ ROOT.gStyle.SetTitleOffset(1.05,'X')
 ROOT.gStyle.SetTitleOffset(1.1,'Y')
 ROOT.gStyle.SetLegendFont(42)
 ROOT.gStyle.SetLegendTextSize(0.045)
+ROOT.gStyle.SetPadRightMargin(0.05)
 ROOT.gStyle.SetPadTopMargin(0.07)
-ROOT.gStyle.SetPadRightMargin(0.07)
 ROOT.gROOT.SetBatch(True)
 ROOT.gErrorIgnoreLevel = ROOT.kWarning
-
 
 
 # ---- EDIT ---- 
@@ -52,6 +51,10 @@ fnames = {}
 gnames = {}
 labels = {}
 
+
+ymax = 100
+xmax = 4.
+xmin = 0.
 
 # non irr cell sizes
 if compareNum == 2:
@@ -154,7 +157,7 @@ elif compareNum == 1:
                   20 : [21, ROOT.kBlue,     '20 #mum']
                  }
     ymax = 120.
-
+    xmax = 1.6
 
 
 # types - irradiated 2E14
@@ -177,8 +180,10 @@ elif compareNum == 5:
                   'T1' : [20, ROOT.kGreen+2,  'type 1'],
                   'T2' : [21, ROOT.kBlue,     'type 2'],
                   'T3' : [22, ROOT.kRed,      'type 3']}
-    ymax = 120.
-
+    ymax = 80.
+    xmax = 1.6
+    xmin = 0.4
+    
 # 2E14 rr angles
 elif compareNum == 6:
     nameComparison = '2E14_angles'
@@ -203,7 +208,7 @@ elif compareNum == 6:
                   '52' : [21, ROOT.kBlue,     '52^{o}'],
                   '64' : [22, ROOT.kRed,      '64^{o}']}
     ymax = 120.
-
+    xmax = 1.6
 
 
 
@@ -377,11 +382,11 @@ for par in pars:
         
 # plot        
 for par in pars:
-    c = ROOT.TCanvas('c_timeResolution_components_%s_%s_vs_Vov'%(par, nameComparison), 'c_timeResolution_components_%s_%s_vs_Vov'%(par, nameComparison), 650, 500)
-    hPad = ROOT.gPad.DrawFrame(0., 0., 4.0, ymax)
+    c = ROOT.TCanvas('c_timeResolution_components_%s_%s_vs_Vov'%(par, nameComparison), 'c_timeResolution_components_%s_%s_vs_Vov'%(par, nameComparison), 600, 500)
+    hPad = ROOT.gPad.DrawFrame(xmin, 0., xmax, ymax)
     #if (nameComparison == '2E14'): hPad = ROOT.gPad.DrawFrame(0., 0., 2., 160.)
-    if '2E14' in nameComparison:
-        hPad = ROOT.gPad.DrawFrame(g_data_scaled[par].GetX()[0] - 0.2, 0., g_data_scaled[par].GetX()[0] + 1.2, ymax)
+    #    if '2E14' in nameComparison:
+        #hPad = ROOT.gPad.DrawFrame(g_data_scaled[par].GetX()[0] - 0.2, 0., g_data_scaled[par].GetX()[0] + 1.2, ymax)
     hPad.SetTitle(";V_{OV} [V];time resolution [ps]")
     hPad.Draw()
     ROOT.gPad.SetTicks(1)
@@ -417,7 +422,7 @@ for par in pars:
     leg.SetTextFont(42)
     leg.SetTextSize(0.050)
     leg.AddEntry(g_data_final[par], 'data', 'PL')
-    leg.AddEntry(g_noise_final[par], 'noise', 'FL')
+    leg.AddEntry(g_noise_final[par], 'electronics', 'FL')
     leg.AddEntry(g_stoch_final[par], 'stochastic', 'FL')    
     if not 'nonIrr' in nameComparison:
         leg.AddEntry(g_dcr_final[par], 'DCR', 'FL')    
@@ -427,7 +432,7 @@ for par in pars:
     tl.SetNDC()
     tl.SetTextFont(42)
     tl.SetTextSize(0.050)
-    tl.DrawLatex(0.20,0.86,'HPK, %s'%plotAttrs[par][2])
+    tl.DrawLatex(0.20,0.86,'HPK, 25 #mum')
 
     tl3 = ROOT.TLatex()
     tl3.SetNDC()

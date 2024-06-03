@@ -2,97 +2,116 @@ from utils import *
 
 parser = argparse.ArgumentParser()  
 parser.add_argument("-n","--comparisonNumber", required = True, type=str, help="comparison number")    
+parser.add_argument('--refTh', action='store_true', help="use a fixed threshold instead of the best threshold")
 args = parser.parse_args()   
 
 
 #---- init ---
-compareNum = int(args.comparisonNumber)
+comparisonNum = int(args.comparisonNumber)
 #-------------
 
 
+#-------------
 plotsdir = '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/'
-
-# settings
-marker_code = True
 color_code = True
-compareToModel = False
-verbose = False
+marker_code = True
 tofhirVersion = '2c'
 
+verbose = False 
+refTh = args.refTh
+# ------------------      
+
+
+# --- different paths
 fnal_dir = '/eos/home-s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/plots'
 may_dir = '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots'
-
 specific_position = False
 add_string = False
+
+compareToModel = False
+# ------
 
 
 # ------ different comparisons ------
 # types
-if compareNum == 1:
-    sipmTypes = ['HPK_nonIrr_LYSO818','HPK_nonIrr_LYSO813','HPK_nonIrr_LYSO816']
-    nameComparison = 'HPK_nonIrr_angle64_T5C_types'
+if comparisonNum == 1:
+    modules = ['LYSO818','LYSO813','LYSO816']
+    temperatures = ['5', '5','5']
+    extraName = ['_angle64', '_angle64', '_angle64']    
     extraLabel = ['','','']
-    extraName = ['_angle64_T5C', '_angle64_T5C', '_angle64_T5C']
+    outSuffix = 'HPK_nonIrr_angle64_T5C_types'
 
 # angles
-elif compareNum == 2:
-    sipmTypes = ['HPK_nonIrr_LYSO818', 'HPK_nonIrr_LYSO818', 'HPK_nonIrr_LYSO818']
-    nameComparison = 'HPK_nonIrr_LYSO818_T5C_angles'
+elif comparisonNum == 2:
+    modules = ['LYSO818', 'LYSO818', 'LYSO818']
+    temperatures = ['5', '5','5']
+    extraName = ['_angle32', '_angle52','_angle64',]
     extraLabel = [' 32^{o}',' 52^{o}', ' 64^{o}']
-    extraName = ['_angle32_T5C', '_angle52_T5C','_angle64_T5C',]
+    outSuffix = 'HPK_nonIrr_LYSO818_T5C_angles'
 
+    
 # sipm cell sizes
-elif compareNum == 3:
-    sipmTypes = ['HPK_nonIrr_LYSO820', 'HPK_nonIrr_LYSO813', 'HPK_nonIrr_LYSO814', 'HPK_nonIrr_LYSO528']
-    nameComparison = 'HPK_nonIrr_angle52_cellSizes_withFNAL'
+elif comparisonNum == 3:
+    modules = ['LYSO820', 'LYSO813', 'LYSO814', 'LYSO528']
+    temperatures = ['5', '5','12','5']
+    extraName = ['_angle52', '_angle52',  '_angle52', '_angle52']    
     extraLabel = ['', '', '  FNAL', '']
+
     specific_position = True
     plots_special = ['%s'%plotsdir, '%s'%plotsdir, '%s'%fnal_dir, '%s'%plotsdir]    
-    extraName = ['_angle52_T5C', '_angle52_T5C',  '_angle52_T12C', '_angle52_T5C']
-#--------------------------------------------------------------------------------------
+    outSuffix = 'HPK_nonIrr_angle52_cellSizes_withFNAL'
 
+    
+# FNAL -- types
+elif comparisonNum == 4:
+    tofhirVersion = '2x'
+    plotsdir = '/eos/home-s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/plots/'
 
-# ---- color settings ----
-if color_code:
-    #color_map = [632, 600, 416]
-    color_map = [806,896,613,886,597,866,429,846,816,413,629,397,590,611,795,1,2,3,4,5,6,7,8,9,10,11]
-if marker_code:
-    marker_map = [20,20,20,20,20,20,20,20]
-# ------------------------
-
-
-
-# --- summary plots names and pulse shape names ----
-# - sipm_base is necessary for retrieving the pulse shape name which does contain also the Vov (loop basis)
-sipm_base = {}
-fnames   = {}
-for it, sipm in enumerate(sipmTypes):
-    sipmTypes[it] = sipm + extraName[it]
-    sipm_base[it] = sipm
-    if specific_position:
-        if add_string and add_str[it] != '':
-            sipmTypes[it] = sipm + extraName[it] + add_str[it]
-        fnames[sipmTypes[it]] = '%s/summaryPlots_%s.root'%(plots_special[it], sipmTypes[it])
-    else:
-        fnames[sipmTypes[it]] = '%s/summaryPlots_%s.root'%(plotsdir, sipmTypes[it])
-
-if verbose:
-    print('sipmTypes: ', sipmTypes , '\t outfile: ', outFileName)
-#---------
-
-
-
-
-
+    modules = ['LYSO818','LYSO813','LYSO816']
+    temperatures = ['12', '12','12']
+    extraName = ['_angle52', '_angle52', '_angle52']
+    extraLabel = ['','','']
+    outSuffix = 'angle52_T12C_types_FNAL'
 
 #--------------------------------------------------------------------------------------
-# ----- output --------
-# - root file
-outFileName = plotsdir+'/plot_tRes_'+nameComparison+'.root'
+
+
+if refTh:
+    outSuffix += "_refTh"
+
+
+if len(modules) != len(temperatures):
+    print('ERROR: either one LYSO or temperature is missing')
+    sys.exit()
+
+sipmTypes = []
+sipmBase = []
+
+outFileName = plotsdir+'/plot_tRes_'+outSuffix+'.root'
 outfile = ROOT.TFile(outFileName, 'RECREATE')
 
-# - plots on web
-outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/plot_tRes/%s/'%nameComparison
+for it,module in enumerate(modules):
+    sipmTypes.append(sipm_(module)+'_'+lyso_(module)+extraName[it]+'_T'+temperatures[it]+'C')
+    print('test: ', sipmTypes[it], '   temp : ', temperatures[it])
+    sipmBase.append(sipm_(module)+'_'+lyso_(module))
+
+
+if verbose:
+    print('module: ', sipmTypes , '\t outfile: ', outfile)
+
+
+if color_code:
+    color_map = [2,210,4,6,7,8,94]
+
+if marker_code:
+    marker_map = [20,20,20,20,20,20,20,20]
+
+
+
+
+
+# ----- output --------
+outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/plot_tRes/%s/'%outSuffix
 if (os.path.exists(outdir)==False):
     os.mkdir(outdir)
 if (os.path.exists(outdir+'/pulseShape')==False):
@@ -126,6 +145,7 @@ if (os.path.exists(outdir+'/tRes_vs_slewRate')==False):
 
 
 # -------- retrieve module infos --------
+fnames   = {}
 labels   = {}
 cols     = {}
 markers  = {}
@@ -136,6 +156,10 @@ NpeFrac  = {}
 thick    = {}
 
 for it, sipm in enumerate(sipmTypes):
+    if specific_position:
+        fnames[sipm]   = '%s/summaryPlots_%s.root'%(plots_special[it], sipm)
+    else:
+        fnames[sipm]   = '%s/summaryPlots_%s.root'%(plotsdir,sipm)
     labels[sipm]   = label_(sipm) + extraLabel[it]
     cols[sipm]     = color_map[it]
     markers[sipm]  = marker_map[it]
@@ -144,7 +168,6 @@ for it, sipm in enumerate(sipmTypes):
     tauRise[sipm]  = tau_rise(sipm)
     NpeFrac[sipm]  = Npe_frac(sipm)
     thick[sipm]    = thickness(sipm)
-
 
 
 if compareToModel:
@@ -163,7 +186,7 @@ errPDE     = 0.05 # assumed uncertainty on PDE (5-10%)
 
 
 g_data = {}
-g_data_average = {}
+g_data_vs_Vov_average = {}
 
 
 # ------ vs Vov -----
@@ -180,10 +203,7 @@ g_Npe_vs_Vov       = {}
 
 # ------ vs Npe / Gain -----
 g_Stoch_vs_Npe     = {}
-g_data_vs_Npe      = {}
-
 g_SR_vs_GainNpe    = {}
-g_data_vs_GainNpe  = {}
 
 # ------ vs bar -----
 g_bestTh_vs_bar    = {}
@@ -197,7 +217,6 @@ g_TotExp_vs_bar       = {}
 g_data_vs_SR        = {}
 g_Stoch_vs_SR      = {}
 g_Noise_vs_SR      = {}
-
 
 
 
@@ -249,12 +268,26 @@ gain   = {}
 
 ##################
 for it,sipm in enumerate(sipmTypes):
+    if verbose:
+        print("\n --- >",sipm)
+        print("opening file ", fnames[sipm])
+
     f[sipm] = ROOT.TFile.Open(fnames[sipm])
+    
     if not f[sipm]:
         print('summary plot file not found')
         sys.exit()
+        
+    if refTh:
+        g_data_vs_Vov_average[sipm] = f[sipm].Get('g_deltaT_totRatioCorr_refTh_vs_vov_enBin01_average')
+    else:
+        g_data_vs_Vov_average[sipm] = f[sipm].Get('g_deltaT_totRatioCorr_bestTh_vs_vov_enBin01_average')
 
-    g_data_average[sipm] = f[sipm].Get('g_deltaT_totRatioCorr_bestTh_vs_vov_enBin01_average')
+    if not isinstance(g_data_vs_Vov_average[sipm], ROOT.TGraphErrors):
+        print("AVERAGE GRAPH NOT FOUND IN SUMMARY PLOTS")
+        sys.exit()
+
+        
     Npe[sipm]                = {}
     gain[sipm]               = {}
 
@@ -270,9 +303,7 @@ for it,sipm in enumerate(sipmTypes):
     g_bestTh_vs_Vov[sipm]    = {}
 
     g_Stoch_vs_Npe[sipm]     = {}
-    g_data_vs_Npe[sipm]      = ROOT.TGraphErrors()
     g_SR_vs_GainNpe[sipm]    = {}
-    g_data_vs_GainNpe[sipm]  = ROOT.TGraphErrors()
 
     g_SR_vs_bar[sipm]        = {}
     g_bestTh_vs_bar[sipm]    = {}
@@ -285,19 +316,19 @@ for it,sipm in enumerate(sipmTypes):
     g_Noise_vs_SR[sipm] = {}
     g_data_vs_SR[sipm] = {}
 
-    g_data_vs_Npe[sipm] = ROOT.TGraphErrors()
-    g_data_vs_GainNpe[sipm] = ROOT.TGraphErrors()
-
 
     if verbose:
         print('retrieving pulse shapes')
 
+
+
     fPS[sipm] = {}
     for ov in Vovs[sipm]:
         if specific_position:
-            fPS[sipm][ov] = ROOT.TFile.Open('%s/pulseShape_%s_Vov%.2f%s.root'%(plots_special[it],sipm_base[it],ov,extraName[it]))
+            fPS[sipm][ov] = ROOT.TFile.Open('%s/pulseShape_%s_Vov%.2f%s_T%sC.root'%(plots_special[it],sipmBase[it],ov,extraName[it],temperatures[it]))
         else:
-            fPS[sipm][ov] = ROOT.TFile.Open('%s/pulseShape_%s_Vov%.2f%s.root'%(plotsdir,sipm_base[it],ov,extraName[it]))
+            fPS[sipm][ov] = ROOT.TFile.Open('%s/pulseShape_%s_Vov%.2f%s_T%sC.root'%(plotsdir,sipmBase[it],ov,extraName[it],temperatures[it]))
+
         if not fPS[sipm][ov]:
             print('pulse shape file not found')
             sys.exit()
@@ -316,9 +347,18 @@ for it,sipm in enumerate(sipmTypes):
         print('retrieving summary plots')
 
     for bar in bars[sipm]:
-        g_data[sipm][bar] = f[sipm].Get('g_deltaT_totRatioCorr_bestTh_vs_vov_bar%02d_enBin01'%bar)
+        if refTh:
+                g_data[sipm][bar] = f[sipm].Get('g_deltaT_totRatioCorr_refTh_vs_vov_bar%02d_enBin01'%bar)
+        else:
+            g_data[sipm][bar] = f[sipm].Get('g_deltaT_totRatioCorr_bestTh_vs_vov_bar%02d_enBin01'%bar)
 
+        if not isinstance(g_data[sipm][bar], ROOT.TGraphErrors):
+            print("GRAPH NOT FOUND IN SUMMARY PLOTS")
+            sys.exit()
+
+            
         if verbose:
+            print(type(g_data[sipm][bar]))
             print('\n check sipm ', sipm , '  bar ', bar)
             for ipoint in range(g_data[sipm][bar].GetN()):
                 print('tres ', g_data[sipm][bar].GetPointY(ipoint), '  ov: ', g_data[sipm][bar].GetPointX(ipoint))
@@ -342,12 +382,14 @@ for it,sipm in enumerate(sipmTypes):
 
         #ov_ref = ov_reference(sipm) # ----> could be hard-coded here --> for non irradiated is 3.5V
         ov_ref = 3.5
-        if 'HPK_nonIrr_LYSO818_angle64' in sipm:
+        if 'LYSO818_angle64' in sipm:
             ov_ref = 1.0        
+        if refTh:
+            ov_ref=1.0
+
         if ov_ref in Vovs[sipm]:
             if verbose:
                 print("computing ref stoch ")
-
                 
             #-------------
             # here I only want to consider the values for ov = 3.5  --> to extract the ref stochastic
@@ -368,6 +410,8 @@ for it,sipm in enumerate(sipmTypes):
             g_psL.SetName('g_pulseShapeL_bar%02d_Vov%.2f'%(bar,ov_ref))
             g_psR.SetName('g_pulseShapeR_bar%02d_Vov%.2f'%(bar,ov_ref))
             timingThreshold = findTimingThreshold(f[sipm].Get('g_deltaT_totRatioCorr_vs_th_bar%02d_Vov%.2f_enBin01'%(bar,ov_ref)))
+            if refTh:
+                timingThreshold = 11
             gtempL = ROOT.TGraphErrors()
             gtempR = ROOT.TGraphErrors()
             srL,err_srL = getSlewRateFromPulseShape(g_psL, timingThreshold, np, gtempL, ov, sipm)
@@ -427,11 +471,16 @@ for it,sipm in enumerate(sipmTypes):
             g_psL.SetName('g_pulseShapeL_bar%02d_Vov%.2f_%s'%(bar,ov,sipm))
             g_psR.SetName('g_pulseShapeR_bar%02d_Vov%.2f_%s'%(bar,ov,sipm))
             timingThreshold = findTimingThreshold(f[sipm].Get('g_deltaT_totRatioCorr_vs_th_bar%02d_Vov%.2f_enBin01'%(bar,ov)))
+            if refTh:
+                timingThreshold = 11
             srL = -1
             srR = -1
             sr = -1
             err_srL = -1
             err_srR = -1
+
+            if verbose:
+                print("draw pulse shape")
 
             # draw pulse shape
             c = ROOT.TCanvas('c_%s_%s'%(g_psL.GetName().replace('g_pulseShapeL','pulseShape'),sipm),'',600,500)  
@@ -459,6 +508,8 @@ for it,sipm in enumerate(sipmTypes):
             c.SaveAs(outdir+'/pulseShape/'+c.GetName()+'.png')   
             hdummy.Delete()
 
+            if verbose:
+                print("computing slew rate")
 
             # compute slew rate for each ov 
             if (srL>0 and srR>0):
@@ -511,6 +562,8 @@ for it,sipm in enumerate(sipmTypes):
             g_Noise_vs_SR[sipm][ov].SetPoint(g_Noise_vs_SR[sipm][ov].GetN(), sr, s_noise)
             g_Noise_vs_SR[sipm][ov].SetPointError(g_Noise_vs_SR[sipm][ov].GetN()-1, errSR, err_s_noise)
 
+            if verbose:
+                print("computing stoch")
 
             # compute s_stoch as diff in quadrature between measured tRes and noise term
             if ( s_meas > s_noise):
@@ -571,20 +624,31 @@ if verbose:
 rms_thresh = 1
 
 g_SR_vs_Vov_average = {}
+g_SR_vs_GainNpe_average = {}
 g_Noise_vs_Vov_average = {}
 g_Stoch_vs_Vov_average = {}
 g_StochExp_vs_Vov_average = {}
 g_TotExp_vs_Vov_average = {}
 
+g_SR_vs_GainPDE_average = {}
+g_Stoch_vs_PDE_average = {}
+g_Stoch_vs_Npe_average = {}
+
 
 for sipm in sipmTypes:
     print("\n ", sipm)
     g_SR_vs_Vov_average[sipm]     = ROOT.TGraphErrors()
+    g_SR_vs_GainNpe_average[sipm] = ROOT.TGraphErrors()
     g_Noise_vs_Vov_average[sipm]  = ROOT.TGraphErrors()
     g_Stoch_vs_Vov_average[sipm]  = ROOT.TGraphErrors()
     g_TotExp_vs_Vov_average[sipm] = ROOT.TGraphErrors()
     g_StochExp_vs_Vov_average[sipm] = ROOT.TGraphErrors()
 
+    g_SR_vs_GainPDE_average[sipm] = ROOT.TGraphErrors()
+    g_Stoch_vs_PDE_average[sipm] = ROOT.TGraphErrors()
+    g_Stoch_vs_Npe_average[sipm] = ROOT.TGraphErrors()
+
+    
     for ov in Vovs[sipm]:
         if (ov in  g_SR_vs_bar[sipm].keys()): 
 
@@ -597,6 +661,9 @@ for sipm in sipmTypes:
             g_SR_vs_Vov_average[sipm].SetPoint(g_SR_vs_Vov_average[sipm].GetN(), ov, sr)
             g_SR_vs_Vov_average[sipm].SetPointError(g_SR_vs_Vov_average[sipm].GetN()-1, 0, fitpol0_sr.GetParError(0))
 
+            g_SR_vs_GainNpe_average[sipm].SetPoint(g_SR_vs_GainNpe_average[sipm].GetN(), gain[sipm][ov]*Npe[sipm][ov], sr)
+            g_SR_vs_GainNpe_average[sipm].SetPointError(g_SR_vs_GainNpe_average[sipm].GetN()-1, 0, fitpol0_sr.GetParError(0))
+            
             # noise using average SR
             g_Noise_vs_Vov_average[sipm].SetPoint(g_Noise_vs_Vov_average[sipm].GetN(), ov, sigma_noise(sr, tofhirVersion))
             sr_err = max(fitpol0_sr.GetParError(0), errSRsyst*sr)
@@ -628,8 +695,21 @@ for sipm in sipmTypes:
             g_TotExp_vs_Vov_average[sipm].SetPoint(g_TotExp_vs_Vov_average[sipm].GetN(), ov, tot)
             g_TotExp_vs_Vov_average[sipm].SetPointError(g_TotExp_vs_Vov_average[sipm].GetN()-1, 0, err_tot)
 
-            
 
+            gainPDE = gain[sipm][ov]*PDE_(ov,sipm)
+            g_SR_vs_GainPDE_average[sipm].SetPoint(g_SR_vs_GainPDE_average[sipm].GetN(), gainPDE, sr)
+            g_SR_vs_GainPDE_average[sipm].SetPointError(g_SR_vs_GainPDE_average[sipm].GetN()-1, 0, sr_err)
+            
+            g_Stoch_vs_PDE_average[sipm].SetPoint(g_Stoch_vs_PDE_average[sipm].GetN(), PDE_(ov,sipm), s_stoch)
+            g_Stoch_vs_PDE_average[sipm].SetPointError(g_Stoch_vs_PDE_average[sipm].GetN()-1 , PDE_(ov,sipm)/100*errPDE, err_s_stoch)
+            
+            g_Stoch_vs_Npe_average[sipm].SetPoint(g_Stoch_vs_Npe_average[sipm].GetN(), Npe[sipm][ov], s_stoch)
+            g_Stoch_vs_Npe_average[sipm].SetPointError(g_Stoch_vs_Npe_average[sipm].GetN()-1, 0, err_s_stoch)
+
+
+
+            
+            
 
 #----------------------------------------------------------------------------------
 # ratio of stochatic terms at 3.5 OV
@@ -699,10 +779,12 @@ if verbose:
 #------ draw ------
 #------------------
 
+srmax = 70
+
 
 leg = {}
 
-# Tres vs OV
+# Tres vs OV per bar
 print('Plotting time resolution vs OV...')
 for sipm in sipmTypes:
     leg[sipm] = ROOT.TLegend(0.65,0.60,0.89,0.79)
@@ -777,9 +859,7 @@ for sipm in sipmTypes:
 
 
 # -----------   vs npe  ----------------
-
-
-# SR and best threshold vs Vov
+# SR and best threshold vs Vov per bar
 leg2 = ROOT.TLegend(0.20,0.70,0.45,0.89)
 leg2.SetBorderSize(0)
 leg2.SetFillStyle(0)
@@ -800,8 +880,7 @@ for bar in range(0,16):
     c.cd()
     xmin = 0.0
     xmax = 4.0
-    ymax = 45
-    hdummy = ROOT.TH2F('hdummy_%d'%(bar),'',100,xmin,xmax,100,0,ymax)
+    hdummy = ROOT.TH2F('hdummy_%d'%(bar),'',100,xmin,xmax,100,0,srmax)
     hdummy.GetXaxis().SetTitle('V_{OV}^{eff} [V]')
     hdummy.GetYaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
     hdummy.Draw()
@@ -825,8 +904,8 @@ for bar in range(0,16):
     c = ROOT.TCanvas('c_slewRate_vs_GainNpe_bar%02d'%(bar),'c_slewRate_vs_GainNpe_bar%02d'%(bar),650,500)
     c.SetGridy()
     c.cd()
-    hdummy = ROOT.TH2F('hdummy_%d'%(bar),'',100,0,6E09,100,0,80)
-    hdummy.GetXaxis().SetTitle('gain x Npe')
+    hdummy = ROOT.TH2F('hdummy_%d'%(bar),'',100,0,20E09,100,0,srmax)
+    hdummy.GetXaxis().SetTitle('Gain x N_{pe}')
     hdummy.GetYaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
     hdummy.Draw()
     for sipm in sipmTypes:
@@ -846,7 +925,7 @@ for bar in range(0,16):
     c = ROOT.TCanvas('c_bestTh_vs_Vov_bar%02d'%(bar),'c_bestTh_vs_Vov_bar%02d'%(bar),650,500)
     c.SetGridy()
     c.cd()
-    hdummy = ROOT.TH2F('hdummy_%d'%(bar),'',100,xmin,xmax,100,0,20)
+    hdummy = ROOT.TH2F('hdummy_%d'%(bar),'',100,xmin,xmax,100,0,40)
     hdummy.GetXaxis().SetTitle('V_{OV}^{eff} [V]')
     hdummy.GetYaxis().SetTitle('best threshold [DAC]')
     hdummy.Draw()
@@ -869,13 +948,41 @@ for bar in range(0,16):
 
 
 
+# average data vs OV
+c =  ROOT.TCanvas('c_data_vs_Vov_average','c_data_vs_Vov_average',650,500)
+c.SetGridx()
+c.SetGridy()
+c.cd()    
+hdummy = ROOT.TH2F('hdummy','',16, 0.0, 4.0 ,100, 0,80)
+hdummy.GetXaxis().SetTitle('V_{OV}^{eff} [V]')
+hdummy.GetYaxis().SetTitle('time resolution [ps]')
+hdummy.Draw()
+for sipm in sipmTypes:
+    g_data_vs_Vov_average[sipm].SetMarkerStyle(markers[sipm])
+    g_data_vs_Vov_average[sipm].SetMarkerColor(cols[sipm])
+    g_data_vs_Vov_average[sipm].SetLineWidth(1)
+    g_data_vs_Vov_average[sipm].SetLineColor(cols[sipm])
+    g_data_vs_Vov_average[sipm].Draw('plsame')
+    outfile.cd()
+leg2.Draw()
+
+cms_logo = draw_logo()
+cms_logo.Draw()
+c.SaveAs(outdir+'/'+c.GetName()+'.png')
+c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
+hdummy.Delete()
+
+
+    
+
+# ------- average slew rate vs things ----------------------------
 
 # average slew rate vs OV
 c =  ROOT.TCanvas('c_slewRate_vs_Vov_average','c_slewRate_vs_Vov_average',650,500)
 c.SetGridx()
 c.SetGridy()
 c.cd()    
-hdummy = ROOT.TH2F('hdummy','',16, 0.0, 4.0 ,100, 0,80)
+hdummy = ROOT.TH2F('hdummy','',16, 0.0, 4.0 ,100, 0,srmax)
 hdummy.GetXaxis().SetTitle('V_{OV}^{eff} [V]')
 hdummy.GetYaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
 hdummy.Draw()
@@ -895,31 +1002,24 @@ c.SaveAs(outdir+'/'+c.GetName()+'.png')
 c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
 hdummy.Delete()
 
-
-
-
-
-
-
-# average time resolution vs Npe
-c =  ROOT.TCanvas('c_timeResolution_vs_Npe_average','c_timeResolution_vs_Npe_average',650,500)
+# average slew rate vs gainNpe
+c =  ROOT.TCanvas('c_slewRate_vs_GainNpe_average','c_slewRate_vs_GainNpe_average',650,500)
 c.SetGridx()
 c.SetGridy()
-c.cd()    
-hdummy = ROOT.TH2F('hdummy','',1000, 1000, 6000, 100, 20, 140)
-hdummy.GetXaxis().SetTitle('Npe')
-hdummy.GetYaxis().SetTitle('#sigma_{t} [ps]')
-hdummy.GetXaxis().SetNdivisions(505)
+c.cd()
+hdummy = ROOT.TH2F('hdummy','',100,0,20E09,100,0,srmax)
+hdummy.GetXaxis().SetTitle('Gain x N_{pe}')
+hdummy.GetYaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
 hdummy.Draw()
 for sipm in sipmTypes:
-    g_data_vs_Npe[sipm].SetMarkerStyle(markers[sipm])
-    g_data_vs_Npe[sipm].SetMarkerColor(cols[sipm])
-    g_data_vs_Npe[sipm].SetLineWidth(1)
-    g_data_vs_Npe[sipm].SetLineColor(cols[sipm])
-    g_data_vs_Npe[sipm].Draw('plsame')
+    g_SR_vs_GainNpe_average[sipm].SetMarkerStyle(markers[sipm])
+    g_SR_vs_GainNpe_average[sipm].SetMarkerColor(cols[sipm])
+    g_SR_vs_GainNpe_average[sipm].SetLineWidth(1)
+    g_SR_vs_GainNpe_average[sipm].SetLineColor(cols[sipm])
+    g_SR_vs_GainNpe_average[sipm].Draw('plsame')
     outfile.cd()
-    g_data_vs_Npe[sipm].Write('g_data_vs_Npe_average_%s'%(sipm))
-leg2.Draw()  
+    g_SR_vs_GainNpe_average[sipm].Write('g_SR_vs_GainNpe_average_%s'%(sipm))
+leg2.Draw()
 
 cms_logo = draw_logo()
 cms_logo.Draw()
@@ -927,35 +1027,111 @@ c.SaveAs(outdir+'/'+c.GetName()+'.png')
 c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
 hdummy.Delete()
 
-
-
-
-
-
-# average time resolution vs GainxNpe
-c =  ROOT.TCanvas('c_timeResolution_vs_GainNpe_average','c_timeResolution_vs_GainNpe_average',650,500)
+# average slew rate vs GainPDE
+c =  ROOT.TCanvas('c_slewRate_vs_GainPDE_average','c_slewRate_vs_GainPDE_average',650,500)
 c.SetGridx()
 c.SetGridy()
-c.cd()    
-hdummy = ROOT.TH2F('hdummy','',1000, 0, 6E09, 100, 20, 140)
-hdummy.GetXaxis().SetTitle('Gain x Npe')
-hdummy.GetYaxis().SetTitle('#sigma_{t} [ps]')
-hdummy.GetXaxis().SetNdivisions(505)
+c.cd()
+hdummy = ROOT.TH2F('hdummy','',2, 10000, 1000000, 2, 0, srmax)
+hdummy.GetXaxis().SetTitle('Gain x PDE')
+hdummy.GetYaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
 hdummy.Draw()
 for sipm in sipmTypes:
-    g_data_vs_GainNpe[sipm].SetMarkerStyle(markers[sipm])
-    g_data_vs_GainNpe[sipm].SetMarkerColor(cols[sipm])
-    g_data_vs_GainNpe[sipm].SetLineWidth(1)
-    g_data_vs_GainNpe[sipm].SetLineColor(cols[sipm])
-    g_data_vs_GainNpe[sipm].Draw('plsame')
-leg2.Draw()  
+    g_SR_vs_GainPDE_average[sipm].SetMarkerStyle(markers[sipm])
+    g_SR_vs_GainPDE_average[sipm].SetMarkerColor(cols[sipm])
+    g_SR_vs_GainPDE_average[sipm].SetLineWidth(1)
+    g_SR_vs_GainPDE_average[sipm].SetLineColor(cols[sipm])
+    g_SR_vs_GainPDE_average[sipm].Draw('plsame')
+    outfile.cd()
+    g_SR_vs_GainPDE_average[sipm].Write('g_SR_vs_GainPDE_average_%s'%(sipm))
+leg2.Draw()
+
 cms_logo = draw_logo()
 cms_logo.Draw()
 c.SaveAs(outdir+'/'+c.GetName()+'.png')
 c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
 hdummy.Delete()
-                                       
 
+# ---------------------------------------------------------------------------------------------------
+
+
+# ------ average stochastic vs various things --------------------------
+# average stoch measured (not scaled) vs PDE
+c =  ROOT.TCanvas('c_Stoch_vs_PDE_average','c_Stoch_vs_PDE_average',650,500)
+c.SetGridx()
+c.SetGridy()
+c.cd()
+ROOT.gStyle.SetOptFit(0)
+hdummy = ROOT.TH2F('hdummy','',2, 0.1, 0.7, 2, 0, 105)
+hdummy.GetXaxis().SetTitle('PDE')
+hdummy.GetYaxis().SetTitle('#sigma_{stoch} [ps]')
+hdummy.Draw()
+it = 0
+lat_fit = {}
+for it,sipm in enumerate(sipmTypes):
+    f = ROOT.TF1("", "[0]*pow(x,[1])", 0.2, 0.45)
+    f.SetLineColor(cols[sipm])
+    f.SetLineStyle(4)
+    f.SetLineWidth(1)
+    g_Stoch_vs_PDE_average[sipm].Fit(f, "QRS+")
+    lat_fit[sipm] = ROOT.TLatex(0.75,0.85-it*0.05,"%d x PDE^{%.1f}"%(f.GetParameter(0), f.GetParameter(1) ) )
+    lat_fit[sipm].SetNDC()
+    lat_fit[sipm].SetTextSize(0.03)
+    lat_fit[sipm].SetTextFont(42)
+    lat_fit[sipm].SetTextColor(cols[sipm])
+    lat_fit[sipm].Draw("same")
+    
+    g_Stoch_vs_PDE_average[sipm].SetMarkerStyle(markers[sipm])
+    g_Stoch_vs_PDE_average[sipm].SetMarkerColor(cols[sipm])
+    g_Stoch_vs_PDE_average[sipm].SetLineWidth(1)
+    g_Stoch_vs_PDE_average[sipm].SetLineColor(cols[sipm])
+    g_Stoch_vs_PDE_average[sipm].Draw('psame')
+    outfile.cd()
+    g_Stoch_vs_PDE_average[sipm].Write('g_Stoch_vs_PDE_average_%s'%(sipm))
+    it+=1
+    
+leg2.Draw()
+
+cms_logo = draw_logo()
+cms_logo.Draw()
+c.SaveAs(outdir+'/'+c.GetName()+'.png')
+c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
+hdummy.Delete()
+del(lat_fit)
+
+
+# average stoch measured (not scaled) vs Npe
+c =  ROOT.TCanvas('c_Stoch_vs_Npe_average','c_Stoch_vs_Npe_average',650,500)
+c.SetGridx()
+c.SetGridy()
+c.cd()
+hdummy = ROOT.TH2F('hdummy','',2, 2e3, 14e3, 2, 0, 100)
+hdummy.GetXaxis().SetTitle('Npe')
+hdummy.GetYaxis().SetTitle('#sigma_{stoch} [ps]')
+hdummy.Draw()
+for sipm in sipmTypes:
+    g_Stoch_vs_Npe_average[sipm].SetMarkerStyle(markers[sipm])
+    g_Stoch_vs_Npe_average[sipm].SetMarkerColor(cols[sipm])
+    g_Stoch_vs_Npe_average[sipm].SetLineWidth(1)
+    g_Stoch_vs_Npe_average[sipm].SetLineColor(cols[sipm])
+    g_Stoch_vs_Npe_average[sipm].Draw('plsame')
+    outfile.cd()
+    g_Stoch_vs_Npe_average[sipm].Write('g_Stoch_vs_Npe_average_%s'%(sipm))
+leg2.Draw()
+
+cms_logo = draw_logo()
+cms_logo.Draw()
+c.SaveAs(outdir+'/'+c.GetName()+'.png')
+c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
+hdummy.Delete()
+# ---------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+# ------------------ average time resolution with contributions ----------------------
 # average tRes
 for sipm in sipmTypes:
     lat_s = latex_sipm(sipm)
@@ -966,12 +1142,12 @@ for sipm in sipmTypes:
     hdummy.GetXaxis().SetTitle('V_{OV}^{eff} [V]')
     hdummy.GetYaxis().SetTitle('time resolution [ps]')
     hdummy.Draw()
-    g_data_average[sipm].SetMarkerStyle(20)
-    g_data_average[sipm].SetMarkerSize(1)
-    g_data_average[sipm].SetMarkerColor(1)
-    g_data_average[sipm].SetLineColor(1)
-    g_data_average[sipm].SetLineWidth(2)
-    g_data_average[sipm].Draw('plsame')
+    g_data_vs_Vov_average[sipm].SetMarkerStyle(20)
+    g_data_vs_Vov_average[sipm].SetMarkerSize(1)
+    g_data_vs_Vov_average[sipm].SetMarkerColor(1)
+    g_data_vs_Vov_average[sipm].SetLineColor(1)
+    g_data_vs_Vov_average[sipm].SetLineWidth(2)
+    g_data_vs_Vov_average[sipm].Draw('plsame')
 
     g_Noise_vs_Vov_average[sipm].SetLineWidth(2)
     g_Noise_vs_Vov_average[sipm].SetLineColor(ROOT.kBlue)
@@ -995,7 +1171,7 @@ for sipm in sipmTypes:
 
     lat_s.Draw()
     outfile.cd()
-    g_data_average[sipm].Write('g_data_vs_Vov_average_%s'%sipm)
+    g_data_vs_Vov_average[sipm].Write('g_data_vs_Vov_average_%s'%sipm)
     g_Noise_vs_Vov_average[sipm].Write('g_Noise_vs_Vov_average_%s'%sipm)
     g_Stoch_vs_Vov_average[sipm].Write('g_StochMeas_vs_Vov_average_%s'%sipm)
     g_StochExp_vs_Vov_average[sipm].Write('g_Stoch_vs_Vov_average_%s'%sipm)
@@ -1006,6 +1182,13 @@ for sipm in sipmTypes:
     c.SaveAs(outdir+'/'+c.GetName()+'.png')
     c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
     hdummy.Delete()
+# ---------------------------------------------------------------------------------------------------
+
+
+
+
+
+
 
 
 # SR and best threshold vs bar
@@ -1017,7 +1200,7 @@ for sipm in sipmTypes:
         c.SetGridy()
         c.cd()
         #hdummy = ROOT.TH2F('hdummy5_%d'%(ov),'',100,-0.5,15.5,100,0,15)
-        hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,80)
+        hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,srmax)
         hdummy.GetXaxis().SetTitle('bar')
         hdummy.GetYaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
         hdummy.Draw()
@@ -1036,7 +1219,7 @@ for sipm in sipmTypes:
         c = ROOT.TCanvas('c_bestTh_vs_bar_%s_Vov%.2f'%(sipm,ov),'c_bestTh_vs_bar_%s_Vov%.2f'%(sipm,ov),650,500)
         c.SetGridy()
         c.cd()
-        hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,20)
+        hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,40)
         hdummy.GetXaxis().SetTitle('bar')
         hdummy.GetYaxis().SetTitle('timing threshold [DAC]')
         hdummy.Draw()
@@ -1050,6 +1233,7 @@ for sipm in sipmTypes:
         c.SaveAs(outdir+'/bestTh/'+c.GetName()+'.png')
         c.SaveAs(outdir+'/bestTh/'+c.GetName()+'.pdf')
         hdummy.Delete()
+# ---------------------------------------------------------------------------------------------------
 
 
 
@@ -1063,7 +1247,7 @@ for sipm in sipmTypes:
         c = ROOT.TCanvas('c_stoch_vs_SR_%s_Vov%.2f'%(sipm,ov),'c_stoch_vs_SR_%s_Vov%.2f'%(sipm,ov),650,500)
         c.SetGridy()
         c.cd()
-        hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,0,80,100,0,60)
+        hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,0,srmax,100,0,60)
         hdummy.GetXaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
         hdummy.GetYaxis().SetTitle('#sigma_{stoch} [ps]')
         hdummy.Draw()
@@ -1084,7 +1268,7 @@ for sipm in sipmTypes:
         c = ROOT.TCanvas('c_noise_vs_SR_%s_Vov%.2f'%(sipm,ov),'c_noise_vs_SR_%s_Vov%.2f'%(sipm,ov),650,500)
         c.SetGridy()
         c.cd()
-        hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,0,80,100,0,60)
+        hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,0,srmax,100,0,60)
         hdummy.GetXaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
         hdummy.GetYaxis().SetTitle('#sigma_{noise} [ps]')
         hdummy.Draw()
@@ -1103,7 +1287,7 @@ for sipm in sipmTypes:
         c = ROOT.TCanvas('c_data_vs_SR_%s_Vov%.2f'%(sipm,ov),'c_data_vs_SR_%s_Vov%.2f'%(sipm,ov),650,500)
         c.SetGridy()
         c.cd()
-        hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,140)
+        hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,srmax,100,0,140)
         hdummy.GetXaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
         hdummy.GetYaxis().SetTitle('#sigma_{t} [ps]')
         hdummy.Draw()
@@ -1118,6 +1302,7 @@ for sipm in sipmTypes:
         c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.png')
         c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.pdf')
         hdummy.Delete()
+# ---------------------------------------------------------------------------------------------------
 
 
 

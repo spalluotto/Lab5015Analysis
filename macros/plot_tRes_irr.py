@@ -2,6 +2,7 @@ from utils import *
 
 parser = argparse.ArgumentParser()  
 parser.add_argument("-n","--comparisonNumber", required = True, type=str, help="comparison number")    
+parser.add_argument('--refTh', action='store_true', help="use a fixed threshold instead of the best threshold")
 args = parser.parse_args()   
 
 
@@ -14,7 +15,8 @@ color_code = True
 marker_code = True
 tofhirVersion = '2c'
 
-verbose = True
+verbose = False
+refTh = args.refTh
 # ------------------ 
 
 
@@ -145,8 +147,14 @@ elif comparisonNum == 30:
     extraName =     ['_angle52', '_angle52',      '_angle52']
     extraLabel =    ['',        '',              '']
     outSuffix =     'HPK_2E14_T-35C_angle52_cellSize'
+#--------------------------------------------------------------------------------------
 
 
+if refTh:
+    outSuffix += "_refTh"
+
+
+    
 
 
 if len(modules) != len(temperatures):
@@ -211,6 +219,7 @@ if (os.path.exists(outdir+'/tRes_vs_DCRNpe_perBar')==False):
 
 
 
+
 # -------- retrieve module infos --------
 fnames   = {}
 labels   = {}
@@ -239,14 +248,16 @@ for it, sipm in enumerate(sipmTypes):
 
 
 if verbose:
+    print(fnames)
     print('defining graphs')
 np         = 3
 errSRsyst  = 0.10 # error on the slew rate
 errPDE     = 0.05 # assumed uncertainty on PDE (5-10%)
-
+errGain    = 0.05
 
 g_data = {}
-g_data_average = {}
+
+g_data_vs_Vov_average = {}
 
 
 # ------ vs Vov -----
@@ -255,7 +266,7 @@ g_Stoch_vs_Vov     = {}
 g_TotExp_vs_Vov    = {}
 
 g_current_vs_Vov   = {}
-g_DCR_vs_Vov       = {}
+g_sDCR_vs_Vov       = {}
 g_bestTh_vs_Vov    = {}
 g_SR_vs_Vov        = {}
 g_Npe_vs_Vov       = {}
@@ -263,7 +274,7 @@ g_Npe_vs_Vov       = {}
 
 # ------ vs Npe / Gain -----
 g_Stoch_vs_Npe     = {}
-g_DCR_vs_Npe       = {}
+g_sDCR_vs_Npe       = {}
 g_data_vs_Npe      = {}
 
 g_SR_vs_GainNpe    = {}
@@ -276,10 +287,10 @@ g_Noise_vs_bar     = {}
 g_Stoch_vs_bar     = {}
 g_TotExp_vs_bar       = {}
 
-g_DCR_vs_bar       = {}
+g_sDCR_vs_bar       = {}
 
 # --- vs SR
-g_DCR_vs_SR       = {}
+g_sDCR_vs_SR       = {}
 
 g_data_vs_SR        = {}
 g_Stoch_vs_SR      = {}
@@ -289,6 +300,7 @@ g_Noise_vs_SR      = {}
 g_data_vs_DCR      = {}
 
 g_data_vs_staticPower = {}
+
 
 
 if verbose:
@@ -343,12 +355,22 @@ gain   = {}
 
 ##################
 for it,sipm in enumerate(sipmTypes):
+    if verbose:
+        print("\n  --->  ", fnames[sipm])
     f[sipm] = ROOT.TFile.Open(fnames[sipm])
     if not f[sipm]:
         print('summary plot file not found')
+        sys.exit()
 
-    g_data_average[sipm] = f[sipm].Get('g_deltaT_totRatioCorr_bestTh_vs_vov_enBin01_average')
+    if refTh:
+            g_data_vs_Vov_average[sipm] = f[sipm].Get('g_deltaT_totRatioCorr_refTh_vs_vov_enBin01_average')
+    else:
+            g_data_vs_Vov_average[sipm] = f[sipm].Get('g_deltaT_totRatioCorr_bestTh_vs_vov_enBin01_average')
 
+    if not isinstance(g_data_vs_Vov_average[sipm], ROOT.TGraphErrors):
+        print("AVERAGE GRAPH NOT FOUND IN SUMMARY PLOTS")
+        sys.exit()
+        
     Npe[sipm]                = {}
     gain[sipm]               = {}
 
@@ -359,11 +381,11 @@ for it,sipm in enumerate(sipmTypes):
     g_Stoch_vs_Vov[sipm]     = {}
     g_TotExp_vs_Vov[sipm]     = {}
 
-    g_DCR_vs_Vov[sipm]       = {}
+    g_sDCR_vs_Vov[sipm]       = {}
     g_current_vs_Vov[sipm]   = ROOT.TGraphErrors()
     g_SR_vs_Vov[sipm]        = {}
     g_bestTh_vs_Vov[sipm]    = {}
-    g_DCR_vs_Npe[sipm]       = {}
+    g_sDCR_vs_Npe[sipm]       = {}
 
 
     g_Stoch_vs_Npe[sipm]     = {}
@@ -378,9 +400,9 @@ for it,sipm in enumerate(sipmTypes):
     g_Stoch_vs_bar[sipm]     = {}
     g_TotExp_vs_bar[sipm]       = {}
 
-    g_DCR_vs_bar[sipm]       = {}
+    g_sDCR_vs_bar[sipm]       = {}
 
-    g_DCR_vs_SR[sipm]        = {}
+    g_sDCR_vs_SR[sipm]        = {}
 
     g_Stoch_vs_SR[sipm] = {}
     g_Noise_vs_SR[sipm] = {}
@@ -407,9 +429,9 @@ for it,sipm in enumerate(sipmTypes):
         g_Stoch_vs_bar[sipm][ov]     = ROOT.TGraphErrors()
         g_TotExp_vs_bar[sipm][ov]       = ROOT.TGraphErrors()
 
-        g_DCR_vs_bar[sipm][ov]       = ROOT.TGraphErrors()
+        g_sDCR_vs_bar[sipm][ov]       = ROOT.TGraphErrors()
 
-        g_DCR_vs_SR[sipm][ov]       = ROOT.TGraphErrors()
+        g_sDCR_vs_SR[sipm][ov]       = ROOT.TGraphErrors()
 
         g_Stoch_vs_SR[sipm][ov]      = ROOT.TGraphErrors()
         g_Noise_vs_SR[sipm][ov]      = ROOT.TGraphErrors()
@@ -422,7 +444,14 @@ for it,sipm in enumerate(sipmTypes):
 
 
     for bar in bars[sipm]:
-        g_data[sipm][bar] = f[sipm].Get('g_deltaT_totRatioCorr_bestTh_vs_vov_bar%02d_enBin01'%bar)
+        if refTh:
+            g_data[sipm][bar] = f[sipm].Get('g_deltaT_totRatioCorr_refTh_vs_vov_bar%02d_enBin01'%bar)
+        else:
+            g_data[sipm][bar] = f[sipm].Get('g_deltaT_totRatioCorr_bestTh_vs_vov_bar%02d_enBin01'%bar)
+
+        if not isinstance(g_data[sipm][bar], ROOT.TGraphErrors):
+            print("GRAPH NOT FOUND IN SUMMARY PLOTS")
+            sys.exit()
 
         if verbose:
             print('\n check sipm ', sipm , '  bar ', bar)
@@ -433,10 +462,10 @@ for it,sipm in enumerate(sipmTypes):
         g_Stoch_vs_Vov[sipm][bar]     = ROOT.TGraphErrors()
 
         g_TotExp_vs_Vov[sipm][bar]    = ROOT.TGraphErrors()
-        g_DCR_vs_Vov[sipm][bar]       = ROOT.TGraphErrors()
+        g_sDCR_vs_Vov[sipm][bar]       = ROOT.TGraphErrors()
 
         g_Stoch_vs_Npe[sipm][bar]     = ROOT.TGraphErrors()
-        g_DCR_vs_Npe[sipm][bar]       = ROOT.TGraphErrors()
+        g_sDCR_vs_Npe[sipm][bar]       = ROOT.TGraphErrors()
 
         g_SR_vs_Vov[sipm][bar]        = ROOT.TGraphErrors()
         g_SR_vs_GainNpe[sipm][bar]    = ROOT.TGraphErrors()
@@ -582,16 +611,16 @@ for it,sipm in enumerate(sipmTypes):
                     print("\ncheck : ", s_dcr)
 
                 
-                g_DCR_vs_Vov[sipm][bar].SetPoint(g_DCR_vs_Vov[sipm][bar].GetN(), ovEff, s_dcr)
-                g_DCR_vs_Vov[sipm][bar].SetPointError(g_DCR_vs_Vov[sipm][bar].GetN()-1, 0, err_s_dcr)
+                g_sDCR_vs_Vov[sipm][bar].SetPoint(g_sDCR_vs_Vov[sipm][bar].GetN(), ovEff, s_dcr)
+                g_sDCR_vs_Vov[sipm][bar].SetPointError(g_sDCR_vs_Vov[sipm][bar].GetN()-1, 0, err_s_dcr)
 
                 if bar in goodbars[sipm][ov]:
-                    g_DCR_vs_bar[sipm][ov].SetPoint( g_DCR_vs_bar[sipm][ov].GetN(), bar, s_dcr )
-                    g_DCR_vs_bar[sipm][ov].SetPointError( g_DCR_vs_bar[sipm][ov].GetN()-1, 0,  err_s_dcr)
+                    g_sDCR_vs_bar[sipm][ov].SetPoint( g_sDCR_vs_bar[sipm][ov].GetN(), bar, s_dcr )
+                    g_sDCR_vs_bar[sipm][ov].SetPointError( g_sDCR_vs_bar[sipm][ov].GetN()-1, 0,  err_s_dcr)
                 
                 dcr = DCR(sipm,ovEff)
-                g_DCR_vs_Npe[sipm][bar].SetPoint( g_DCR_vs_Npe[sipm][bar].GetN(), math.sqrt(dcr)/Npe[sipm][ov]/(math.sqrt(30.)/3000.), s_dcr )
-                g_DCR_vs_Npe[sipm][bar].SetPointError( g_DCR_vs_Npe[sipm][bar].GetN()-1, 0,  err_s_dcr)
+                g_sDCR_vs_Npe[sipm][bar].SetPoint( g_sDCR_vs_Npe[sipm][bar].GetN(), math.sqrt(dcr)/Npe[sipm][ov]/(math.sqrt(30.)/3000.), s_dcr )
+                g_sDCR_vs_Npe[sipm][bar].SetPointError( g_sDCR_vs_Npe[sipm][bar].GetN()-1, 0,  err_s_dcr)
 
                 # total time resolution   EXPECTED 
                 s_tot = math.sqrt( s_stoch*s_stoch + s_noise*s_noise + s_dcr*s_dcr )
@@ -604,8 +633,8 @@ for it,sipm in enumerate(sipmTypes):
                     g_TotExp_vs_bar[sipm][ov].SetPoint(g_TotExp_vs_bar[sipm][ov].GetN(), bar, s_tot)
                     g_TotExp_vs_bar[sipm][ov].SetPointError(g_TotExp_vs_bar[sipm][ov].GetN()-1, 0, err_s_tot)
 
-                g_DCR_vs_SR[sipm][ov].SetPoint(g_DCR_vs_SR[sipm][ov].GetN(), sr, s_dcr)  #  questo non e normalizzato a sqrt(dcr) !! diverso da quello medio che faccio sotto
-                g_DCR_vs_SR[sipm][ov].SetPointError(g_DCR_vs_SR[sipm][ov].GetN()-1, errSR, err_s_dcr)
+                g_sDCR_vs_SR[sipm][ov].SetPoint(g_sDCR_vs_SR[sipm][ov].GetN(), sr, s_dcr)  #  questo non e normalizzato a sqrt(dcr) !! diverso da quello medio che faccio sotto
+                g_sDCR_vs_SR[sipm][ov].SetPointError(g_sDCR_vs_SR[sipm][ov].GetN()-1, errSR, err_s_dcr)
 
                     
             # tRes contributions vs SR
@@ -634,38 +663,49 @@ g_SR_vs_Vov_average = {}
 g_Noise_vs_Vov_average = {}
 g_Stoch_vs_Vov_average = {}
 
-g_DCR_vs_Vov_average = {}
+g_sDCR_vs_Vov_average = {}
 g_TotExp_vs_Vov_average = {}
 
-g_DCR_vs_DCRNpe_average = {}
-g_DCR_vs_DCRNpe_average_all = ROOT.TGraphErrors()
+g_sDCR_vs_DCRNpe_average = {}
+g_sDCR_vs_DCRNpe_average_all = ROOT.TGraphErrors()
 
-g_DCRNpe_vs_DCR_average = {}
-g_DCRNpe_vs_DCR_average_all = ROOT.TGraphErrors()
+g_sDCRNpe_vs_DCR_average = {}
+g_sDCRNpe_vs_DCR_average_all = ROOT.TGraphErrors()
 
-g_DCR_vs_SR_average = {}
+g_sDCR_vs_SR_average = {}
+
+# ---
+
+g_Stoch_vs_Npe_average = {}
+g_SR_vs_GainPDE_average = {}
 
 
 for sipm in sipmTypes:
     g_SR_vs_Vov_average[sipm]     = ROOT.TGraphErrors()
-    g_DCR_vs_DCRNpe_average[sipm] = ROOT.TGraphErrors()
-    g_DCRNpe_vs_DCR_average[sipm] = ROOT.TGraphErrors()
+    g_sDCR_vs_DCRNpe_average[sipm] = ROOT.TGraphErrors()
+    g_sDCRNpe_vs_DCR_average[sipm] = ROOT.TGraphErrors()
     
     g_Noise_vs_Vov_average[sipm]  = ROOT.TGraphErrors()
     g_Stoch_vs_Vov_average[sipm]  = ROOT.TGraphErrors()
-    g_DCR_vs_Vov_average[sipm]    = ROOT.TGraphErrors()
+    g_sDCR_vs_Vov_average[sipm]    = ROOT.TGraphErrors()
     g_TotExp_vs_Vov_average[sipm] = ROOT.TGraphErrors()
 
-    g_DCR_vs_SR_average[sipm] = ROOT.TGraphErrors()
+    g_sDCR_vs_SR_average[sipm] = ROOT.TGraphErrors()
 
-    print("\n sipm ", sipm)
+    
+    g_Stoch_vs_Npe_average[sipm] = ROOT.TGraphErrors()
+    g_SR_vs_GainPDE_average[sipm] = ROOT.TGraphErrors()
+    
+    if verbose:
+        print("\n sipm ", sipm)
     for ov in Vovs[sipm]:
         ovEff = Vovs_eff(sipm, ov) 
         dcr   = DCR(sipm, ov)
         staticCurrent = float(current_(sipm,ov)) * 1E-03
         #staticCurrent = dcr*1E09 * Gain_(ovEff,sipm) * 1.602E-19
         staticPower = staticCurrent * (37. + ovEff) * 1000.    # in mW
-        print('ov   : ',ov ,'static power: ', staticPower)
+        if verbose:
+            print('ov   : ',ov ,'static power: ', staticPower)
 
         if (ov in  g_SR_vs_bar[sipm].keys()): 
 
@@ -695,11 +735,11 @@ for sipm in sipmTypes:
 
             # average dcr
             fitpol0_dcr = ROOT.TF1('fitpol0_dcr','pol0',-100,100)  
-            g_DCR_vs_bar[sipm][ov].Fit(fitpol0_dcr,'QNR')
+            g_sDCR_vs_bar[sipm][ov].Fit(fitpol0_dcr,'QNR')
             s_dcr =  fitpol0_dcr.GetParameter(0)
             err_s_dcr = fitpol0_dcr.GetParError(0)
-            g_DCR_vs_Vov_average[sipm].SetPoint(g_DCR_vs_Vov_average[sipm].GetN(), ovEff, s_dcr)
-            g_DCR_vs_Vov_average[sipm].SetPointError(g_DCR_vs_Vov_average[sipm].GetN()-1, 0, err_s_dcr)
+            g_sDCR_vs_Vov_average[sipm].SetPoint(g_sDCR_vs_Vov_average[sipm].GetN(), ovEff, s_dcr)
+            g_sDCR_vs_Vov_average[sipm].SetPointError(g_sDCR_vs_Vov_average[sipm].GetN()-1, 0, err_s_dcr)
 
             # tot resolution summing noise + stochastic + dcr in quadrature
             tot = math.sqrt( s_stoch*s_stoch + sigma_noise(sr, tofhirVersion)*sigma_noise(sr, tofhirVersion) + s_dcr*s_dcr )
@@ -709,8 +749,8 @@ for sipm in sipmTypes:
 
 
             # sigma dcr ave vs SR average
-            g_DCR_vs_SR_average[sipm].SetPoint(g_DCR_vs_SR_average[sipm].GetN(), sr, s_dcr/math.sqrt(dcr))
-            g_DCR_vs_SR_average[sipm].SetPointError(g_DCR_vs_SR_average[sipm].GetN()-1, fitpol0_sr.GetParError(0), err_s_dcr)
+            g_sDCR_vs_SR_average[sipm].SetPoint(g_sDCR_vs_SR_average[sipm].GetN(), sr, s_dcr/math.sqrt(dcr))
+            g_sDCR_vs_SR_average[sipm].SetPointError(g_sDCR_vs_SR_average[sipm].GetN()-1, fitpol0_sr.GetParError(0), err_s_dcr)
 
             
             # average tRes vs Npe, DCR, static power, GainNpe            
@@ -733,23 +773,26 @@ for sipm in sipmTypes:
             x = math.sqrt(dcr)/Npe[sipm][ov]/ (math.sqrt(30.)/3000)
             x_down = math.sqrt(dcr)/(Npe[sipm][ov]*(1+errPDE) )/ (math.sqrt(30.)/3000)
             x_up   = math.sqrt(dcr)/(Npe[sipm][ov]*(1-errPDE))/ (math.sqrt(30.)/3000)
-            if (g_DCR_vs_bar[sipm][ov].GetN()==0):continue
+            if (g_sDCR_vs_bar[sipm][ov].GetN()==0):continue
 
-            g_DCR_vs_DCRNpe_average[sipm].SetPoint( g_DCR_vs_DCRNpe_average[sipm].GetN(), x,  s_dcr)
-            g_DCR_vs_DCRNpe_average[sipm].SetPointError( g_DCR_vs_DCRNpe_average[sipm].GetN()-1, 0.5*(x_up-x_down), g_DCR_vs_bar[sipm][ov].GetRMS(2))
-            g_DCR_vs_DCRNpe_average_all.SetPoint( g_DCR_vs_DCRNpe_average_all.GetN(), x,  s_dcr)
-            g_DCR_vs_DCRNpe_average_all.SetPointError( g_DCR_vs_DCRNpe_average_all.GetN()-1, 0.5*(x_up-x_down),  g_DCR_vs_bar[sipm][ov].GetRMS(2))
+            g_sDCR_vs_DCRNpe_average[sipm].SetPoint( g_sDCR_vs_DCRNpe_average[sipm].GetN(), x,  s_dcr)
+            g_sDCR_vs_DCRNpe_average[sipm].SetPointError( g_sDCR_vs_DCRNpe_average[sipm].GetN()-1, 0.5*(x_up-x_down), g_sDCR_vs_bar[sipm][ov].GetRMS(2))
+            g_sDCR_vs_DCRNpe_average_all.SetPoint( g_sDCR_vs_DCRNpe_average_all.GetN(), x,  s_dcr)
+            g_sDCR_vs_DCRNpe_average_all.SetPointError( g_sDCR_vs_DCRNpe_average_all.GetN()-1, 0.5*(x_up-x_down),  g_sDCR_vs_bar[sipm][ov].GetRMS(2))
             
             y = s_dcr * Npe[sipm][ov]/6000 
             #err_y = err_s_dcr * Npe[sipm][ov]/6000  # fixme: need to account also for error on Npe
-            err_y = g_DCR_vs_bar[sipm][ov].GetRMS(2) * Npe[sipm][ov]/6000
-            g_DCRNpe_vs_DCR_average[sipm].SetPoint( g_DCRNpe_vs_DCR_average[sipm].GetN(), dcr, y )
-            g_DCRNpe_vs_DCR_average[sipm].SetPointError( g_DCRNpe_vs_DCR_average[sipm].GetN()-1, 0., err_y)
-            g_DCRNpe_vs_DCR_average_all.SetPoint( g_DCRNpe_vs_DCR_average_all.GetN(), dcr, y)
-            g_DCRNpe_vs_DCR_average_all.SetPointError( g_DCRNpe_vs_DCR_average_all.GetN()-1, 0, err_y)
+            err_y = g_sDCR_vs_bar[sipm][ov].GetRMS(2) * Npe[sipm][ov]/6000
+            g_sDCRNpe_vs_DCR_average[sipm].SetPoint( g_sDCRNpe_vs_DCR_average[sipm].GetN(), dcr, y )
+            g_sDCRNpe_vs_DCR_average[sipm].SetPointError( g_sDCRNpe_vs_DCR_average[sipm].GetN()-1, 0., err_y)
+            g_sDCRNpe_vs_DCR_average_all.SetPoint( g_sDCRNpe_vs_DCR_average_all.GetN(), dcr, y)
+            g_sDCRNpe_vs_DCR_average_all.SetPointError( g_sDCRNpe_vs_DCR_average_all.GetN()-1, 0, err_y)
 
+            gainPDE = gain[sipm][ov]*PDE_(ovEff,sipm)
 
-
+            g_SR_vs_GainPDE_average[sipm].SetPoint(g_SR_vs_GainPDE_average[sipm].GetN(), gainPDE, sr)
+            g_SR_vs_GainPDE_average[sipm].SetPointError(g_SR_vs_GainPDE_average[sipm].GetN()-1, 0, sr_err)            
+            #FIXME : errrors missing
 
 
 
@@ -759,9 +802,7 @@ fitFun_tRes_dcr_model = ROOT.TF1('fitFun_tRes_dcr_model','[1] * 2 * pow(x,[0]/0.
 fitFun_tRes_dcr_model.SetParameter(0,0.4)
 fitFun_tRes_dcr_model.SetParameter(1,40)
 fitFun_tRes_dcr_model.SetLineColor(1)
-g_DCR_vs_DCRNpe_average_all.Fit(fitFun_tRes_dcr_model)
-
-
+g_sDCR_vs_DCRNpe_average_all.Fit(fitFun_tRes_dcr_model)
 
 
 
@@ -770,14 +811,16 @@ if verbose:
 
 
 
-####################
-###### draw
-###################
+#################### #################### #################### #################### #################### #################### 
+###### DRAW  #################### #################### #################### #################### #################### ####################
+################### #################### #################### #################### #################### ####################
 
 
 leg = {}
 
-# Tres vs OV
+# --------------------------------------------------------------------------------------------------------------
+# ----- things vs things per bar
+# Tres vs OV -- per bar
 print('Plotting time resolution vs OV...')
 for sipm in sipmTypes:
     leg[sipm] = ROOT.TLegend(0.65,0.60,0.89,0.79)
@@ -791,7 +834,7 @@ for sipm in sipmTypes:
         c.cd()
         xmin = 0.0
         xmax = 2.0
-        hdummy = ROOT.TH2F('hdummy_%s_%d'%(sipm,bar),'',100,xmin,xmax,140,0,140)
+        hdummy = ROOT.TH2F('hdummy_%s_%d'%(sipm,bar),'',100,xmin,xmax,140,0,120)
         hdummy.GetXaxis().SetTitle('V_{OV}^{eff} [V]')
         hdummy.GetYaxis().SetTitle('#sigma_{t} [ps]')
         hdummy.Draw()
@@ -818,12 +861,12 @@ for sipm in sipmTypes:
         g_Stoch_vs_Vov[sipm][bar].SetFillColorAlpha(ROOT.kGreen+2,0.5)
         g_Stoch_vs_Vov[sipm][bar].Draw('E3lsame')
 
-        g_DCR_vs_Vov[sipm][bar].SetLineWidth(2)
-        g_DCR_vs_Vov[sipm][bar].SetLineColor(ROOT.kOrange+2)
-        g_DCR_vs_Vov[sipm][bar].SetFillColor(ROOT.kOrange+2)
-        g_DCR_vs_Vov[sipm][bar].SetFillColorAlpha(ROOT.kOrange+2,0.5)
-        g_DCR_vs_Vov[sipm][bar].SetFillStyle(3001)
-        g_DCR_vs_Vov[sipm][bar].Draw('E3lsame')
+        g_sDCR_vs_Vov[sipm][bar].SetLineWidth(2)
+        g_sDCR_vs_Vov[sipm][bar].SetLineColor(ROOT.kOrange+2)
+        g_sDCR_vs_Vov[sipm][bar].SetFillColor(ROOT.kOrange+2)
+        g_sDCR_vs_Vov[sipm][bar].SetFillColorAlpha(ROOT.kOrange+2,0.5)
+        g_sDCR_vs_Vov[sipm][bar].SetFillStyle(3001)
+        g_sDCR_vs_Vov[sipm][bar].Draw('E3lsame')
 
         g_TotExp_vs_Vov[sipm][bar].SetLineWidth(2)
         g_TotExp_vs_Vov[sipm][bar].SetLineColor(ROOT.kRed+1)
@@ -836,13 +879,13 @@ for sipm in sipmTypes:
         g_data[sipm][bar].Write('g_Data_vs_Vov_%s_bar%02d'%(sipm,  bar))
         g_Noise_vs_Vov[sipm][bar].Write('g_Noise_vs_Vov_%s_bar%02d'%(sipm, bar))
         g_Stoch_vs_Vov[sipm][bar].Write('g_Stoch_vs_Vov_%s_bar%02d'%(sipm, bar))
-        g_DCR_vs_Vov[sipm][bar].Write('g_DCR_vs_Vov_%s_bar%02d'%(sipm, bar))
+        g_sDCR_vs_Vov[sipm][bar].Write('g_DCR_vs_Vov_%s_bar%02d'%(sipm, bar))
 
         if (i==0):
             leg[sipm].AddEntry(g_data[sipm][bar], 'data', 'PL')
             leg[sipm].AddEntry(g_Noise_vs_Vov[sipm][bar], 'noise', 'L')
             leg[sipm].AddEntry(g_Stoch_vs_Vov[sipm][bar], 'stoch', 'L')
-            leg[sipm].AddEntry(g_DCR_vs_Vov[sipm][bar], 'DCR', 'L')
+            leg[sipm].AddEntry(g_sDCR_vs_Vov[sipm][bar], 'DCR', 'L')
 
         leg[sipm].Draw('same')
 
@@ -858,9 +901,9 @@ for sipm in sipmTypes:
         c.SaveAs(outdir+'/tRes_vs_Vov_perBar/'+c.GetName()+'.png')
         c.SaveAs(outdir+'/tRes_vs_Vov_perBar/'+c.GetName()+'.pdf')
         hdummy.Delete()
+        
 
-
-# -----------   vs npe  ----------------
+# -----------   vs npe per bar ----------------
 print('Plotting tRes_DCR vs Npe...')
 
 for bar in range(0,16):      
@@ -875,12 +918,12 @@ for bar in range(0,16):
     hdummy.GetYaxis().SetTitle('#sigma_{t}^{DCR} [ps]')
     hdummy.Draw()
     for sipm in sipmTypes:
-        if (bar not in g_DCR_vs_Npe[sipm].keys()): continue
-        g_DCR_vs_Npe[sipm][bar].SetMarkerStyle(markers[sipm])
-        g_DCR_vs_Npe[sipm][bar].SetMarkerColor(cols[sipm])
-        g_DCR_vs_Npe[sipm][bar].SetLineWidth(1)
-        g_DCR_vs_Npe[sipm][bar].SetLineColor(cols[sipm])
-        g_DCR_vs_Npe[sipm][bar].Draw('psame')
+        if (bar not in g_sDCR_vs_Npe[sipm].keys()): continue
+        g_sDCR_vs_Npe[sipm][bar].SetMarkerStyle(markers[sipm])
+        g_sDCR_vs_Npe[sipm][bar].SetMarkerColor(cols[sipm])
+        g_sDCR_vs_Npe[sipm][bar].SetLineWidth(1)
+        g_sDCR_vs_Npe[sipm][bar].SetLineColor(cols[sipm])
+        g_sDCR_vs_Npe[sipm][bar].Draw('psame')
 
     cms_logo = draw_logo()
     cms_logo.Draw()
@@ -888,81 +931,6 @@ for bar in range(0,16):
     c.SaveAs(outdir+'/tRes_vs_DCRNpe_perBar/'+c.GetName()+'.png')
     c.SaveAs(outdir+'/tRes_vs_DCRNpe_perBar'+c.GetName()+'.pdf')
     hdummy.Delete()
-
-
-# -- DCR vs DCRNpe
-c =  ROOT.TCanvas('c_timeResolutionDCR_vs_DCRNpe_average','c_timeResolutionDCR_vs_DCRNpe_average',600,500)
-c.SetGridx()
-c.SetGridy()
-c.cd()    
-hdummy = ROOT.TH2F('hdummy_%d'%(bar),'',100,0,2.0,100,0,100)
-hdummy.GetXaxis().SetTitle('#sqrt{DCR/30GHz}/(Npe/3000)')
-hdummy.GetYaxis().SetTitle('#sigma_{t}^{DCR} [ps]')
-hdummy.Draw()
-g_DCR_vs_DCRNpe_average_all.SetMarkerSize(0.1)
-g_DCR_vs_DCRNpe_average_all.Draw('p*same')
-fitFun_tRes_dcr_model.Draw('same')
-outfile.cd() 
-g_DCR_vs_DCRNpe_average_all.Write('g_DCR_vs_DCRNpe_average_all')
-for sipm in sipmTypes:
-    g_DCR_vs_DCRNpe_average[sipm].SetMarkerStyle(markers[sipm])
-    g_DCR_vs_DCRNpe_average[sipm].SetMarkerColor(cols[sipm])
-    g_DCR_vs_DCRNpe_average[sipm].SetLineWidth(1)
-    g_DCR_vs_DCRNpe_average[sipm].SetLineColor(cols[sipm])
-    g_DCR_vs_DCRNpe_average[sipm].Draw('psame')
-    outfile.cd() 
-    g_DCR_vs_DCRNpe_average[sipm].Write('g_DCR_vs_DCRNpe_average_%s'%sipm)
-
-cms_logo = draw_logo()
-cms_logo.Draw()
-
-c.SaveAs(outdir+'/'+c.GetName()+'.png')
-c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
-hdummy.Delete()
-
-
-
-# --- DCRNpe vs DCR
-c =  ROOT.TCanvas('c_timeResolutionDCRNpe_vs_DCR_average','c_timeResolutionDCRNpe_vs_DCR_average',600,500)
-c.SetGridx()
-c.SetGridy()
-c.cd()    
-hdummy = ROOT.TH2F('hdummy_%d'%(bar),'',100,0,50,100,0,100)
-hdummy.GetXaxis().SetTitle('DCR[GHz]')
-hdummy.GetYaxis().SetTitle('(Npe/6000) #times #sigma_{t}^{DCR} [ps]')
-hdummy.Draw()
-fitFun_tRes_dcr = ROOT.TF1('fitFun_tRes_dcr','[1] * pow(x/30.,[0])', 0,10)  
-fitFun_tRes_dcr.SetParameter(0,0.5)
-fitFun_tRes_dcr.SetParameter(1,40)
-fitFun_tRes_dcr.SetLineColor(1)
-
-g_DCRNpe_vs_DCR_average_all.Fit(fitFun_tRes_dcr)
-g_DCRNpe_vs_DCR_average_all.SetMarkerSize(0.1)
-g_DCRNpe_vs_DCR_average_all.Draw('p*same')
-fitFun_tRes_dcr.Draw('same')
-outfile.cd() 
-g_DCRNpe_vs_DCR_average_all.Write('g_DCRNpe_vs_DCR_average_all')
-
-for sipm in sipmTypes:
-    g_DCRNpe_vs_DCR_average[sipm].SetMarkerStyle(markers[sipm])
-    g_DCRNpe_vs_DCR_average[sipm].SetMarkerColor(cols[sipm])
-    g_DCRNpe_vs_DCR_average[sipm].SetLineWidth(1)
-    g_DCRNpe_vs_DCR_average[sipm].SetLineColor(cols[sipm])
-    g_DCRNpe_vs_DCR_average[sipm].Draw('psame')
-    outfile.cd() 
-    g_DCRNpe_vs_DCR_average[sipm].Write('g_DCRNpe_vs_DCR_average_%s'%sipm)
-
-cms_logo = draw_logo()
-cms_logo.Draw()
-
-c.SaveAs(outdir+'/'+c.GetName()+'.png')
-c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
-hdummy.Delete()
-
-
-
-
-
 
 # SR and best threshold vs Vov
 leg2 = ROOT.TLegend(0.40,0.65,0.85,0.9)
@@ -1050,10 +1018,122 @@ for bar in range(0,16):
     c.SaveAs(outdir+'/bestTh/'+c.GetName()+'.png')
     c.SaveAs(outdir+'/bestTh/'+c.GetName()+'.pdf')
     hdummy.Delete()
+# --------------------------------------------------------------------------------------------------------------
 
 
 
-# --- current vs Vov Eff
+
+
+
+# --------------------------------------------------------------------------------------------------------------
+# --- sigma DCR vs things
+# --- DCRNpe vs DCR
+c =  ROOT.TCanvas('c_timeResolutionDCRNpe_vs_DCR_average','c_timeResolutionDCRNpe_vs_DCR_average',600,500)
+c.SetGridx()
+c.SetGridy()
+c.cd()    
+hdummy = ROOT.TH2F('hdummy_%d'%(bar),'',100,0,50,100,0,100)
+hdummy.GetXaxis().SetTitle('DCR[GHz]')
+hdummy.GetYaxis().SetTitle('(Npe/6000) #times #sigma_{t}^{DCR} [ps]')
+hdummy.Draw()
+fitFun_tRes_dcr = ROOT.TF1('fitFun_tRes_dcr','[1] * pow(x/30.,[0])', 0,10)  
+fitFun_tRes_dcr.SetParameter(0,0.5)
+fitFun_tRes_dcr.SetParameter(1,40)
+fitFun_tRes_dcr.SetLineColor(1)
+
+g_sDCRNpe_vs_DCR_average_all.Fit(fitFun_tRes_dcr)
+g_sDCRNpe_vs_DCR_average_all.SetMarkerSize(0.1)
+g_sDCRNpe_vs_DCR_average_all.Draw('p*same')
+fitFun_tRes_dcr.Draw('same')
+outfile.cd() 
+g_sDCRNpe_vs_DCR_average_all.Write('g_DCRNpe_vs_DCR_average_all')
+
+for sipm in sipmTypes:
+    g_sDCRNpe_vs_DCR_average[sipm].SetMarkerStyle(markers[sipm])
+    g_sDCRNpe_vs_DCR_average[sipm].SetMarkerColor(cols[sipm])
+    g_sDCRNpe_vs_DCR_average[sipm].SetLineWidth(1)
+    g_sDCRNpe_vs_DCR_average[sipm].SetLineColor(cols[sipm])
+    g_sDCRNpe_vs_DCR_average[sipm].Draw('psame')
+    outfile.cd() 
+    g_sDCRNpe_vs_DCR_average[sipm].Write('g_DCRNpe_vs_DCR_average_%s'%sipm)
+
+cms_logo = draw_logo()
+cms_logo.Draw()
+
+c.SaveAs(outdir+'/'+c.GetName()+'.png')
+c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
+hdummy.Delete()
+
+
+# ---- average sigma DCR vs average slew rate --------
+c =  ROOT.TCanvas('c_DCR_vs_SR_average','c_DCR_vs_SR_average',600,500)
+c.SetGridx()
+c.SetGridy()
+c.cd()    
+hdummy = ROOT.TH2F('hdummy','',20, 0, 35,100, 0, 30)
+hdummy.GetXaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
+hdummy.GetYaxis().SetTitle('#sigma_{t, DCR}/#sqrt{DCR} [ps]')
+hdummy.Draw()
+for sipm in sipmTypes:
+    g_sDCR_vs_SR_average[sipm].SetMarkerStyle(markers[sipm])
+    g_sDCR_vs_SR_average[sipm].SetMarkerColor(cols[sipm])
+    g_sDCR_vs_SR_average[sipm].SetLineWidth(1)
+    g_sDCR_vs_SR_average[sipm].SetLineColor(cols[sipm])
+    g_sDCR_vs_SR_average[sipm].Draw('plsame')
+    outfile.cd()
+    g_sDCR_vs_SR_average[sipm].Write('g_DCR_vs_SR_average_%s'%(sipm))
+leg2.Draw()
+
+
+cms_logo = draw_logo()
+cms_logo.Draw()
+
+c.SaveAs(outdir+'/'+c.GetName()+'.png')
+c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
+hdummy.Delete()
+
+
+
+# -- average DCR vs DCRNpe
+c =  ROOT.TCanvas('c_timeResolutionDCR_vs_DCRNpe_average','c_timeResolutionDCR_vs_DCRNpe_average',600,500)
+c.SetGridx()
+c.SetGridy()
+c.cd()    
+hdummy = ROOT.TH2F('hdummy_%d'%(bar),'',100,0,2.0,100,0,100)
+hdummy.GetXaxis().SetTitle('#sqrt{DCR/30GHz}/(Npe/3000)')
+hdummy.GetYaxis().SetTitle('#sigma_{t}^{DCR} [ps]')
+hdummy.Draw()
+g_sDCR_vs_DCRNpe_average_all.SetMarkerSize(0.1)
+g_sDCR_vs_DCRNpe_average_all.Draw('p*same')
+fitFun_tRes_dcr_model.Draw('same')
+outfile.cd() 
+g_sDCR_vs_DCRNpe_average_all.Write('g_DCR_vs_DCRNpe_average_all')
+for sipm in sipmTypes:
+    g_sDCR_vs_DCRNpe_average[sipm].SetMarkerStyle(markers[sipm])
+    g_sDCR_vs_DCRNpe_average[sipm].SetMarkerColor(cols[sipm])
+    g_sDCR_vs_DCRNpe_average[sipm].SetLineWidth(1)
+    g_sDCR_vs_DCRNpe_average[sipm].SetLineColor(cols[sipm])
+    g_sDCR_vs_DCRNpe_average[sipm].Draw('psame')
+    outfile.cd() 
+    g_sDCR_vs_DCRNpe_average[sipm].Write('g_DCR_vs_DCRNpe_average_%s'%sipm)
+
+cms_logo = draw_logo()
+cms_logo.Draw()
+
+c.SaveAs(outdir+'/'+c.GetName()+'.png')
+c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
+hdummy.Delete()
+
+# --------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+# -------- average things vs Vov
+# --- data average vs Vov Eff
 c =  ROOT.TCanvas('c_data_average_vs_Vov', 'c_data_average_vs_Vov',600,500)
 c.SetGridx()
 c.SetGridy()
@@ -1063,11 +1143,11 @@ hdummy.GetXaxis().SetTitle('V_{OV}^{eff} [V]')
 hdummy.GetYaxis().SetTitle('#sigma_{t} [ps]')
 hdummy.Draw()
 for sipm in sipmTypes:
-    g_data_average[sipm].SetMarkerStyle(markers[sipm])
-    g_data_average[sipm].SetMarkerColor(cols[sipm])
-    g_data_average[sipm].SetLineWidth(1)
-    g_data_average[sipm].SetLineColor(cols[sipm])
-    g_data_average[sipm].Draw('plsame')
+    g_data_vs_Vov_average[sipm].SetMarkerStyle(markers[sipm])
+    g_data_vs_Vov_average[sipm].SetMarkerColor(cols[sipm])
+    g_data_vs_Vov_average[sipm].SetLineWidth(1)
+    g_data_vs_Vov_average[sipm].SetLineColor(cols[sipm])
+    g_data_vs_Vov_average[sipm].Draw('plsame')
     outfile.cd()
 leg2.Draw()
 
@@ -1078,7 +1158,6 @@ c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
 hdummy.Delete()
 del hdummy
 del c
-
 
 
 
@@ -1130,47 +1209,12 @@ for sipm in sipmTypes:
     g_SR_vs_Vov_average[sipm].Write('g_SR_vs_Vov_average_%s'%(sipm))
 leg2.Draw()
 
-
-
 cms_logo = draw_logo()
 cms_logo.Draw()
 c.SaveAs(outdir+'/'+c.GetName()+'.png')
 c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
 hdummy.Delete()
-
-
-
-
-
-
-# --------------------------------------------
-# ---- average DCR vs average slew rate --------
-c =  ROOT.TCanvas('c_DCR_vs_SR_average','c_DCR_vs_SR_average',600,500)
-c.SetGridx()
-c.SetGridy()
-c.cd()    
-hdummy = ROOT.TH2F('hdummy','',20, 0, 35,100, 0, 30)
-hdummy.GetXaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
-hdummy.GetYaxis().SetTitle('#sigma_{t, DCR}/#sqrt{DCR} [ps]')
-hdummy.Draw()
-for sipm in sipmTypes:
-    g_DCR_vs_SR_average[sipm].SetMarkerStyle(markers[sipm])
-    g_DCR_vs_SR_average[sipm].SetMarkerColor(cols[sipm])
-    g_DCR_vs_SR_average[sipm].SetLineWidth(1)
-    g_DCR_vs_SR_average[sipm].SetLineColor(cols[sipm])
-    g_DCR_vs_SR_average[sipm].Draw('plsame')
-    outfile.cd()
-    g_DCR_vs_SR_average[sipm].Write('g_DCR_vs_SR_average_%s'%(sipm))
-leg2.Draw()
-
-
-cms_logo = draw_logo()
-cms_logo.Draw()
-
-c.SaveAs(outdir+'/'+c.GetName()+'.png')
-c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
-hdummy.Delete()
-# --------------------------------------------
+# --------------------------------------------------------------------------------------------------------------
 
 
 
@@ -1180,13 +1224,18 @@ hdummy.Delete()
 
 
 
+
+
+
+
+# ----------- average time resolution vs things -----------
 
 # average time resolution vs Npe
 c =  ROOT.TCanvas('c_timeResolution_vs_Npe_average','c_timeResolution_vs_Npe_average',600,500)
 c.SetGridx()
 c.SetGridy()
 c.cd()    
-hdummy = ROOT.TH2F('hdummy','',1000, 1000, 6000, 100, 20, 140)
+hdummy = ROOT.TH2F('hdummy','',1000, 1000, 10000, 100, 20, 120)
 hdummy.GetXaxis().SetTitle('Npe')
 hdummy.GetYaxis().SetTitle('#sigma_{t} [ps]')
 hdummy.GetXaxis().SetNdivisions(505)
@@ -1209,15 +1258,11 @@ c.SaveAs(outdir+'/'+c.GetName()+'.png')
 c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
 hdummy.Delete()
 
-
-# average time resolution vs DCR
-########################################
-
 c =  ROOT.TCanvas('c_timeResolution_vs_DCR_average','c_timeResolution_vs_DCR_average',600,500)
 c.SetGridx()
 c.SetGridy()
 c.cd()    
-hdummy = ROOT.TH2F('hdummy','',1000, 0, 100, 20, 0, 140)
+hdummy = ROOT.TH2F('hdummy','',1000, 0, 100, 20, 0, 120)
 hdummy.GetXaxis().SetTitle('DCR [GHz]')
 hdummy.GetYaxis().SetTitle('#sigma_{t} [ps]')
 hdummy.Draw()
@@ -1272,7 +1317,7 @@ c =  ROOT.TCanvas('c_timeResolution_vs_GainNpe_average','c_timeResolution_vs_Gai
 c.SetGridx()
 c.SetGridy()
 c.cd()    
-hdummy = ROOT.TH2F('hdummy','',1000, 0, 3E09, 100, 20, 140)
+hdummy = ROOT.TH2F('hdummy','',1000, 0, 3E09, 100, 20, 120)
 hdummy.GetXaxis().SetTitle('Gain x Npe')
 hdummy.GetYaxis().SetTitle('#sigma_{t} [ps]')
 hdummy.GetXaxis().SetNdivisions(505)
@@ -1291,9 +1336,21 @@ cms_logo.Draw()
 c.SaveAs(outdir+'/'+c.GetName()+'.png')
 c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
 hdummy.Delete()
-                                       
+# --------------------------------------------------------------------------------------------------------------
 
-# average tRes
+
+
+
+
+
+
+
+
+
+
+
+# --------------------------------------------------------------------------------------------------------------
+#  ---  average time resolution with contributions ----------------
 for sipm in sipmTypes:
     latex = ROOT.TLatex(0.18,0.84,'%s'%(labels[sipm]))
     latex.SetNDC()
@@ -1307,12 +1364,12 @@ for sipm in sipmTypes:
     hdummy.Draw()
     
     ROOT.gPad.SetTicks(1)
-    g_data_average[sipm].SetMarkerStyle(20)
-    g_data_average[sipm].SetMarkerSize(1)
-    g_data_average[sipm].SetMarkerColor(1)
-    g_data_average[sipm].SetLineColor(1)
-    g_data_average[sipm].SetLineWidth(2)
-    g_data_average[sipm].Draw('plsame')
+    g_data_vs_Vov_average[sipm].SetMarkerStyle(20)
+    g_data_vs_Vov_average[sipm].SetMarkerSize(1)
+    g_data_vs_Vov_average[sipm].SetMarkerColor(1)
+    g_data_vs_Vov_average[sipm].SetLineColor(1)
+    g_data_vs_Vov_average[sipm].SetLineWidth(2)
+    g_data_vs_Vov_average[sipm].Draw('plsame')
 
     g_Noise_vs_Vov_average[sipm].SetLineWidth(2)
     g_Noise_vs_Vov_average[sipm].SetLineColor(ROOT.kBlue)
@@ -1326,12 +1383,12 @@ for sipm in sipmTypes:
     g_Stoch_vs_Vov_average[sipm].SetFillStyle(3001)
     g_Stoch_vs_Vov_average[sipm].SetFillColorAlpha(ROOT.kGreen+2,0.5)
     g_Stoch_vs_Vov_average[sipm].Draw('E3lsame')
-    g_DCR_vs_Vov_average[sipm].SetLineWidth(2)
-    g_DCR_vs_Vov_average[sipm].SetLineColor(ROOT.kOrange+2)
-    g_DCR_vs_Vov_average[sipm].SetFillColor(ROOT.kOrange+2)
-    g_DCR_vs_Vov_average[sipm].SetFillStyle(3001)
-    g_DCR_vs_Vov_average[sipm].SetFillColorAlpha(ROOT.kOrange+2,0.5)
-    g_DCR_vs_Vov_average[sipm].Draw('E3lsame')
+    g_sDCR_vs_Vov_average[sipm].SetLineWidth(2)
+    g_sDCR_vs_Vov_average[sipm].SetLineColor(ROOT.kOrange+2)
+    g_sDCR_vs_Vov_average[sipm].SetFillColor(ROOT.kOrange+2)
+    g_sDCR_vs_Vov_average[sipm].SetFillStyle(3001)
+    g_sDCR_vs_Vov_average[sipm].SetFillColorAlpha(ROOT.kOrange+2,0.5)
+    g_sDCR_vs_Vov_average[sipm].Draw('E3lsame')
     g_TotExp_vs_Vov_average[sipm].SetLineWidth(2)
     g_TotExp_vs_Vov_average[sipm].SetLineColor(ROOT.kRed+1)
     g_TotExp_vs_Vov_average[sipm].SetFillColor(ROOT.kRed+1)
@@ -1342,10 +1399,10 @@ for sipm in sipmTypes:
 
     latex.Draw()
     outfile.cd()
-    g_data_average[sipm].Write('g_data_vs_Vov_average_%s'%sipm)
+    g_data_vs_Vov_average[sipm].Write('g_data_vs_Vov_average_%s'%sipm)
     g_Noise_vs_Vov_average[sipm].Write('g_Noise_vs_Vov_average_%s'%sipm)
     g_Stoch_vs_Vov_average[sipm].Write('g_Stoch_vs_Vov_average_%s'%sipm)
-    g_DCR_vs_Vov_average[sipm].Write('g_DCR_vs_Vov_average_%s'%sipm)
+    g_sDCR_vs_Vov_average[sipm].Write('g_DCR_vs_Vov_average_%s'%sipm)
     g_TotExp_vs_Vov_average[sipm].Write('g_Tot_vs_Vov_average_%s'%sipm)
 
 
@@ -1354,13 +1411,16 @@ for sipm in sipmTypes:
     c.SaveAs(outdir+'/'+c.GetName()+'.png')
     c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
     hdummy.Delete()
+# --------------------------------------------------------------------------------------------------------------
 
 
 
 
 
 
-# SR and best threshold vs bar
+
+# ----------- things vs things per ov --------------------------------------------------------
+# -----  SR and best threshold vs bar per ov
 for ov in VovsUnion:
     c = ROOT.TCanvas('c_slewRate_vs_bar_%s_Vov%.2f'%(sipm,ov),'c_slewRate_vs_bar_%s_Vov%.2f'%(sipm,ov),600,500)
     c.SetGridy()
@@ -1451,17 +1511,17 @@ for ov in VovsUnion:
     c = ROOT.TCanvas('c_DCR_vs_bar_%s_Vov%.2f'%(sipm,ov),'c_DCR_vs_bar_%s_Vov%.2f'%(sipm,ov),600,500)
     c.SetGridy()
     c.cd()
-    hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,140)
+    hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,120)
     hdummy.GetXaxis().SetTitle('bar')
     hdummy.GetYaxis().SetTitle('#sigma_{t, DCR} [ps]')
     hdummy.Draw()
     for j, sipm in enumerate(sipmTypes):
-        if ov not in g_DCR_vs_bar[sipm].keys():
+        if ov not in g_sDCR_vs_bar[sipm].keys():
             continue
-        g_DCR_vs_bar[sipm][ov].SetMarkerStyle( markers[sipm] )
-        g_DCR_vs_bar[sipm][ov].SetMarkerColor(cols[sipm])
-        g_DCR_vs_bar[sipm][ov].SetLineColor(cols[sipm])
-        g_DCR_vs_bar[sipm][ov].Draw('psame')
+        g_sDCR_vs_bar[sipm][ov].SetMarkerStyle( markers[sipm] )
+        g_sDCR_vs_bar[sipm][ov].SetMarkerColor(cols[sipm])
+        g_sDCR_vs_bar[sipm][ov].SetLineColor(cols[sipm])
+        g_sDCR_vs_bar[sipm][ov].Draw('psame')
     leg2.Draw()
     lat = latex_vov(ov)
     lat.Draw()
@@ -1469,12 +1529,7 @@ for ov in VovsUnion:
     c.SaveAs(outdir+'/tRes_vs_bar_perVov/'+c.GetName()+'.pdf')
     hdummy.Delete()
 
-
-
-
-
-#------- vs SR -------
-
+#------- vs SR per ov -------
 for ov in VovsUnion:
     c = ROOT.TCanvas('c_stoch_vs_SR_%s_Vov%.2f'%(sipm,ov),'c_stoch_vs_SR_%s_Vov%.2f'%(sipm,ov),600,500)
     c.SetGridy()
@@ -1528,12 +1583,12 @@ for ov in VovsUnion:
     hdummy.GetYaxis().SetTitle('#sigma_{DCR}  [ps]')
     hdummy.Draw()
     for j, sipm in enumerate(sipmTypes):
-        if ov not in g_DCR_vs_SR[sipm].keys():
+        if ov not in g_sDCR_vs_SR[sipm].keys():
             continue
-        g_DCR_vs_SR[sipm][ov].SetMarkerStyle( markers[sipm] )
-        g_DCR_vs_SR[sipm][ov].SetMarkerColor(cols[sipm])
-        g_DCR_vs_SR[sipm][ov].SetLineColor(cols[sipm])
-        g_DCR_vs_SR[sipm][ov].Draw('psame')
+        g_sDCR_vs_SR[sipm][ov].SetMarkerStyle( markers[sipm] )
+        g_sDCR_vs_SR[sipm][ov].SetMarkerColor(cols[sipm])
+        g_sDCR_vs_SR[sipm][ov].SetLineColor(cols[sipm])
+        g_sDCR_vs_SR[sipm][ov].Draw('psame')
     leg2.Draw()
     lat = latex_vov(ov)
     lat.Draw()
@@ -1545,7 +1600,7 @@ for ov in VovsUnion:
     c = ROOT.TCanvas('c_data_vs_SR_%s_Vov%.2f'%(sipm,ov),'c_data_vs_SR_%s_Vov%.2f'%(sipm,ov),600,500)
     c.SetGridy()
     c.cd()
-    hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,140)
+    hdummy = ROOT.TH2F('hdummy_%s_%.2f'%(sipm,ov),'',100,-0.5,15.5,100,0,120)
     hdummy.GetXaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
     hdummy.GetYaxis().SetTitle('#sigma_{t} [ps]')
     hdummy.Draw()
@@ -1562,9 +1617,78 @@ for ov in VovsUnion:
     c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.png')
     c.SaveAs(outdir+'/tRes_vs_slewRate/'+c.GetName()+'.pdf')
     hdummy.Delete()
+# --------------------------------------------------------------------------------------------------------------
 
+
+
+
+
+
+
+
+
+
+
+# ---------------------------
+# ------ check model --------
+# ---------------------------
+
+# -- average slew rate vs Gain x PDE 
+c =  ROOT.TCanvas('c_SR_vs_GainPDE_average_%s'%sipm, 'c_SR_vs_GainPDE_average_%s'%sipm, 600, 500)
+c.SetGridx()
+c.SetGridy()
+c.cd()
+hdummy = ROOT.TH2F('hdummy','',2, 10000, 200000, 2, 0., 35.)
+hdummy.GetXaxis().SetTitle('Gain x PDE')
+hdummy.GetYaxis().SetTitle('slew rate at the timing thr. [#muA/ns]')
+hdummy.GetXaxis().SetNdivisions(505)
+hdummy.Draw()
+for sipm in sipmTypes:
+    g_SR_vs_GainPDE_average[sipm].SetMarkerStyle(markers[sipm])
+    g_SR_vs_GainPDE_average[sipm].SetMarkerColor(cols[sipm])
+    g_SR_vs_GainPDE_average[sipm].SetLineWidth(1)
+    g_SR_vs_GainPDE_average[sipm].SetLineColor(cols[sipm])
+    g_SR_vs_GainPDE_average[sipm].Draw('plsame')
+leg2.Draw()
+
+cms_logo = draw_logo()
+cms_logo.Draw()
+
+c.SaveAs(outdir+'/'+c.GetName()+'.png')
+c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
+hdummy.Delete()
+
+
+# -- average expected stochasti vs Npe
+c =  ROOT.TCanvas('c_stoch_vs_Npe_average_%s'%sipm, 'c_stoch_vs_Npe_average_%s'%sipm, 600, 500)
+c.SetGridx()
+c.SetGridy()
+c.cd()
+hdummy = ROOT.TH2F('hdummy','',2, 2e3, 8e3,2, 20, 80)
+hdummy.GetXaxis().SetTitle('Npe')
+hdummy.GetYaxis().SetTitle('#sigma_{t, stoch} [ps]')
+hdummy.GetXaxis().SetNdivisions(505)
+hdummy.Draw()
+for sipm in sipmTypes:
+    g_Stoch_vs_Npe_average[sipm].SetMarkerStyle(markers[sipm])
+    g_Stoch_vs_Npe_average[sipm].SetMarkerColor(cols[sipm])
+    g_Stoch_vs_Npe_average[sipm].SetLineWidth(1)
+    g_Stoch_vs_Npe_average[sipm].SetLineColor(cols[sipm])
+    g_Stoch_vs_Npe_average[sipm].Draw('plsame')
+leg2.Draw()
+
+cms_logo = draw_logo()
+cms_logo.Draw()
+
+c.SaveAs(outdir+'/'+c.GetName()+'.png')
+c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
+hdummy.Delete()
+
+
+
+
+# --------------------------------------------------------------------------------------------------------------
+
+
+    
 outfile.Close()
-
-
-
-

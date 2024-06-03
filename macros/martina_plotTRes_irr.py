@@ -28,7 +28,7 @@ ROOT.gStyle.SetTitleOffset(1.1,'Y')
 ROOT.gStyle.SetLegendFont(42)
 ROOT.gStyle.SetLegendTextSize(0.045)
 ROOT.gStyle.SetPadTopMargin(0.07)
-ROOT.gStyle.SetPadRightMargin(0.07)
+ROOT.gStyle.SetPadRightMargin(0.05)
 ROOT.gROOT.SetBatch(True)
 ROOT.gErrorIgnoreLevel = ROOT.kWarning
 
@@ -369,7 +369,7 @@ for par in pars_to_scale:
             
         
 # plot
-leg = ROOT.TLegend(0.70, 0.65, 0.89, 0.89)
+leg = ROOT.TLegend(0.70, 0.60, 0.89, 0.89)
 leg.SetBorderSize(0)
 leg.SetFillStyle(0)
 leg.SetTextFont(42)

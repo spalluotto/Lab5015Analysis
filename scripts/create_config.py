@@ -3,7 +3,6 @@
 #--------> ex: python create_config.py -r 66448-66461 -t 12 -ov 1.5 -ml HPK_nonIrr_C25_LYSO813 -c config_23.00
 
 import os, re
-import commands
 import math, time
 import sys
 import argparse
@@ -62,14 +61,14 @@ baseCfg = open('%s/moduleCharacterization_base.cfg'%cfgFolder, 'r')
 
 if args.extraLabel:
    newCfg = open('%s/moduleCharacterization_%s.cfg'%(cfgFolder,label), 'w')
-   print 'writing \t moduleCharacterization_%s.cfg'%(label)
+   print('writing \t moduleCharacterization_%s.cfg'%(label))
 else:
    newCfg = open('%s/moduleCharacterization_%s.cfg'%(cfgFolder,label), 'w')
-   print 'writing \t moduleCharacterization_%s.cfg'%(label)
+   print('writing \t moduleCharacterization_%s.cfg'%(label))
 
 for line in baseCfg:
    if (line.startswith('Vov') and args.Vov not in line):
-      print '\n---------------- \n ERROR: missing ov in moduleCharacterization.cfg file\n'
+      print('\n---------------- \n ERROR: missing ov in moduleCharacterization.cfg file\n')
       newCfg.write(line + '%s \n'%args.Vov) # non funziona perche va a capo
       sys.exit()
    elif 'runNumbers' in line:
@@ -80,7 +79,7 @@ for line in baseCfg:
       newCfg.write(line.replace('moduleLabel', '%s'%module_label))
    elif 'confNumber' in line:
       newCfg.write(line.replace('confNumber', '%s'%args.config))
-      print 'config : ', args.config
+      print('config : ', args.config)
 
    elif 'vovLabel' in line:
       newCfg.write(line.replace('vovLabel', '%s'%args.Vov))
@@ -99,10 +98,10 @@ baseCfg = open('%s/drawPulseShapeTB_base.cfg'%cfgFolder, 'r')
 
 if args.extraLabel:
    newCfg = open('%s/drawPulseShapeTB_%s.cfg'%(cfgFolder,label), 'w')
-   print 'writing \t drawPulseShapeTB_%s.cfg'%(label)
+   print('writing \t drawPulseShapeTB_%s.cfg'%(label))
 else:
    newCfg = open('%s/drawPulseShapeTB_%s.cfg'%(cfgFolder,label), 'w')
-   print 'writing \t drawPulseShapeTB_%s.cfg'%(label)
+   print('writing \t drawPulseShapeTB_%s.cfg'%(label))
 
 
 for line in baseCfg:
@@ -116,7 +115,7 @@ for line in baseCfg:
       newCfg.write(line.replace('moduleLabel', '%s'%module_label))
    elif 'confNumber' in line:
       newCfg.write(line.replace('confNumber', '%s'%args.config))
-      print 'config : ', args.config
+      print('config : ', args.config)
    elif 'vovLabel' in line:
       newCfg.write(line.replace('vovLabel', '%s'%args.Vov))
 

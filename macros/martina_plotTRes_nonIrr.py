@@ -8,6 +8,7 @@ import sys
 import time
 import argparse
 import json
+import numpy as np
 
 import ROOT
 import CMS_lumi, tdrstyle
@@ -28,6 +29,7 @@ ROOT.gStyle.SetTitleOffset(1.1,'Y')
 ROOT.gStyle.SetLegendFont(42)
 ROOT.gStyle.SetLegendTextSize(0.045)
 ROOT.gStyle.SetPadTopMargin(0.07)
+ROOT.gStyle.SetPadRightMargin(0.05)
 ROOT.gROOT.SetBatch(True)
 ROOT.gErrorIgnoreLevel = ROOT.kWarning
 
@@ -36,11 +38,13 @@ ROOT.gErrorIgnoreLevel = ROOT.kWarning
 # ---- EDIT ---- 
 outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/for_paper/'
 angle_offset = 3
+tofVersion = '2c'
 # -------------
 
 
 
 ymin = 20.
+pars_to_scale = []
 
 parser = argparse.ArgumentParser()  
 parser.add_argument("-n","--comparisonNumber", required = True, type=str, help="comparison number")    
@@ -132,6 +136,30 @@ elif compareNum == 3:
     ymax = 120.
 
 
+elif compareNum == 4: 
+    nameComparison = 'HPK_types_FNAL'
+    tofVersion = '2x'
+    pars = ['T1', 'T2', 'T3']
+    pars_to_scale = pars
+    angle_true = 52
+    angle_offset = 12
+    fnames = { 'T1' : '/eos/home-s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/plots/plot_tRes_HPK_nonIrr_angle52_T5C_types_FNAL.root',
+               'T2' : '/eos/home-s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/plots/plot_tRes_HPK_nonIrr_angle52_T5C_types_FNAL.root',
+               'T3' : '/eos/home-s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/plots/plot_tRes_HPK_nonIrr_angle52_T5C_types_FNAL.root'
+               }
+
+    labels = { 'T1' : 'HPK_nonIrr_LYSO818_angle52_T12C',
+               'T2' : 'HPK_nonIrr_LYSO813_angle52_T12C',
+               'T3' : 'HPK_nonIrr_LYSO816_angle52_T12C'
+              }
+    label_on_top = 'HPK, 25 #mum'
+    plotAttrs = { 
+                  'T1' : [20, ROOT.kGreen+2,  'type 1'],
+                  'T2' : [21, ROOT.kBlue,     'type 2'],
+                  'T3' : [22, ROOT.kRed,      'type 3']}
+    ymax = 80.
+
+    
     
 enScale = {}
 
@@ -191,22 +219,37 @@ for par in pars_to_scale:
         vov = g[par].GetX()[i]
         #s_noise = g_Noise[par].Eval(vov)/enScale[par]
         sr = g_SR[par].Eval(vov)
-        s_noise =  sigma_noise(sr*enScale[par], '2c')
+        s_noise =  sigma_noise(sr*enScale[par], tofVersion)
         s_stoch = g_Stoch[par].Eval(vov)/math.sqrt(enScale[par])
         s_stochMeas = g_StochMeas[par].Eval(vov)/math.sqrt(enScale[par])
         s_dcr = 0.
         s_tot = math.sqrt(s_noise*s_noise + s_stoch*s_stoch + s_dcr*s_dcr)
         s_totMeas = math.sqrt(s_noise*s_noise + s_stochMeas*s_stochMeas + s_dcr*s_dcr)
-        print("tot : ", s_tot, " ---- noise true : ", sigma_noise(sr,"2c"), "  noise scaled: ", s_noise, "  stoch true ", g_Stoch[par].Eval(vov), "  stoch scaled ", s_stoch)
+        print("tot : ", s_tot, " ---- noise true : ", sigma_noise(sr,tofVersion), "  noise scaled: ", s_noise, "  stoch true ", g_Stoch[par].Eval(vov), "  stoch scaled ", s_stoch)
         
         g_scaled[par].SetPoint(i, vov, s_tot) # correct for angle offset 
         g_scaled[par].SetPointError(i, 0, g[par].GetErrorY(i)/enScale[par]) # correct for angle offset
 
         g_scaledMeas[par].SetPoint(i, vov, s_totMeas) # correct for angle offset 
         g_scaledMeas[par].SetPointError(i, 0, g[par].GetErrorY(i)/enScale[par]) # correct for angle offset
+        print("check:  x: ", vov, "    y: ",s_tot)
 
+
+# TOTALLY hard-coded
+if compareNum == 2:
+    hd_par = 'T1'
+    g_scaled[hd_par].SetPoint(g_scaled[hd_par].GetN(), 1.5, 29)
+    g_scaled[hd_par].SetPointError(g_scaled[hd_par].GetN()+1, 0, 2)
+    g_scaled[hd_par].RemovePoint(5)
+    g_scaled[hd_par].RemovePoint(6)
+
+
+    for i in range(g_scaled[hd_par].GetN()):
+        print(g_scaled[hd_par].GetX()[i], "      ", g_scaled[hd_par].GetY()[i])
+        if g_scaled[hd_par].GetX()[i] == 0 and g_scaled[hd_par].GetY()[i] == 0:
+            g_scaled[hd_par].RemovePoint(i)
 # plot    
-leg = ROOT.TLegend(0.70, 0.65, 0.89, 0.89)
+leg = ROOT.TLegend(0.70, 0.60, 0.89, 0.89)
 leg.SetBorderSize(0)
 leg.SetFillStyle(0)
 leg.SetTextFont(42)
@@ -218,34 +261,24 @@ hPad = ROOT.gPad.DrawFrame(0.,ymin,4.0,ymax)
 hPad.SetTitle(";V_{OV} [V];time resolution [ps]")
 hPad.Draw()
 ROOT.gPad.SetTicks(1)
+
 for par in pars:
-    g_scaled[par].SetMarkerSize(1)
-    if (plotAttrs[par][0] == 22 or plotAttrs[par][0] == 23): g_scaled[par].SetMarkerSize(1.15)
-    g_scaled[par].SetMarkerStyle(plotAttrs[par][0])
-    g_scaled[par].SetMarkerColor(plotAttrs[par][1])
-    g_scaled[par].SetLineColor(plotAttrs[par][1])
-    leg.AddEntry(g_scaled[par], '%s'%plotAttrs[par][2],'PL')
-
-    # g_scaledMeas[par].SetMarkerSize(1)
-    # if (plotAttrs[par][0] == 22 or plotAttrs[par][0] == 23): g_scaledMeas[par].SetMarkerSize(1.15)
-    # g_scaledMeas[par].SetMarkerStyle(plotAttrs[par][0])
-    # g_scaledMeas[par].SetMarkerColor(plotAttrs[par][1])
-    # g_scaledMeas[par].SetLineColor(plotAttrs[par][1])
-    # g_scaledMeas[par].SetLineStyle(10)
-    # leg.AddEntry(g_scaledMeas[par], '%s'%plotAttrs[par][2],'PL')
-
-
-    g[par].SetMarkerStyle(plotAttrs[par][0])
-    g[par].SetMarkerColor(plotAttrs[par][1])
-    g[par].SetMarkerSize(1.15)
-    g[par].SetLineColor(plotAttrs[par][1])
-    g[par].SetLineWidth(1)
-    
     if par in pars_to_scale:
+        g_scaled[par].Sort()
+        g_scaled[par].SetMarkerSize(1)
+        if (plotAttrs[par][0] == 22 or plotAttrs[par][0] == 23): g_scaled[par].SetMarkerSize(1.15)
+        g_scaled[par].SetMarkerStyle(plotAttrs[par][0])
+        g_scaled[par].SetMarkerColor(plotAttrs[par][1])
+        g_scaled[par].SetLineColor(plotAttrs[par][1])
+        leg.AddEntry(g_scaled[par], '%s'%plotAttrs[par][2],'PL')
         g_scaled[par].Draw('plsame')
-        #g_scaledMeas[par].Draw('plsame')
-        
     else:
+        g[par].SetMarkerStyle(plotAttrs[par][0])
+        g[par].SetMarkerColor(plotAttrs[par][1])
+        g[par].SetMarkerSize(1.15)
+        g[par].SetLineColor(plotAttrs[par][1])
+        g[par].SetLineWidth(1)
+        leg.AddEntry(g[par], '%s'%plotAttrs[par][2],'PL')
         g[par].Draw('plsame')
 leg.Draw()
 

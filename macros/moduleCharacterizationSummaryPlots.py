@@ -4,10 +4,12 @@ from utils import *
 
 # ---- EDIT -----
 #inputdir = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/'
+#inputdir = '/eos/home-s/spalluot/MTD/TB_FNAL_Mar23/Lab5015Analysis/plots/'
+
 inputdir = '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/'
+
 summarydir = '/afs/cern.ch/user/s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/'
 source = 'TB'
-
 outdir  = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/ModuleCharacterization/'
 # ---------------
 
@@ -88,7 +90,10 @@ os.system('mkdir %s/summaryPlots/timeResolution/fits/'%outdir)
     
 
 # -- ref threhsold
-thRef = 11
+if 'FNAL' in inputdir:
+    thRef = 10
+else:
+    thRef = 11
 
 # -- get list of bars, Vovs, thresholds to be analyzed
 bars = []
@@ -161,12 +166,19 @@ g_deltaT_energyRatioCorr_bestTh_vs_bar = {} # g [vov, energyBin]
 g_deltaT_totRatioCorr_bestTh_vs_vov = {} # g [bar, energyBin] 
 g_deltaT_totRatioCorr_bestTh_vs_bar = {} # g [vov, energyBin] 
 
+g_deltaT_energyRatioCorr_refTh_vs_vov = {} # g [bar, energyBin] 
+g_deltaT_totRatioCorr_refTh_vs_vov = {} # g [bar, energyBin] 
+
 g_deltaT_energyRatioCorr_totRatioCorr_bestTh_vs_vov = {} # g [bar, energyBin] 
 g_deltaT_energyRatioCorr_totRatioCorr_bestTh_vs_bar = {} # g [vov, energyBin] 
 
 g_deltaT_totRatioCorr_bestTh_vs_vov_average = {} # g [energyBin]
 g_deltaT_energyRatioCorr_bestTh_vs_vov_average = {} # g [energyBin]
 g_deltaT_energyRatioCorr_totRatioCorr_bestTh_vs_vov_average = {} # g [energyBin]
+
+g_deltaT_totRatioCorr_refTh_vs_vov_average = {} # g [energyBin]
+g_deltaT_energyRatioCorr_refTh_vs_vov_average = {} # g [energyBin]
+g_deltaT_energyRatioCorr_totRatioCorr_refTh_vs_vov_average = {} # g [energyBin]
 
 
 for bar in bars:
@@ -202,7 +214,10 @@ for bar in bars:
       g_deltaT_energyRatioCorr_bestTh_vs_vov[bar, enBin] = ROOT.TGraphErrors()
       g_deltaT_totRatioCorr_bestTh_vs_vov[bar, enBin] = ROOT.TGraphErrors()
       g_deltaT_energyRatioCorr_totRatioCorr_bestTh_vs_vov[bar, enBin] = ROOT.TGraphErrors()
-      
+
+      g_deltaT_energyRatioCorr_refTh_vs_vov[bar, enBin] = ROOT.TGraphErrors()
+      g_deltaT_totRatioCorr_refTh_vs_vov[bar, enBin] = ROOT.TGraphErrors()
+
 for vov in Vovs:
     for enBin in enBins: 
         g_deltaT_energyRatioCorr_bestTh_vs_bar[vov, enBin] = ROOT.TGraphErrors()
@@ -213,6 +228,10 @@ for enBin in enBins:
    g_deltaT_energyRatioCorr_bestTh_vs_vov_average[enBin] = ROOT.TGraphErrors()
    g_deltaT_totRatioCorr_bestTh_vs_vov_average[enBin] = ROOT.TGraphErrors()
    g_deltaT_energyRatioCorr_totRatioCorr_bestTh_vs_vov_average[enBin] = ROOT.TGraphErrors()
+
+   g_deltaT_energyRatioCorr_refTh_vs_vov_average[enBin] = ROOT.TGraphErrors()
+   g_deltaT_totRatioCorr_refTh_vs_vov_average[enBin] = ROOT.TGraphErrors()
+   g_deltaT_energyRatioCorr_totRatioCorr_refTh_vs_vov_average[enBin] = ROOT.TGraphErrors()
 
 
 # --- Read the histograms from moduleCharacterization_step2 file
@@ -388,6 +407,15 @@ for label in label_list:
 
                   g_deltaT_totRatioCorr_vs_bar[vov, thr, enBin].SetPoint(g_deltaT_totRatioCorr_vs_bar[vov, thr, enBin].GetN(), bar, tRes_totCorr[enBin][0]/kscale )
                   g_deltaT_totRatioCorr_vs_bar[vov, thr, enBin].SetPointError(g_deltaT_totRatioCorr_vs_bar[vov, thr, enBin].GetN()-1, 0, tRes_totCorr[enBin][1]/kscale)
+
+                  # new graphs created for a fixed threshold
+                  g_deltaT_energyRatioCorr_refTh_vs_vov[bar, enBin].SetPoint(g_deltaT_energyRatioCorr_refTh_vs_vov[bar, enBin].GetN(), VovsEff[vov],tRes_energyCorr[enBin][0]/kscale )
+                  g_deltaT_energyRatioCorr_refTh_vs_vov[bar, enBin].SetPointError(g_deltaT_energyRatioCorr_refTh_vs_vov[bar, enBin].GetN()-1, 0, tRes_energyCorr[enBin][1]/kscale)
+
+                  g_deltaT_totRatioCorr_refTh_vs_vov[bar, enBin].SetPoint(g_deltaT_totRatioCorr_refTh_vs_vov[bar, enBin].GetN(), VovsEff[vov],tRes_totCorr[enBin][0]/kscale )
+                  g_deltaT_totRatioCorr_refTh_vs_vov[bar, enBin].SetPointError(g_deltaT_totRatioCorr_refTh_vs_vov[bar, enBin].GetN()-1, 0, tRes_totCorr[enBin][1]/kscale)
+
+                  
                 
          # graphs at best Th
          for enBin in enBins:
@@ -437,6 +465,19 @@ for enBin in enBins:
       ave, err = [fitpol0.GetParameter(0),fitpol0.GetParError(0)]
       g_deltaT_energyRatioCorr_totRatioCorr_bestTh_vs_vov_average[enBin].SetPoint(g_deltaT_energyRatioCorr_totRatioCorr_bestTh_vs_vov_average[enBin].GetN(), VovsEff[vov], ave)
       g_deltaT_energyRatioCorr_totRatioCorr_bestTh_vs_vov_average[enBin].SetPointError(g_deltaT_energyRatioCorr_totRatioCorr_bestTh_vs_vov_average[enBin].GetN()-1, 0, err)
+
+      # graphs for a fixed threshold (thRef)
+      
+      g_deltaT_totRatioCorr_vs_bar[vov, thRef, enBin].Fit(fitpol0,'QSN')
+      ave, err = [fitpol0.GetParameter(0),fitpol0.GetParError(0)]
+      g_deltaT_totRatioCorr_refTh_vs_vov_average[enBin].SetPoint(g_deltaT_totRatioCorr_refTh_vs_vov_average[enBin].GetN(), VovsEff[vov], ave)
+      g_deltaT_totRatioCorr_refTh_vs_vov_average[enBin].SetPointError(g_deltaT_totRatioCorr_refTh_vs_vov_average[enBin].GetN()-1, 0, err)
+      
+      g_deltaT_energyRatioCorr_vs_bar[vov, thRef, enBin].Fit(fitpol0,'QSN')
+      ave, err = [fitpol0.GetParameter(0),fitpol0.GetParError(0)]
+      g_deltaT_energyRatioCorr_refTh_vs_vov_average[enBin].SetPoint(g_deltaT_energyRatioCorr_refTh_vs_vov_average[enBin].GetN(), VovsEff[vov], ave)
+      g_deltaT_energyRatioCorr_refTh_vs_vov_average[enBin].SetPointError(g_deltaT_energyRatioCorr_refTh_vs_vov_average[enBin].GetN()-1, 0, err)
+
       
 
 # -- Draw
@@ -633,9 +674,17 @@ for bar in bars:
         g_deltaT_energyRatioCorr_bestTh_vs_vov[bar, enBin].Write('g_deltaT_energyRatioCorr_bestTh_vs_vov_bar%02d_enBin%02d'%(bar, enBin))
         g_deltaT_totRatioCorr_bestTh_vs_vov[bar, enBin].Write('g_deltaT_totRatioCorr_bestTh_vs_vov_bar%02d_enBin%02d'%(bar, enBin))
         g_deltaT_energyRatioCorr_totRatioCorr_bestTh_vs_vov[bar, enBin].Write('g_deltaT_energyRatioCorr_totRatioCorr_bestTh_vs_vov_bar%02d_enBin%02d'%(bar, enBin))
+
         ctres2.SaveAs(outdir+'/summaryPlots/timeResolution/'+ctres2.GetName()+'.png')
         ctres2.SaveAs(outdir+'/summaryPlots/timeResolution/'+ctres2.GetName()+'.pdf')
-        hPadT2.Delete()   
+
+        # saving also ref threshold
+        g_deltaT_energyRatioCorr_refTh_vs_vov[bar, enBin].Write('g_deltaT_energyRatioCorr_refTh_vs_vov_bar%02d_enBin%02d'%(bar, enBin))
+        g_deltaT_totRatioCorr_refTh_vs_vov[bar, enBin].Write('g_deltaT_totRatioCorr_refTh_vs_vov_bar%02d_enBin%02d'%(bar, enBin))
+
+        
+        hPadT2.Delete()
+        
 
 # average time resolution vs OV
 for enBin in enBins:
@@ -664,7 +713,49 @@ for enBin in enBins:
    ctres2.SaveAs(outdir+'/summaryPlots/timeResolution/'+ctres2.GetName()+'.png')
    ctres2.SaveAs(outdir+'/summaryPlots/timeResolution/'+ctres2.GetName()+'.pdf')
    hPadT2.Delete()   
+
+
+
+# average time resolution vs OV at ref threshold
+for enBin in enBins:
+   ctres2 = ROOT.TCanvas('c_tRes_totRatioCorr_refTh_vs_Vov_enBin%02d_average'%(enBin))
+   hPadT2 = ROOT.TH2F('hPadT2','', 6, 0.0, vovMax,10, tResMin,tResMax)
+   hPadT2.SetTitle(";V_{OV}^{eff} [V];#sigma_{t} [ps]")
+   hPadT2.Draw()
+   ctres2.SetGridy()
+   g_deltaT_totRatioCorr_refTh_vs_vov_average[enBin].SetMarkerStyle(20)
+   g_deltaT_totRatioCorr_refTh_vs_vov_average[enBin].SetMarkerColor(1)
+   g_deltaT_totRatioCorr_refTh_vs_vov_average[enBin].SetLineColor(1)
+   g_deltaT_totRatioCorr_refTh_vs_vov_average[enBin].Draw('plsame')
+   g_deltaT_energyRatioCorr_refTh_vs_vov_average[enBin].SetMarkerStyle(24)
+   g_deltaT_energyRatioCorr_refTh_vs_vov_average[enBin].SetMarkerColor(1)
+   g_deltaT_energyRatioCorr_refTh_vs_vov_average[enBin].SetLineColor(1)
+   g_deltaT_energyRatioCorr_refTh_vs_vov_average[enBin].Draw('plsame')
+   latex.Draw('same')
+   outfile.cd() 
+   g_deltaT_energyRatioCorr_refTh_vs_vov_average[enBin].Write('g_deltaT_energyRatioCorr_refTh_vs_vov_enBin%02d_average'%(enBin))
+   g_deltaT_totRatioCorr_refTh_vs_vov_average[enBin].Write('g_deltaT_totRatioCorr_refTh_vs_vov_enBin%02d_average'%(enBin))
+   ctres2.SaveAs(outdir+'/summaryPlots/timeResolution/'+ctres2.GetName()+'.png')
+   ctres2.SaveAs(outdir+'/summaryPlots/timeResolution/'+ctres2.GetName()+'.pdf')
+   hPadT2.Delete()   
    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # -- plots vs bar
 
 # -- tot vs bar 
@@ -833,3 +924,5 @@ for enBin in enBins:
    hPadT5.Delete()  
 
 outfile.Close()
+
+

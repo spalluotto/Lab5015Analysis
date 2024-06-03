@@ -11,7 +11,7 @@ ithmode = 0.313   # equivalence threshold amplitude in uA
 max_xErr = 0.015 # max error accepted for pulse shape points
 min_x = -5.      # min x value accepted for the pulse shape point
 
-thMin = 0      # min index of the pulse shape required for data taken at ov < 0.8 with irradiated modules
+thMin = 0        # min index of the pulse shape required for data taken at ov < 0.8 with irradiated modules
 
 
 #######
@@ -50,7 +50,7 @@ def getSlewRateFromPulseShape(g1, timingThreshold, npoints, gtemp, vov, name, ca
     imin = max(0, itiming-2)
     if ( imin >= 0 and g1.GetX()[imin+1] < g1.GetX()[imin] ): imin = ifirst
 
-    if float(vov)<=0.8 and 'E1' in name and imin <thMin:
+    if float(vov)<=0.6 and 'E1' in name and imin <thMin:
         imin = thMin
     
     tmin = g1.GetX()[imin]
