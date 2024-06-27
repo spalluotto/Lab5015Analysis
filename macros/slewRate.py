@@ -123,18 +123,41 @@ def findTimingThreshold(g2):
     return xmin
 
 
-def sigma_noise(sr, tofVersion):
+
+
+
+# ----------------------------------------------------- 
+# ------------ noise parametrization --------------
+# ----------------------------------------------------- 
+def sigma_noise(sr, tofVersion, err_sr):
     if sr < 0 :
         return 0
     if '2x' in tofVersion:
-        noise_single = math.sqrt( pow(420./sr,2) + 16.7*16.7 )
+        n = 420.
+        const = 16.7
+        noise_single = math.sqrt( pow(n/sr,2) + const*const )        
     elif '2c' in tofVersion:
-        noise_single = math.sqrt( pow(463./sr,2) + 16.7*16.7 ) # dal fittone di Andrea
-        # noise_single = math.sqrt( pow(278./ pow(sr,0.8) ,2) + 19.1*19.1 )
+        n = 420.
+        # n = 463     # dal fittone di andrea
+        # n = 278     # dalle misure in lab
+        const = 16.7
+        # const = 19.1    # dalle misure in lab
+        noise_single = math.sqrt( pow(n/sr,2) + const*const )
     else:
         print("  ----      UNKNOWN TOFHIR VERSION ------")
         return None
-    return noise_single / math.sqrt(2)
+    noise = noise_single / math.sqrt(2)
+
+
+    # --- errors on parameters
+    err_n = 35
+    err_const = 2
+
+    err_noise = 1/math.sqrt(2) * 1/noise * n/(sr*sr) * math.sqrt(math.pow(err_n,2) + math.pow(n/sr*err_sr,2) + math.pow(const*err_const,2))
+    
+    return (noise, err_noise)
+# -----------------------------------------------------
+
 
 
 

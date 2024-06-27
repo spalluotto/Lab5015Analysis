@@ -12,6 +12,7 @@ import json
 import math
 import ROOT
 
+import numpy
 import CMS_lumi, tdrstyle
 
 from slewRate import *
@@ -20,14 +21,15 @@ from moduleDict import *
 
 def draw_logo():
     logo_x = 0.16
+    logo_right = 0.82
     logo = ROOT.TLatex()
     logo.SetNDC()
     logo.SetTextSize(0.045)
     logo.SetTextFont(62)
     logo.DrawText(logo_x,0.95,'CMS')
     logo.SetTextFont(52)
-    #logo.DrawText(logo_x+0.07, 0.95, '  Phase-2 Preliminary')
-    logo.DrawText(logo_x+0.07, 0.95, '   MTD Test beam')
+    logo.DrawText(logo_x+0.07, 0.95, '   Preliminary')
+    logo.DrawText(logo_right, 0.95, 'Phase II')
     return logo
 
 def latex_vov(overv):

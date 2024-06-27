@@ -12,7 +12,7 @@ import ROOT
 import CMS_lumi, tdrstyle
 from moduleDict import *
 from SiPM import *
-
+from utils import *
 
 parser = argparse.ArgumentParser()  
 parser.add_argument("-n","--comparisonNumber", required = True, type=str, help="comparison number")    
@@ -28,37 +28,6 @@ ymax = 120
 compareNum = int(args.comparisonNumber)
 
 #-------------
-
-
-def draw_logo():
-    logo_x = 0.16
-    logo = ROOT.TLatex()
-    logo.SetNDC()
-    logo.SetTextSize(0.045) 
-    logo.SetTextFont(62)
-    logo.DrawText(logo_x,0.95,'CMS') 
-    logo.SetTextFont(52)
-    logo.DrawText(logo_x+0.07, 0.95, '  Phase-2 Preliminary')
-    return logo
-
-
-
-#set the tdr style                                                                                                                                   
-tdrstyle.setTDRStyle()
-ROOT.gStyle.SetOptStat(0)
-ROOT.gStyle.SetOptFit(1)
-ROOT.gStyle.SetOptTitle(0)                                                                                                                       
-ROOT.gStyle.SetLabelSize(0.055,'X')
-ROOT.gStyle.SetLabelSize(0.055,'Y')
-ROOT.gStyle.SetTitleSize(0.07,'X')
-ROOT.gStyle.SetTitleSize(0.07,'Y')
-ROOT.gStyle.SetTitleOffset(1.05,'X')
-ROOT.gStyle.SetTitleOffset(1.1,'Y')
-ROOT.gStyle.SetLegendFont(42)
-ROOT.gStyle.SetLegendTextSize(0.045)
-ROOT.gStyle.SetPadTopMargin(0.07)
-ROOT.gROOT.SetBatch(True)
-ROOT.gErrorIgnoreLevel = ROOT.kWarning   
 
 
 outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/compareTimeResolution/'

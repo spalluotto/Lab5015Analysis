@@ -8,7 +8,7 @@ import sys
 import time
 import argparse
 import json
-from ROOT import *
+import ROOT
 
 
 def lyso_(module):

@@ -39,8 +39,9 @@ ROOT.gErrorIgnoreLevel = ROOT.kWarning
 outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/for_paper/'
 angle_offset = 3
 tofVersion = '2c'
+meas = False
+verbose = False
 # -------------
-
 
 
 ymin = 20.
@@ -218,36 +219,64 @@ for par in pars_to_scale:
     for i in range(0, g[par].GetN()):
         vov = g[par].GetX()[i]
         #s_noise = g_Noise[par].Eval(vov)/enScale[par]
-        sr = g_SR[par].Eval(vov)
-        s_noise =  sigma_noise(sr*enScale[par], tofVersion)
-        s_stoch = g_Stoch[par].Eval(vov)/math.sqrt(enScale[par])
-        s_stochMeas = g_StochMeas[par].Eval(vov)/math.sqrt(enScale[par])
-        s_dcr = 0.
-        s_tot = math.sqrt(s_noise*s_noise + s_stoch*s_stoch + s_dcr*s_dcr)
-        s_totMeas = math.sqrt(s_noise*s_noise + s_stochMeas*s_stochMeas + s_dcr*s_dcr)
-        print("tot : ", s_tot, " ---- noise true : ", sigma_noise(sr,tofVersion), "  noise scaled: ", s_noise, "  stoch true ", g_Stoch[par].Eval(vov), "  stoch scaled ", s_stoch)
+        sr = g_SR[par].GetY()[i]
+        err_sr = g_SR[par].GetEY()[i]
+        s_noise,err_s_noise =  sigma_noise(sr*enScale[par], tofVersion, err_sr*enScale[par])
+
+        s_stoch = g_Stoch[par].GetY()[i]/math.sqrt(enScale[par])
+        err_s_stoch = g_Stoch[par].GetEY()[i]/math.sqrt(enScale[par])
         
+        s_stochMeas = g_StochMeas[par].GetY()[i]/math.sqrt(enScale[par])
+        err_s_stochMeas = g_StochMeas[par].GetEY()[i]/math.sqrt(enScale[par])
+        
+        s_dcr = 0.
+        err_s_dcr = 0.
+
+        s_tot = math.sqrt(s_noise*s_noise + s_stoch*s_stoch + s_dcr*s_dcr)
+        err_s_tot = 1/s_tot * math.sqrt(math.pow(s_noise*err_s_noise,2) + math.pow(s_stoch*err_s_stoch,2) + math.pow(s_dcr*err_s_dcr,2))
+
+        s_totMeas = math.sqrt(s_noise*s_noise + s_stochMeas*s_stochMeas + s_dcr*s_dcr)
+        err_s_totMeas = 1/s_totMeas * math.sqrt(math.pow(s_noise*err_s_noise,2) + math.pow(s_stochMeas*err_s_stochMeas,2) + math.pow(s_dcr*err_s_dcr,2))
+
         g_scaled[par].SetPoint(i, vov, s_tot) # correct for angle offset 
-        g_scaled[par].SetPointError(i, 0, g[par].GetErrorY(i)/enScale[par]) # correct for angle offset
+        g_scaled[par].SetPointError(i, 0, err_s_tot) # correct for angle offset
 
         g_scaledMeas[par].SetPoint(i, vov, s_totMeas) # correct for angle offset 
-        g_scaledMeas[par].SetPointError(i, 0, g[par].GetErrorY(i)/enScale[par]) # correct for angle offset
-        print("check:  x: ", vov, "    y: ",s_tot)
+        g_scaledMeas[par].SetPointError(i, 0, err_s_totMeas) # correct for angle offset
+
+        if verbose:
+            print("OV : ", vov)
+            print("scaling -- > ", round(enScale[par],2))
+            print("data : ",round(g[par].GetY()[i],1), "tot scaled : ", round(s_tot,1), " ---- noise true : ", round(sigma_noise(sr,tofVersion,err_sr),1), "  noise scaled: ", round(s_noise,1), "  stoch true ", round(g_Stoch[par].Eval(vov),1), "  stoch scaled ", round(s_stoch,1), "  stoch meas true : ", round(s_stochMeas,1))
+
+
+g_uff={}
+if meas:
+    g_uff = g_scaledMeas.copy()
+else:
+    g_uff = g_scaled.copy()
+
+if verbose:
+    print(meas)
+    for par in pars_to_scale:
+        for i in range(g_scaled[par].GetN()):
+            print("\n \n      meas  ", g_scaledMeas[par].GetY()[i], "    exp  ", g_scaled[par].GetY()[i], "    uff  ", g_uff[par].GetY()[i])    
 
 
 # TOTALLY hard-coded
 if compareNum == 2:
+    print("T1 HARD CODATO !!! \n !! ------------------------- \n !! ---------------------")
     hd_par = 'T1'
-    g_scaled[hd_par].SetPoint(g_scaled[hd_par].GetN(), 1.5, 29)
-    g_scaled[hd_par].SetPointError(g_scaled[hd_par].GetN()+1, 0, 2)
-    g_scaled[hd_par].RemovePoint(5)
-    g_scaled[hd_par].RemovePoint(6)
+    g_uff[hd_par].SetPoint(g_uff[hd_par].GetN(), 1.5, 29)
+    g_uff[hd_par].SetPointError(g_uff[hd_par].GetN()+1, 0, 2)
+    g_uff[hd_par].RemovePoint(5)
+    g_uff[hd_par].RemovePoint(6)
 
 
-    for i in range(g_scaled[hd_par].GetN()):
-        print(g_scaled[hd_par].GetX()[i], "      ", g_scaled[hd_par].GetY()[i])
-        if g_scaled[hd_par].GetX()[i] == 0 and g_scaled[hd_par].GetY()[i] == 0:
-            g_scaled[hd_par].RemovePoint(i)
+    for i in range(g_uff[hd_par].GetN()):
+        print(g_uff[hd_par].GetX()[i], "      ", g_uff[hd_par].GetY()[i])
+        if g_uff[hd_par].GetX()[i] == 0 and g_uff[hd_par].GetY()[i] == 0:
+            g_uff[hd_par].RemovePoint(i)
 # plot    
 leg = ROOT.TLegend(0.70, 0.60, 0.89, 0.89)
 leg.SetBorderSize(0)
@@ -264,14 +293,14 @@ ROOT.gPad.SetTicks(1)
 
 for par in pars:
     if par in pars_to_scale:
-        g_scaled[par].Sort()
-        g_scaled[par].SetMarkerSize(1)
-        if (plotAttrs[par][0] == 22 or plotAttrs[par][0] == 23): g_scaled[par].SetMarkerSize(1.15)
-        g_scaled[par].SetMarkerStyle(plotAttrs[par][0])
-        g_scaled[par].SetMarkerColor(plotAttrs[par][1])
-        g_scaled[par].SetLineColor(plotAttrs[par][1])
-        leg.AddEntry(g_scaled[par], '%s'%plotAttrs[par][2],'PL')
-        g_scaled[par].Draw('plsame')
+        g_uff[par].Sort()
+        g_uff[par].SetMarkerSize(1)
+        if (plotAttrs[par][0] == 22 or plotAttrs[par][0] == 23): g_uff[par].SetMarkerSize(1.15)
+        g_uff[par].SetMarkerStyle(plotAttrs[par][0])
+        g_uff[par].SetMarkerColor(plotAttrs[par][1])
+        g_uff[par].SetLineColor(plotAttrs[par][1])
+        leg.AddEntry(g_uff[par], '%s'%plotAttrs[par][2],'PL')
+        g_uff[par].Draw('plsame')
     else:
         g[par].SetMarkerStyle(plotAttrs[par][0])
         g[par].SetMarkerColor(plotAttrs[par][1])

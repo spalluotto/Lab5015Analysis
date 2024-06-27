@@ -334,7 +334,11 @@ for par in pars:
     print("\n ", par)
     if (par not in fnames.keys()): continue
     g_noise[par] = f[par].Get('g_Noise_vs_Vov_average_%s'%labels[par])
-    g_stoch[par] = f[par].Get('g_Stoch_vs_Vov_average_%s'%labels[par])
+    if 'nonIrr' in nameComparison:
+        g_stoch[par] = f[par].Get('g_StochMeas_vs_Vov_average_%s'%labels[par])
+    else:
+        g_stoch[par] = f[par].Get('g_Stoch_vs_Vov_average_%s'%labels[par])
+        
     if not 'nonIrr' in nameComparison:
         g_dcr[par]   = f[par].Get('g_DCR_vs_Vov_average_%s'%labels[par])
     g_sr[par]   = f[par].Get('g_SR_vs_Vov_average_%s'%labels[par])
