@@ -61,6 +61,14 @@ elif comparisonNum == 3:
     plots_special = ['%s'%plotsdir, '%s'%plotsdir, '%s'%fnal_dir, '%s'%plotsdir]    
     outSuffix = 'HPK_nonIrr_angle52_cellSizes_withFNAL'
 
+# sipm cell sizes
+elif comparisonNum == 5:
+    modules = ['LYSO820', 'LYSO813', 'LYSO528']
+    temperatures = ['5', '5','5']
+    extraName = ['_angle52',  '_angle52', '_angle52']    
+    extraLabel = ['', '', '']
+    outSuffix = 'HPK_nonIrr_angle52_cellSizes'
+
     
 # FNAL -- types
 elif comparisonNum == 4:
@@ -183,7 +191,7 @@ if verbose:
 np         = 3
 errSRsyst  = 0.10 # error on the slew rate
 errPDE     = 0.05 # assumed uncertainty on PDE (5-10%)
-
+errGain    = 0.05
 
 g_data = {}
 g_data_vs_Vov_average = {}
@@ -199,7 +207,7 @@ g_TotExp_vs_Vov    = {}
 g_bestTh_vs_Vov    = {}
 g_SR_vs_Vov        = {}
 g_Npe_vs_Vov       = {}
-
+g_Vov_vs_Npe       = {}
 
 # ------ vs Npe / Gain -----
 g_Stoch_vs_Npe     = {}
@@ -295,6 +303,7 @@ for it,sipm in enumerate(sipmTypes):
     g_data[sipm]             = {}
 
     g_Npe_vs_Vov[sipm]       = ROOT.TGraphErrors()
+    g_Vov_vs_Npe[sipm]       = ROOT.TGraphErrors()
     g_Noise_vs_Vov[sipm]     = {}
     g_Stoch_vs_Vov[sipm]     = {}
     g_StochExp_vs_Vov[sipm]     = {}
@@ -537,6 +546,7 @@ for it,sipm in enumerate(sipmTypes):
 
             # fill graph vs vov
             g_Npe_vs_Vov[sipm].SetPoint(g_Npe_vs_Vov[sipm].GetN(), ov, Npe[sipm][ov])
+            g_Vov_vs_Npe[sipm].SetPoint(g_Vov_vs_Npe[sipm].GetN(), Npe[sipm][ov], ov)
             g_SR_vs_Vov[sipm][bar].SetPoint( g_SR_vs_Vov[sipm][bar].GetN(), ov, sr )
             g_SR_vs_Vov[sipm][bar].SetPointError( g_SR_vs_Vov[sipm][bar].GetN()-1, 0, errSR )
             g_bestTh_vs_Vov[sipm][bar].SetPoint( g_bestTh_vs_Vov[sipm][bar].GetN(), ov, timingThreshold )
@@ -638,6 +648,7 @@ g_Stoch_vs_PDE_average = {}
 g_Stoch_vs_PDE_average_all = ROOT.TGraphErrors()
 g_Stoch_vs_Npe_average = {}
 
+g_Noise_vs_Gain_average =  {}
 
 for sipm in sipmTypes:
     print("\n ", sipm)
@@ -652,6 +663,7 @@ for sipm in sipmTypes:
     g_Stoch_vs_PDE_average[sipm] = ROOT.TGraphErrors()
     g_Stoch_vs_Npe_average[sipm] = ROOT.TGraphErrors()
 
+    g_Noise_vs_Gain_average[sipm] = ROOT.TGraphErrors()
     
     for ov in Vovs[sipm]:
         if (ov in  g_SR_vs_bar[sipm].keys()): 
@@ -687,7 +699,10 @@ for sipm in sipmTypes:
             fitpol0_stoch = ROOT.TF1('fitpol0_stoch','pol0',-100,100)  
             g_Stoch_vs_bar[sipm][ov].Fit(fitpol0_stoch,'QNR')
             s_stoch = fitpol0_stoch.GetParameter(0)
+            #s_stoch = math.sqrt(s_meas*s_meas-s_noise*s_noise)
             err_s_stoch = 1./s_stoch * math.sqrt( pow(s_meas*err_s_meas, 2) + pow(s_noise*err_s_noise ,2) )
+            #err_s_stoch = fitpol0_stoch.GetParError(0)
+            
             g_Stoch_vs_Vov_average[sipm].SetPoint(g_Stoch_vs_Vov_average[sipm].GetN(), ov, s_stoch)
             g_Stoch_vs_Vov_average[sipm].SetPointError(g_Stoch_vs_Vov_average[sipm].GetN()-1, 0, err_s_stoch)
 
@@ -721,7 +736,26 @@ for sipm in sipmTypes:
             g_Stoch_vs_Npe_average[sipm].SetPointError(g_Stoch_vs_Npe_average[sipm].GetN()-1, 0, err_s_stoch)
 
 
+for sipm in sipmTypes:
+    # ---- noise vs gain ----                                                                                                                                      
+    # a un punto fissato: prendo uno stesso Npe, valuto ov e prendo gain a quel ov
+    Npe_ref = 5000
+    ov_ref  = g_Vov_vs_Npe[sipm].Eval(Npe_ref)
+    s_noise = g_Noise_vs_Vov_average[sipm].Eval(ov_ref)
+    # Trova i punti più vicini
+    x_vals = numpy.array([g_Noise_vs_Vov_average[sipm].GetX()[i] for i in range(g_Noise_vs_Vov_average[sipm].GetN())])
+    y_vals = numpy.array([g_Noise_vs_Vov_average[sipm].GetY()[i] for i in range(g_Noise_vs_Vov_average[sipm].GetN())])
+    y_errs = numpy.array([g_Noise_vs_Vov_average[sipm].GetErrorY(i) for i in range(g_Noise_vs_Vov_average[sipm].GetN())])
 
+    # Usare scipy per interpolare anche gli errori
+    interp_func = interp1d(x_vals, y_vals, kind='linear', bounds_error=False, fill_value='extrapolate')
+    interp_err_func = interp1d(x_vals, y_errs, kind='linear', bounds_error=False, fill_value='extrapolate')
+    
+    # Calcola l'errore sul valore interpolato di y
+    err_s_noise = interp_err_func(ov_ref)
+    
+    g_Noise_vs_Gain_average[sipm].SetPoint(g_Noise_vs_Gain_average[sipm].GetN(), Gain_(ov_ref,sipm), s_noise)
+    g_Noise_vs_Gain_average[sipm].SetPointError(g_Noise_vs_Gain_average[sipm].GetN()-1, Gain_(ov_ref,sipm)*errGain, err_s_noise)
             
             
 
@@ -1160,6 +1194,43 @@ for sipm in sipmTypes:
 
 
 
+# -- average noise vs gain                                                                                                                                                 
+c =  ROOT.TCanvas('c_Noise_vs_Gain_average', 'c_Noise_vs_Gain_average', 600, 500)
+c.SetGridx()
+c.SetGridy()
+c.cd()
+hdummy = ROOT.TH2F('hdummy','',2, 0, 1000000,2, 0, 120)
+hdummy.GetXaxis().SetTitle('Gain')
+hdummy.GetYaxis().SetTitle('#sigma_{noise} [ps]')
+hdummy.GetXaxis().SetNdivisions(505)
+hdummy.Draw()
+mg = ROOT.TMultiGraph()
+for sipm in sipmTypes:
+    g_Noise_vs_Gain_average[sipm].SetMarkerStyle(markers[sipm])
+    g_Noise_vs_Gain_average[sipm].SetMarkerColor(cols[sipm])
+    g_Noise_vs_Gain_average[sipm].SetLineWidth(1)
+    g_Noise_vs_Gain_average[sipm].SetLineColor(cols[sipm])
+    g_Noise_vs_Gain_average[sipm].Draw('plsame')
+    g_Noise_vs_Gain_average[sipm].Write('g_Noise_vs_Gain_average[sipm]_%s'%sipm)
+    mg.Add(g_Noise_vs_Gain_average[sipm])
+leg2.Draw()
+
+f=ROOT.TF1("","[0]*pow(x,[1])", 0, 1000000)
+f.SetLineColor(1)
+f.SetLineStyle(7)
+f.SetParameter(1,-1)
+mg.Fit(f,"RS+")
+f.Draw("same")
+
+cms_logo = draw_logo()
+cms_logo.Draw()
+
+c.SaveAs(outdir+'/'+c.GetName()+'.png')
+c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
+hdummy.Delete()
+del(f)
+
+
 
 
 
@@ -1337,7 +1408,19 @@ hdummy.GetYaxis().SetTitle('#sigma_{stoch} [ps]')
 hdummy.Draw()
 it = 0
 lat_fit = {}
-for it,sipm in enumerate(sipmTypes):    
+for it,sipm in enumerate(sipmTypes):
+    print("\n  sipm ---> ",  sipm )
+    f = ROOT.TF1("","[0]*pow(x,[1])", 0.1,0.8)
+    f.SetLineColor(cols[sipm])
+    f.SetLineStyle(7)
+    f.SetLineWidth(1)
+    g_Stoch_vs_PDE_average[sipm].Fit(f,"RS+")
+    lat_fit[sipm] = ROOT.TLatex(0.75,0.8-it*0.05,"%d x PDE^{%.1f}"%(f.GetParameter(0), f.GetParameter(1) ) )
+    lat_fit[sipm].SetNDC()
+    lat_fit[sipm].SetTextColor(cols[sipm])
+    lat_fit[sipm].SetTextSize(0.03)
+    lat_fit[sipm].SetTextFont(42)
+    lat_fit[sipm].Draw("same")
     g_Stoch_vs_PDE_average[sipm].SetMarkerStyle(markers[sipm])
     g_Stoch_vs_PDE_average[sipm].SetMarkerColor(cols[sipm])
     g_Stoch_vs_PDE_average[sipm].SetLineWidth(1)
@@ -1349,19 +1432,19 @@ for it,sipm in enumerate(sipmTypes):
     
 leg2.Draw()
 
-# -- Fit all point together
-f = ROOT.TF1("", "[0]*pow(x,[1])", 0.2, 0.5)
-f.SetLineColor(1)
-f.SetLineStyle(4)
-f.SetLineWidth(1)
-g_Stoch_vs_PDE_average_all.Fit(f, "RS+")
-f.Draw("same")
+# # -- Fit all point together
+# f = ROOT.TF1("", "[0]*pow(x,[1])", 0.2, 0.5)
+# f.SetLineColor(1)
+# f.SetLineStyle(4)
+# f.SetLineWidth(1)
+# g_Stoch_vs_PDE_average_all.Fit(f, "RS+")
+# #f.Draw("same")
 
-lat_fit = ROOT.TLatex(0.75,0.8,"%d x PDE^{%.1f}"%(f.GetParameter(0), f.GetParameter(1) ) )
-lat_fit.SetNDC()
-lat_fit.SetTextSize(0.03)
-lat_fit.SetTextFont(42)
-lat_fit.Draw("same")
+# lat_fit = ROOT.TLatex(0.75,0.8,"%d x PDE^{%.1f}"%(f.GetParameter(0), f.GetParameter(1) ) )
+# lat_fit.SetNDC()
+# lat_fit.SetTextSize(0.03)
+# lat_fit.SetTextFont(42)
+# #lat_fit.Draw("same")
 
 cms_logo = draw_logo()
 cms_logo.Draw()

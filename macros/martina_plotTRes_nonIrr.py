@@ -39,10 +39,11 @@ ROOT.gErrorIgnoreLevel = ROOT.kWarning
 outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/for_paper/'
 angle_offset = 3
 tofVersion = '2c'
-meas = False
-verbose = False
+meas = True
+verbose = True
 # -------------
 
+print("\n USING STOCH MEASURED ? ", meas)
 
 ymin = 20.
 pars_to_scale = []
@@ -247,7 +248,8 @@ for par in pars_to_scale:
         if verbose:
             print("OV : ", vov)
             print("scaling -- > ", round(enScale[par],2))
-            print("data : ",round(g[par].GetY()[i],1), "tot scaled : ", round(s_tot,1), " ---- noise true : ", round(sigma_noise(sr,tofVersion,err_sr),1), "  noise scaled: ", round(s_noise,1), "  stoch true ", round(g_Stoch[par].Eval(vov),1), "  stoch scaled ", round(s_stoch,1), "  stoch meas true : ", round(s_stochMeas,1))
+            print("data : ",round(g[par].GetY()[i],1), "tot scaled : ", round(s_tot,1), " ---- noise true : ", round(sigma_noise(sr,tofVersion,err_sr)[0],1), "  noise scaled: ", round(s_noise,1), "  stoch true ", round(g_Stoch[par].Eval(vov),1), "  stoch scaled ", round(s_stoch,1), "  stoch meas true : ", round(s_stochMeas,1))
+            print("err on stoch : ", err_s_stochMeas)
 
 
 g_uff={}
@@ -263,20 +265,6 @@ if verbose:
             print("\n \n      meas  ", g_scaledMeas[par].GetY()[i], "    exp  ", g_scaled[par].GetY()[i], "    uff  ", g_uff[par].GetY()[i])    
 
 
-# TOTALLY hard-coded
-if compareNum == 2:
-    print("T1 HARD CODATO !!! \n !! ------------------------- \n !! ---------------------")
-    hd_par = 'T1'
-    g_uff[hd_par].SetPoint(g_uff[hd_par].GetN(), 1.5, 29)
-    g_uff[hd_par].SetPointError(g_uff[hd_par].GetN()+1, 0, 2)
-    g_uff[hd_par].RemovePoint(5)
-    g_uff[hd_par].RemovePoint(6)
-
-
-    for i in range(g_uff[hd_par].GetN()):
-        print(g_uff[hd_par].GetX()[i], "      ", g_uff[hd_par].GetY()[i])
-        if g_uff[hd_par].GetX()[i] == 0 and g_uff[hd_par].GetY()[i] == 0:
-            g_uff[hd_par].RemovePoint(i)
 # plot    
 leg = ROOT.TLegend(0.70, 0.60, 0.89, 0.89)
 leg.SetBorderSize(0)

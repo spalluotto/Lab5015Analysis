@@ -19,6 +19,8 @@ angle_offset = 3
 plotdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23//plot_tRes_vs_thickness/'
 indir = '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/'
 
+print("------------------------\n----------------------------\n\n IN TUTTO CIO MANCANO GLI ERRORI \n\n------------------------\n----------------------------\n\n")
+
 
 if irr:
     # ----- irradiated modules
@@ -52,15 +54,14 @@ else:
         "HPK_nonIrr_LYSO816_angle64_T5C": 2.4
     }
     
-# define graphs
+# define graphs scaled
 graphs = {
-    "data"  : ROOT.TGraph(),
-    "Stoch" : ROOT.TGraph(),
-    "Noise" : ROOT.TGraph(),
-    "SR"    : ROOT.TGraph()
+    "data"  : ROOT.TGraphErrors(),
+    "Stoch" : ROOT.TGraphErrors(),
+    "Noise" : ROOT.TGraphErrors(),
+    "SR"    : ROOT.TGraphErrors()
 }
 
-graphs_scaled = graphs.copy()
 
 plot_settings = {
     "data"  : ["time resolution [ps]", 1],
@@ -69,14 +70,14 @@ plot_settings = {
     "SR"    : ["slew rate at the timing threshold", 1]
 }
 fit = {
-    "data"  : "[0]/sqrt(x)",
+    "data"  : "[0]/pow(x,[1])",
     "Stoch" : "[0]/sqrt(x)",
     "Noise" : "[0]/x",
     "SR"    : "[0]*x"
     }
 
 if irr:
-    graphs["DCR"] = ROOT.TGraph()
+    graphs["DCR"] = ROOT.TGraphErrors()
     plot_settings["DCR"] = ["#sigma_{DCR} [ps]", ROOT.kOrange+2]
     fit["DCR"] = "[0]/sqrt(x)"
 
@@ -98,40 +99,65 @@ for it,g in enumerate(graphs):
 ov_ref = 1.0
 file = ROOT.TFile(infile)
 
-# Loop over the dictionary to retrieve and evaluate the graphs
+# Loop over the dictionary to retrieve and evaluate the graphs + compute the scaling
 for module, thickness in modules.items():
     for g in graphs:
-        graph = file.Get(f"g_{g}_vs_Vov_average_{module}")
+        if g=="data" or g=="Noise": # require a different procedure
+            continue
+        if g=="Stoch" and not irr:
+            graph = file.Get(f"g_{g}Meas_vs_Vov_average_{module}")
+        else:
+                graph = file.Get(f"g_{g}_vs_Vov_average_{module}")
         if not graph:
             raise ValueError(f"Error retrieving graph {g} for {module} from the file")
     
         y_value = graph.Eval(ov_ref)
-        graphs[g].SetPoint(graphs[g].GetN(), thickness, y_value)
 
         if '/sqrt' in fit[g]:
             y_scaled = y_value/math.sqrt(enScale[g])
-        elif '/x' in fit[g]:
-            y_scaled = y_value/enScale[g]
         elif '*x' in fit[g]:
             y_scaled = y_value*enScale[g]
+        
+        graphs[g].SetPoint(graphs[g].GetN(), thickness, y_scaled)
 
-# draw
-for g in graphs:
-    y_label = plot_settings[g][0]
-    col = plot_settings[g][1]
-    c = ROOT.TCanvas(f"c_{g}_vs_thickness", f"c_{g}_vs_thickness", 600, 500)
-    c.cd()
-    hPad = ROOT.gPad.DrawFrame(2,0,4,70)
-    hPad.SetTitle(f";thickness [mm];{y_label}")
-    hPad.Draw()
-
-    graphs[g].SetMarkerColor(col)
-    graphs[g].SetMarkerStyle(20)
-    graphs[g].Draw("PSAME")
+# scaling applied first on SR , then noise re-computed
+for module, thickness in modules.items():
+    g="Noise"
+    g_sr = file.Get(f"g_SR_vs_Vov_average_{module}")
+    sr = g_sr.Eval(ov_ref)                               # FIX ME : interpolation for errors!!!!!
+    noise,err_noise = sigma_noise(sr*enScale[g], '2c',sr*enScale[g]/10)
+    graphs[g].SetPoint(graphs[g].GetN(), thickness, noise)
 
 
+# data computed as sum in quadrature
+for module, thickness in modules.items():
+    g = "data"
+    s_stoch = graphs["Stoch"].Eval(thickness)
+    s_noise = graphs["Noise"].Eval(thickness)
+    s_dcr = 0
     if irr:
-        f = ROOT.TF1("func", fit[g], 2,4)
+        s_dcr = graphs["DCR"].Eval(thickness)
+    s_tot = math.sqrt(s_noise*s_noise + s_stoch*s_stoch + s_dcr*s_dcr)
+    graphs[g].SetPoint(graphs[g].GetN(), thickness, s_tot)
+    
+# draw
+c = ROOT.TCanvas("c_timeResolution_vs_thickness", "c_timeResolution_vs_thickness", 600, 500)
+c.cd()
+hPad = ROOT.gPad.DrawFrame(2,0,4,70)
+hPad.SetTitle(f";thickness [mm];time resolution [ps]")
+hPad.Draw()
+for g in graphs:
+    if g=="SR":
+        continue
+    col = plot_settings[g][1]
+    graphs[g].SetMarkerColor(col)
+    graphs[g].SetLineColor(col)
+    graphs[g].SetMarkerStyle(20)
+    
+
+    if (irr and g=="data") or (not irr and g=="Stoch"):
+        graphs[g].Draw("PSAME")
+        f = ROOT.TF1("func", "[0]/pow(x,[1])", 2,4)
         f.SetLineColor(col)
         graphs[g].Fit(f, "RS+")
         
@@ -140,6 +166,8 @@ for g in graphs:
         p_value = ROOT.TMath.Prob(chi, ndf)
 
         print("\n\n p-value : ", p_value)
+    else:
+        graphs[g].Draw("PLSAME")
+
     
-    
-    c.SaveAs(f"{plotdir}/{c.GetName()}_{label}.png")
+c.SaveAs(f"{plotdir}/{c.GetName()}_{label}.png")

@@ -34,7 +34,7 @@ ROOT.gErrorIgnoreLevel = ROOT.kWarning
 
 
 # ---- EDIT ---- 
-outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/for_paper/'
+outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/for_paper/components/'
 angle_offset = 3
 pars_to_scale = []
 # -------------
@@ -130,7 +130,7 @@ elif compareNum == 4:
                   '32' : [20, ROOT.kGreen+2,  '32^{o}'],
                   '52' : [21, ROOT.kBlue,     '52^{o}'],
                   '64' : [22, ROOT.kRed,      '64^{o}']}
-    ymax = 80.
+    ymax = 100.
 
 
 
@@ -345,24 +345,30 @@ for par in pars:
 
     for i in range(0, g_data[par].GetN()):
         vov = g_data[par].GetX()[i]
-        sr = g_sr[par].Eval(vov)
+        sr = g_sr[par].GetY()[i]
+        err_sr = g_sr[par].GetEY()[i]
         if par in pars_to_scale:
-            s_noise =  sigma_noise(sr*enScale[par], '2c')
-            s_stoch = g_stoch[par].Eval(vov)/math.sqrt(enScale[par])
+            s_noise,err_s_noise =  sigma_noise(sr*enScale[par], '2c',err_sr)
+            s_stoch = g_stoch[par].GetY()[i]/math.sqrt(enScale[par])
+            err_s_stoch = g_stoch[par].GetEY()[i]/math.sqrt(enScale[par])
             g_noise_scaled[par].SetPoint(i, vov, s_noise)  
-            g_noise_scaled[par].SetPointError(i, 0, g_noise[par].GetErrorY(i)/enScale[par]) 
+            g_noise_scaled[par].SetPointError(i, 0, err_s_noise) 
             g_stoch_scaled[par].SetPoint(i, vov, s_stoch)  
-            g_stoch_scaled[par].SetPointError(i, 0, g_stoch[par].GetErrorY(i)/math.sqrt(enScale[par])) 
+            g_stoch_scaled[par].SetPointError(i, 0, err_s_stoch) 
             s_dcr = 0.
-
+            err_s_dcr = 0.
+            
             if not 'nonIrr' in nameComparison:
                 s_dcr = g_dcr[par].Eval(vov)/enScale[par]
+                err_s_dcr = g_dcr[par].GetErrorY(i)/enScale[par]
                 g_dcr_scaled[par].SetPoint(i, vov, s_dcr)  
-                g_dcr_scaled[par].SetPointError(i, 0, g_dcr[par].GetErrorY(i)/enScale[par]) 
+                g_dcr_scaled[par].SetPointError(i, 0, err_s_dcr) 
 
             s_tot = math.sqrt(s_noise*s_noise + s_stoch*s_stoch + s_dcr*s_dcr)
+            err_s_tot = 1/s_tot * math.sqrt(math.pow(s_noise*err_s_noise,2) + math.pow(s_stoch*err_s_stoch,2) + math.pow(s_dcr*err_s_dcr,2))
+            
             g_data_scaled[par].SetPoint(i, vov, s_tot) 
-            g_data_scaled[par].SetPointError(i, 0, g_data[par].GetErrorY(i)/enScale[par]) 
+            g_data_scaled[par].SetPointError(i, 0, err_s_tot) 
 
             
 
@@ -436,7 +442,11 @@ for par in pars:
     tl.SetNDC()
     tl.SetTextFont(42)
     tl.SetTextSize(0.050)
-    tl.DrawLatex(0.20,0.86,'HPK, 25 #mum')
+    if compareNum == 1 or compareNum ==2:
+        tl.DrawLatex(0.20,0.86,'HPK, %s'%plotAttrs[par][2])
+        print(plotAttrs[par][2])
+    else:
+        tl.DrawLatex(0.20,0.86,'HPK, 25 #mum')
 
     tl3 = ROOT.TLatex()
     tl3.SetNDC()

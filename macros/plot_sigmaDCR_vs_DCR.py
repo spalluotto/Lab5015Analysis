@@ -29,7 +29,7 @@ enScale = math.cos(math.radians(ang_true)) / math.cos(math.radians(angle_target)
     
 
 # graphs definition ----- 
-g_dcr   = {}
+g_cur   = {}
 g_data  = {}
 g_noise = {}
 g_stoch = {}
@@ -40,7 +40,7 @@ g_scaled = {}
 
 # retrieve files and graph
 for module in files:
-    g_dcr[module] = {}
+    g_cur[module] = {}
     g_data[module] = {}
 
     g_noise[module] = {}
@@ -57,55 +57,100 @@ for module in files:
     for t in temperatures:
         conf_label = f'{sipm}_{module}_angle52_T{t}C'
         #g_dcr[module][t] = file.Get(f'g_DCR_vs_DCRNpe_average_{conf_label}')
-        g_dcr[module][t] = file.Get(f'g_current_vs_Vov_average_{conf_label}')        
-        print(type(g_dcr[module][t]))
+        g_cur[module][t] = file.Get(f'g_current_vs_Vov_{conf_label}')        
         g_data[module][t] = file.Get(f'g_data_vs_Vov_average_{conf_label}')
 
         g_noise[module][t] = file.Get(f'g_Noise_vs_Vov_average_{conf_label}')
         g_stoch[module][t] = file.Get(f'g_Stoch_vs_Vov_average_{conf_label}')
         g_sdcr[module][t] = file.Get(f'g_DCR_vs_Vov_average_{conf_label}')
         
-        if not g_dcr[module][t]:
-            print(g_dcr[module][t], ' not found in ',infile)
+        if not g_cur[module][t]:
+            print(g_cur[module][t], ' not found in ',infile)
 
-ov_ref = 0.8
+ov_ref = 0.7
 it = 0
+
+# ovs = {}
+# ovs_set = {}
+# index = {}
+# for module in files:
+#     ovs[module] = {}
+#     ovs_set[module] = {}
+#     index[module] = {}
+#     temperatures = files[module]
+#     for t in temperatures:
+#         ovs[module][t] = []
+#         ovs_set[module][t] = []
+#         for i in range(g_cur[module][t].GetN()):
+#             ovSet = g_cur[module][t].GetX()[i]
+#             I = g_cur[module][t].GetX()[i]
+#             ovEff_at_ovSet = ovSet-25*I*16/1000
+#             ovs[module][t].append(ovEff_at_ovSet)
+#             ovs_set[module][t].append(ovSet)
+# for module in files:
+#     print(module)
+#     temperatures = files[module]
+#     for t in temperatures:
+#         print(t)
+#         ovs_n = numpy.array(ovs[module][t])
+#         ovs_diff = ovs_n - ov_ref
+#         abs_diff = numpy.abs(ovs_diff)
+#         min_abs_index = numpy.argmin(abs_diff)
+#         min_abs_value = numpy.min(abs_diff)
+#         #print("array : ", ovs_n, "    valore minimo : ", min_abs_value, "   indice ", min_abs_index, "    che corrisponde a ov set: ", ovs_set[module][t][min_abs_index])
+#         index[module][t] = min_abs_index.item()
+
+#print(index)
+        
 for module in files:
+    print("\n\n")
+    print(module)
     g_scaled[module] = {}
     temperatures = files[module]
     col = it+1
             
     for t in temperatures:
-        print("module  ", module, "    t   ", t)
+        print(t)
         g_scaled[module][t] = ROOT.TGraphErrors()
         g_scaled[module][t].SetMarkerColor(col)
-
-        dcr = g_dcr[module][t].Eval(ov_ref)
+        
+        #cur = g_cur[module][t].Eval(ovs_set[module][t][index[module][t]])
+        cur = g_cur[module][t].Eval(ov_ref)
         data = g_data[module][t].Eval(ov_ref)
         y = data
         y_err = 0 # to be fixed
-        x = dcr
+        x = cur
 
         print("x ",x, "y ", y)
         y_scaled = y # to be fixed
+        if "100056" in module:
+            y_scaled = y/1.065
         g_scaled[module][t].SetPoint(g_scaled[module][t].GetN(),x,y_scaled)
     it+=1  
             
 # --- draw 
-c = ROOT.TCanvas("c_timeResolution_vs_DCR", "c_timeResolution_vs_DCR", 600, 500)
+c = ROOT.TCanvas("c_timeResolution_vs_current", "c_timeResolution_vs_current", 600, 500)
 c.cd()
-hPad = ROOT.gPad.DrawFrame(0,0,50,100)
-hPad.SetTitle(";DCR [GHz];#sigma_{t} [ps]")
+hPad = ROOT.gPad.DrawFrame(0,0,1.4,150)
+hPad.SetTitle(";I;#sigma_{t} [ps]")
 hPad.Draw()
 
-leg = ROOT.TLegend(0.2,0.55,0.6,0.9)
+leg = ROOT.TLegend(0.7,0.7,0.9,0.9)
+leg.SetBorderSize(0)
+leg.SetFillColor(0)
+leg.SetTextFont(42)
+leg.SetTextSize(0.050)
 it=0
 for module in files:
     temperatures = files[module]
+    j = 0
     for t in temperatures:
+        if j==0:
+            leg.AddEntry(g_scaled[module][t], f"{sipm_(module).split('HPK_')[1]}", "p")
         g_scaled[module][t].SetMarkerStyle(20+it*2)
         g_scaled[module][t].Draw("PSAME")
-        leg.AddEntry(g_scaled[module][t], f"{sipm_(module).split('HPK_')[1]} T {t}C", "p")
+        #    leg.AddEntry(g_scaled[module][t], f"{sipm_(module).split('HPK_')[1]} T {t}C", "p")
+        j+=1
     it+=1
 
     

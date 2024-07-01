@@ -41,7 +41,8 @@ def lyso_(module):
         return 'LYSO814'
     elif 'LYSO528' in module:
         return 'LYSO528'
-
+    elif 'LYSO796' in module:
+        return 'LYSO796'
 
 
 def sipm_(module):
@@ -52,6 +53,8 @@ def sipm_(module):
     elif 'LYSO816' in module:
         return 'HPK_nonIrr'
 
+    elif 'LYSO796' in module:
+        return 'HPK_2E14'
     elif 'LYSO815' in module:
         return 'HPK_2E14'
     elif 'LYSO825' in module:
@@ -84,6 +87,8 @@ def sipm_cell_size(module):
     elif 'LYSO813' in module:
         return 'HPK 25#mum'
     elif 'LYSO816' in module:
+        return 'HPK 25#mum'
+    elif 'LYSO796' in module:
         return 'HPK 25#mum'
     elif 'LYSO815' in module:
         return 'HPK 25#mum'

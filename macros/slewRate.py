@@ -11,7 +11,7 @@ ithmode = 0.313   # equivalence threshold amplitude in uA
 max_xErr = 0.015 # max error accepted for pulse shape points
 min_x = -5.      # min x value accepted for the pulse shape point
 
-thMin = 0        # min index of the pulse shape required for data taken at ov < 0.8 with irradiated modules
+thMin = 0        # min index of the pulse shape required for data taken at ov <= 0.6 with irradiated modules
 
 
 #######
@@ -140,7 +140,7 @@ def sigma_noise(sr, tofVersion, err_sr):
         n = 420.
         # n = 463     # dal fittone di andrea
         # n = 278     # dalle misure in lab
-        const = 16.7
+        const = 16
         # const = 19.1    # dalle misure in lab
         noise_single = math.sqrt( pow(n/sr,2) + const*const )
     else:

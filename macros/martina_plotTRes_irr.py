@@ -326,7 +326,7 @@ if pars_srScale:
         
         for i in range(0, g[par].GetN()):
             vov = g[par].GetX()[i]
-            sr = g_SR[par].Eval(vov)
+            sr = g_SR[par].Eval(vov)  # AGGIUNGI ERRORE SU SR
             s_noise_scaled = sigma_noise(sr*srScale, '2c')
             s_stoch = g_Stoch[par].Eval(vov)
             s_dcr = g_DCR[par].Eval(vov)
@@ -349,7 +349,7 @@ for par in pars_to_scale:
         vov = g[par].GetX()[i]
         #s_noise = gNoise[par].Eval(vov)/enScale[par]
         sr = g_SR[par].Eval(vov)
-        s_noise =  sigma_noise(sr*enScale[par], '2c')
+        s_noise =  sigma_noise(sr*enScale[par], '2c')  # AGGIUNGI ERRORE SU SR
         s_stoch = g_Stoch[par].Eval(vov)/math.sqrt(enScale[par])
         s_dcr = g_DCR[par].Eval(vov)/enScale[par]
         s_tot = math.sqrt(s_noise*s_noise + s_stoch*s_stoch + s_dcr*s_dcr)

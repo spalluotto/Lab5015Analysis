@@ -85,7 +85,7 @@ if compareNum == 1:
                   20 : [21, ROOT.kBlue,     '20 #mum'],
                   15 : [22, ROOT.kRed,      '15 #mum']}
 
-    ymax = 70.
+    ymax = 90.
     ymin = 0.
 
     gnames = { # name : scaling_needed, xmin, xmax, x_label, ymin, ymax, y_label]
@@ -96,26 +96,28 @@ if compareNum == 1:
 elif compareNum == 2:
     irr_label = '2 #times 10^{14} 1 MeV n_{eq}/cm^{2}'
     nameComparison = 'HPK_2E14_cellSizes'
-    pars = [20, 25, 30]
-    pars_to_scale = pars
+    pars = [15, 20, 25, 30]
+    pars_to_scale = [20, 25, 30]
     angle_true = 49
     label_on_top = 'HPK'
 
     fnames = { 30 : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_T-35C_angle52_cellSize.root',
                25 : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_T-35C_angle52_cellSize.root',
-               20 : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_T-35C_angle52_cellSize.root'
+               20 : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_T-35C_angle52_cellSize.root',
+               15 : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plots_timeResolution_2E14_15um_T2_TBJune22_TOFHIR2X.root'
               }
     labels = { 30 : 'HPK_2E14_LYSO200104_angle52_T-35C',
                25 : 'HPK_2E14_LYSO815_angle52_T-35C',
-               20 : 'HPK_2E14_LYSO825_angle52_T-35C'
+               20 : 'HPK_2E14_LYSO825_angle52_T-35C',
+               15 : 'HPK_2E14_LYSO796_T-40C'
               }
     plotAttrs = { 30 : [23, ROOT.kOrange+1, '30 #mum'],
                   25 : [20, ROOT.kGreen+2,  '25 #mum'],
-                  20 : [21, ROOT.kBlue,     '20 #mum']
-                 }
+                  20 : [21, ROOT.kBlue,     '20 #mum'],
+                  15 : [22, ROOT.kRed,      '15 #mum']}
 
     gnames = {
-    'DCR_pdescaled_vs_DCR_average' : ['1/',0, 60, 'DCR [GHz]', 0,70, '#sigma_{DCR} x PDE/PDE_{ref} [ps]']
+    'DCR_pdescaled_vs_DCR_average' : ['1/',0, 70, 'DCR [GHz]', 0,80, '#sigma_{DCR} x PDE/PDE_{ref} [ps]']
     }
 
 
@@ -123,6 +125,7 @@ elif compareNum == 2:
 enScale = {}
 
 for it,par in enumerate(pars):
+    print(par)
     if not isinstance(angle_true, list):
         ang_true = angle_true
         angle_target = angle_true + angle_offset
@@ -130,7 +133,7 @@ for it,par in enumerate(pars):
         ang_true = angle_true[it]
         angle_target = angle_true[it] + angle_offset
     enScale[par] = math.cos(math.radians(ang_true)) / math.cos(math.radians(angle_target))
-    
+    print(enScale[par])
 
 
 
@@ -166,19 +169,28 @@ for par in pars:
         g_scaled[par][graph] = ROOT.TGraphErrors()
         g_scaled[par][graph].SetName('%s_%s'%(graph, labels[par]))
 
-
+graph = 'DCR_pdescaled_vs_DCR_average'
+if compareNum == 2:
+    par  = 15
+    f[par] = ROOT.TFile.Open(fnames[par])
+    for graph in gnames:
+        g[par][graph] = ROOT.TGraphErrors()
+        g_dcr_vs_vov = f[par].Get('g_DCRfromCurrent_vs_Vov_HPK_2E14_LYSO796_T-40C')
+        g_sdcr_vs_vov = f[par].Get('g_DCR_vs_Vov_average_HPK_2E14_LYSO796_T-40C')
+        for i in range(g_dcr_vs_vov.GetN()):
+            ov = g_dcr_vs_vov.GetX()[i]
+            g[par][graph].SetPoint(g[par][graph].GetN(),g_dcr_vs_vov.GetY()[i], g_sdcr_vs_vov.GetY()[i]*PDE_(ov,'LYSO796')/PDE_(3.5,'LYSO818','0'))
+            #g[par][graph].SetPointError(g[par][graph].GetN()-1, g_dcr_vs_vov.GetEY()[i], )                
+        
 # scale Sep data to take into account angle offset in 2023 Sep TB 
-for par in pars_to_scale:
-    print("\n ", par)
-    if par not in pars_to_scale: continue
+for par in pars:
+    print("\n ", par)        
     for graph in gnames:        
         for i in range(0, g[par][graph].GetN()):
             x = g[par][graph].GetX()[i]
             y = g[par][graph].GetY()[i]
-            y_err = g[par][graph].GetErrorY(i)
-
+            y_err = g[par][graph].GetErrorY(i)            
             scaling = gnames[graph][0]
-
             if scaling == '1/sqrt':
                 y_scaled = y/math.sqrt(enScale[par])
                 y_err_scaled = y_err/math.sqrt(enScale[par])
@@ -189,8 +201,14 @@ for par in pars_to_scale:
                 print("SCALE NOT FOUND")
                 sys.exit(0)
 
+            # not optimal --> pars not to be scaled
+            if par not in pars_to_scale:
+                y_scaled = y
+                y_err_scaled = y_err_scaled
+
+            print("y  ", y, "   y_scaled  ", y_scaled)
             g_scaled[par][graph].SetPoint(i, x, y_scaled)
-            g_scaled[par][graph].SetPointError(i, 0, 0)
+            g_scaled[par][graph].SetPointError(i, 0, y_err_scaled)
 
 
 
@@ -221,25 +239,16 @@ for graph in gnames:
         mg = ROOT.TMultiGraph()
     
     for par in pars:
-        if par in pars_to_scale:
-            g_scaled[par][graph].Sort()
-            g_scaled[par][graph].SetMarkerSize(1)
-            if (plotAttrs[par][0] == 22 or plotAttrs[par][0] == 23): g_scaled[par][graph].SetMarkerSize(1.15)
-            g_scaled[par][graph].SetMarkerStyle(plotAttrs[par][0])
-            g_scaled[par][graph].SetMarkerColor(plotAttrs[par][1])
-            g_scaled[par][graph].SetLineColor(plotAttrs[par][1])
-            leg.AddEntry(g_scaled[par][graph], '%s'%plotAttrs[par][2],'PL')
-            g_scaled[par][graph].Draw('plsame')
-            if compareNum == 1 or compareNum==2:
-                mg.Add(g_scaled[par][graph])
-        else:
-            g[par][graph].SetMarkerStyle(plotAttrs[par][0])
-            g[par][graph].SetMarkerColor(plotAttrs[par][1])
-            g[par][graph].SetMarkerSize(1.15)
-            g[par][graph].SetLineColor(plotAttrs[par][1])
-            g[par][graph].SetLineWidth(1)
-            leg.AddEntry(g[par][graph], '%s'%plotAttrs[par][2],'PL')
-            g[par][graph].Draw('plsame')
+        g_scaled[par][graph].Sort()
+        g_scaled[par][graph].SetMarkerSize(1)
+        if (plotAttrs[par][0] == 22 or plotAttrs[par][0] == 23): g_scaled[par][graph].SetMarkerSize(1.15)
+        g_scaled[par][graph].SetMarkerStyle(plotAttrs[par][0])
+        g_scaled[par][graph].SetMarkerColor(plotAttrs[par][1])
+        g_scaled[par][graph].SetLineColor(plotAttrs[par][1])
+        leg.AddEntry(g_scaled[par][graph], '%s'%plotAttrs[par][2],'PL')
+        g_scaled[par][graph].Draw('psame')
+        if compareNum == 1 or compareNum==2:
+            mg.Add(g_scaled[par][graph])
     leg.Draw()
     
     tl2 = ROOT.TLatex()
@@ -257,7 +266,7 @@ for graph in gnames:
 
 
     if compareNum == 1:
-        f = ROOT.TF1("", "[0]*pow(x,[1])", 0.2, 0.65)
+        f = ROOT.TF1("", "[0]*pow(x,[1])", 0., 0.65)
         f.SetLineColor(1)
         f.SetLineStyle(7)
         f.SetLineWidth(1)
@@ -271,7 +280,7 @@ for graph in gnames:
         lat_fit.Draw("same")
 
     elif compareNum == 2:
-        f = ROOT.TF1("", "[0]*pow(x,[1])", 2, 40)
+        f = ROOT.TF1("", "[0]*pow(x,[1])", 0, 80)
         f.SetLineColor(1)
         f.SetLineStyle(7)
         f.SetLineWidth(1)

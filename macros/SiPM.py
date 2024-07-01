@@ -20,7 +20,7 @@ def sipm_type(lyso_):
     elif '820' in lyso_ or '200104' in lyso_:
         return 'HPK-ES2-30um'
 
-    elif '528' in lyso_:
+    elif '528' in lyso_ or '796' in lyso_:
         return 'HPK-MS'
 
 

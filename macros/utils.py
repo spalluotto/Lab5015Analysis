@@ -13,6 +13,7 @@ import math
 import ROOT
 
 import numpy
+from scipy.interpolate import interp1d
 import CMS_lumi, tdrstyle
 
 from slewRate import *
