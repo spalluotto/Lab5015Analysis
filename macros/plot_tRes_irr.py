@@ -147,6 +147,15 @@ elif comparisonNum == 30:
     extraName =     ['_angle52', '_angle52',      '_angle52']
     extraLabel =    ['',        '',              '']
     outSuffix =     'HPK_2E14_T-35C_angle52_cellSize'
+
+elif comparisonNum == 31:
+    modules =       ['LYSO200104', 'LYSO815',       'LYSO825', '']
+    temperatures =  ['-35',     '-35',           '-35']
+    extraName =     ['_angle52', '_angle52',      '_angle52']
+    extraLabel =    ['',        '',              '']
+    outSuffix =     'HPK_2E14_T-35C_angle52_cellSize'
+
+    
 #--------------------------------------------------------------------------------------
 
 
@@ -564,7 +573,7 @@ for it,sipm in enumerate(sipmTypes):
             #err_s_noise =  0.5*(sigma_noise(sr*(1-errSR/sr), tofhirVersion )-sigma_noise(sr*(1+errSR/sr), tofhirVersion) )
 
             # compute s_stoch by scaling the stochastic term measured for non-irradiated SiPMs for sqrt(PDE) 
-            alpha = 0.71
+            alpha = 0.75
             PDE = PDE_(ovEff,sipm)
             PDE_nonIrr = PDE_(ov_reference(module),sipm,'0')
             s_stoch = stoch_reference(sipm)/pow( PDE / PDE_nonIrr, alpha )
@@ -750,8 +759,14 @@ for sipm in sipmTypes:
             # average dcr
             fitpol0_sdcr = ROOT.TF1('fitpol0_sdcr','pol0',-100,100)  
             g_sDCR_vs_bar[sipm][ov].Fit(fitpol0_sdcr,'QNR')
-            s_dcr =  fitpol0_sdcr.GetParameter(0)
-            err_s_dcr = fitpol0_sdcr.GetParError(0)
+            #s_dcr =  fitpol0_sdcr.GetParameter(0)
+            #err_s_dcr = fitpol0_sdcr.GetParError(0)
+            if (s_meas*s_meas - s_noise*s_noise - s_stoch*s_stoch > 0):
+                s_dcr = math.sqrt(s_meas*s_meas - s_noise*s_noise - s_stoch*s_stoch)
+                err_s_dcr = 1./s_dcr * math.sqrt( pow(s_meas*err_s_meas,2) + pow( err_s_stoch*s_stoch,2) + pow(noise_err*s_noise,2))
+            else:
+                s_dcr = 0.
+                err_s_dcr = 0.
             g_sDCR_vs_Vov_average[sipm].SetPoint(g_sDCR_vs_Vov_average[sipm].GetN(), ovEff, s_dcr)
             g_sDCR_vs_Vov_average[sipm].SetPointError(g_sDCR_vs_Vov_average[sipm].GetN()-1, 0, err_s_dcr)
 

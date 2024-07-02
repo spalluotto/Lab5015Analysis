@@ -80,7 +80,15 @@ elif comparisonNum == 4:
     extraName = ['_angle52', '_angle52', '_angle52']
     extraLabel = ['','','']
     outSuffix = 'angle52_T12C_types_FNAL'
+    
 
+
+              
+plotAttrs = { 30 : [23, ROOT.kOrange+1, '30 #mum'],
+              25 : [20, ROOT.kGreen+2,  '25 #mum'],
+              20 : [21, ROOT.kBlue,     '20 #mum'],
+              15 : [22, ROOT.kRed,      '15 #mum']}
+    
 #--------------------------------------------------------------------------------------
 
 
@@ -698,11 +706,10 @@ for sipm in sipmTypes:
             # average stochastic
             fitpol0_stoch = ROOT.TF1('fitpol0_stoch','pol0',-100,100)  
             g_Stoch_vs_bar[sipm][ov].Fit(fitpol0_stoch,'QNR')
-            s_stoch = fitpol0_stoch.GetParameter(0)
-            #s_stoch = math.sqrt(s_meas*s_meas-s_noise*s_noise)
-            err_s_stoch = 1./s_stoch * math.sqrt( pow(s_meas*err_s_meas, 2) + pow(s_noise*err_s_noise ,2) )
+            #s_stoch = fitpol0_stoch.GetParameter(0)
             #err_s_stoch = fitpol0_stoch.GetParError(0)
-            
+            s_stoch = math.sqrt(s_meas*s_meas-s_noise*s_noise)
+            err_s_stoch = 1./s_stoch * math.sqrt( pow(s_meas*err_s_meas, 2) + pow(s_noise*err_s_noise ,2) )
             g_Stoch_vs_Vov_average[sipm].SetPoint(g_Stoch_vs_Vov_average[sipm].GetN(), ov, s_stoch)
             g_Stoch_vs_Vov_average[sipm].SetPointError(g_Stoch_vs_Vov_average[sipm].GetN()-1, 0, err_s_stoch)
 

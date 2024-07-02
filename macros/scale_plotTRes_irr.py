@@ -43,6 +43,8 @@ angle_offset = 3
 pars_to_scale = []
 # -------------
 
+stochPow = 0.76
+
 srScale = 1.20 # scaling SR from TOFHIR2X to 2C
 pars_srScale = []
 index_out_of_bounds = False
@@ -71,26 +73,30 @@ irr_label = '2 #times 10^{14} 1 MeV n_{eq}/cm^{2}'
 # cell sizes
 if compareNum == 1:
     nameComparison = 'HPK_2E14_cellSizes'
-    pars = [20, 25, 30]
-    pars_to_scale = pars
+    pars = [15,20, 25, 30]
+    pars_to_scale = [20, 25, 30]
     angle_true = 49
     label_on_top = 'HPK'
     
     fnames = { 30 : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_T-35C_angle52_cellSize.root',
                25 : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_T-35C_angle52_cellSize.root',
-               20 : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_T-35C_angle52_cellSize.root'
+               20 : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_T-35C_angle52_cellSize.root',
+               15 : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plots_timeResolution_2E14_15um_T2_TBJune22_TOFHIR2X.root'
               }
     labels = { 30 : 'HPK_2E14_LYSO200104_angle52_T-35C',
                25 : 'HPK_2E14_LYSO815_angle52_T-35C',
-               20 : 'HPK_2E14_LYSO825_angle52_T-35C'
+               20 : 'HPK_2E14_LYSO825_angle52_T-35C',
+               15 : 'HPK_2E14_LYSO796_T-40C'
+               
               }
     plotAttrs = { 30 : [23, ROOT.kOrange+1, '30 #mum'],
                   25 : [20, ROOT.kGreen+2,  '25 #mum'],
-                  20 : [21, ROOT.kBlue,     '20 #mum']
+                  20 : [21, ROOT.kBlue,     '20 #mum'],
+                  15 : [22, ROOT.kRed,      '15 #mum']
                  }
     ymax = 160.
     ov_min = 0.2
-    ov_max = 1.6
+    ov_max = 2.4
 
     
 # types
@@ -326,8 +332,14 @@ if pars_srScale:
         
         for i in range(0, g[par].GetN()):
             vov = g[par].GetX()[i]
-            sr = g_SR[par].Eval(vov)  # AGGIUNGI ERRORE SU SR
-            s_noise_scaled = sigma_noise(sr*srScale, '2c')
+            if round(vov,2) != round(g_SR[par].GetX()[i],2):
+                print("Vov from SR vs Vov is different in index wrt data vs Vov")
+                sys.exit()
+            sr = g_SR[par].GetY()[i]
+            err_sr = g_SR[par].GetEY()[i]
+
+            #sr = g_SR[par].Eval(vov)  # AGGIUNGI ERRORE SU SR
+            s_noise_scaled = sigma_noise(sr*srScale, '2c', err_sr)
             s_stoch = g_Stoch[par].Eval(vov)
             s_dcr = g_DCR[par].Eval(vov)
             s_tot = math.sqrt(s_noise_scaled*s_noise_scaled + s_stoch*s_stoch + s_dcr*s_dcr)
@@ -347,21 +359,35 @@ for par in pars_to_scale:
 
     for i in range(0, g[par].GetN()):
         vov = g[par].GetX()[i]
-        #s_noise = gNoise[par].Eval(vov)/enScale[par]
-        sr = g_SR[par].Eval(vov)
-        s_noise =  sigma_noise(sr*enScale[par], '2c')  # AGGIUNGI ERRORE SU SR
-        s_stoch = g_Stoch[par].Eval(vov)/math.sqrt(enScale[par])
+        if round(vov,2) != round(g_SR[par].GetX()[i],2):
+            print("Vov from SR vs Vov is different in index wrt data vs Vov")
+            sys.exit()
+        sr = g_SR[par].GetY()[i]
+        err_sr = g_SR[par].GetEY()[i]
+        s_noise,err_s_noise =  sigma_noise(sr*enScale[par], '2c', err_sr)  # AGGIUNGI ERRORE SU SR
+
+        if round(vov,2) != round(g_Stoch[par].GetX()[i],2):
+            print("Vov from Stoch vs Vov is different in index wrt data vs Vov")
+            sys.exit()
+
+        s_stoch = g_Stoch[par].Eval(vov)/math.pow(enScale[par], stochPow)
+        err_s_stoch = g_Stoch[par].GetEY()[i]/math.pow(enScale[par],stochPow)
+        
         s_dcr = g_DCR[par].Eval(vov)/enScale[par]
+        err_s_dcr = g_DCR[par].GetEY()[i]/enScale[par]
+
         s_tot = math.sqrt(s_noise*s_noise + s_stoch*s_stoch + s_dcr*s_dcr)
+        err_s_tot = 1./s_tot * math.sqrt( pow( err_s_stoch*s_stoch,2) + pow(s_noise*err_s_noise,2) + pow(s_dcr*err_s_dcr,2))
+        
+        print("tot : ", s_tot, " ---- noise true : ", sigma_noise(sr,"2c",err_sr), "  noise scaled: ", s_noise, "  stoch true ", g_Stoch[par].Eval(vov), "  stoch scaled ", s_stoch, ' dcr true : ', g_DCR[par].Eval(vov), ' dcr scaled : ', s_dcr)
 
-        print("tot : ", s_tot, " ---- noise true : ", sigma_noise(sr,"2c"), "  noise scaled: ", s_noise, "  stoch true ", g_Stoch[par].Eval(vov), "  stoch scaled ", s_stoch, ' dcr true : ', g_DCR[par].Eval(vov), ' dcr scaled : ', s_dcr)
-
-        g_scaled[par].SetPoint(i, vov, s_tot) # correct for angle offset
-        g_scaled[par].SetPointError(i, 0, g[par].GetErrorY(i)/enScale[par]) # correct for angle offset                            
+        g_scaled[par].SetPoint(g_scaled[par].GetN(), vov, s_tot) # correct for angle offset
+        g_scaled[par].SetPointError(g_scaled[par].GetN()-1, 0, err_s_tot)
+        #g_scaled[par].SetPointError(i, 0, g[par].GetErrorY(i)/enScale[par]) # correct for angle offset                            
 
         try:
             g_scaled_vs_power[par].SetPoint(i, g_vs_power[par].GetX()[i], s_tot)
-            g_scaled_vs_power[par].SetPointError(i, 0 , g_vs_power[par].GetErrorY(i)/enScale[par])
+            g_scaled_vs_power[par].SetPointError(i, 0 , err_s_tot)
         except IndexError:
             index_out_of_bounds = True
             print("Index out of bounds")

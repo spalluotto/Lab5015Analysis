@@ -45,6 +45,7 @@ verbose = True
 
 print("\n USING STOCH MEASURED ? ", meas)
 
+stochPow = 0.76
 ymin = 20.
 pars_to_scale = []
 
@@ -224,11 +225,11 @@ for par in pars_to_scale:
         err_sr = g_SR[par].GetEY()[i]
         s_noise,err_s_noise =  sigma_noise(sr*enScale[par], tofVersion, err_sr*enScale[par])
 
-        s_stoch = g_Stoch[par].GetY()[i]/math.sqrt(enScale[par])
-        err_s_stoch = g_Stoch[par].GetEY()[i]/math.sqrt(enScale[par])
+        s_stoch = g_Stoch[par].GetY()[i]/math.pow(enScale[par], stochPow)
+        err_s_stoch = g_Stoch[par].GetEY()[i]/math.pow(enScale[par], stochPow)
         
-        s_stochMeas = g_StochMeas[par].GetY()[i]/math.sqrt(enScale[par])
-        err_s_stochMeas = g_StochMeas[par].GetEY()[i]/math.sqrt(enScale[par])
+        s_stochMeas = g_StochMeas[par].GetY()[i]/math.pow(enScale[par], stochPow)
+        err_s_stochMeas = g_StochMeas[par].GetEY()[i]/math.pow(enScale[par], stochPow)
         
         s_dcr = 0.
         err_s_dcr = 0.

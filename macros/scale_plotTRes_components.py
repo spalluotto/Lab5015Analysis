@@ -39,6 +39,9 @@ angle_offset = 3
 pars_to_scale = []
 # -------------
 
+stochPow = 0.76
+
+
 #---- init ---
 parser = argparse.ArgumentParser()  
 parser.add_argument("-n","--comparisonNumber", required = True, type=str, help="comparison number")    
@@ -310,7 +313,7 @@ for par in pars:
             raise FileNotFoundError(f"File not found: {fnames[par]}")
         g_data[par] = f[par].Get('g_data_vs_Vov_average_%s'%labels[par])
         if not g_data[par]:
-            raise AttributeError(f"Graph not found in file {fnames[par]} with name {graph_name}")
+            raise AttributeError(f"Graph not found in file {fnames[par]} with name g_data_vs_Vov_average")
     except (FileNotFoundError, AttributeError) as e:
         print(f"Error: {e}")
 
@@ -349,8 +352,8 @@ for par in pars:
         err_sr = g_sr[par].GetEY()[i]
         if par in pars_to_scale:
             s_noise,err_s_noise =  sigma_noise(sr*enScale[par], '2c',err_sr)
-            s_stoch = g_stoch[par].GetY()[i]/math.sqrt(enScale[par])
-            err_s_stoch = g_stoch[par].GetEY()[i]/math.sqrt(enScale[par])
+            s_stoch = g_stoch[par].GetY()[i]/math.pow(enScale[par], stochPow)
+            err_s_stoch = g_stoch[par].GetEY()[i]/math.pow(enScale[par], stochPow)
             g_noise_scaled[par].SetPoint(i, vov, s_noise)  
             g_noise_scaled[par].SetPointError(i, 0, err_s_noise) 
             g_stoch_scaled[par].SetPoint(i, vov, s_stoch)  

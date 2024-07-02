@@ -41,7 +41,7 @@ angle_offset = 3
 tofVersion = '2c'
 # -------------
 
-
+stochPow = 0.76
 
 ymin = 20.
 pars_to_scale = []
@@ -192,8 +192,8 @@ for par in pars:
             y_err = g[par][graph].GetErrorY(i)            
             scaling = gnames[graph][0]
             if scaling == '1/sqrt':
-                y_scaled = y/math.sqrt(enScale[par])
-                y_err_scaled = y_err/math.sqrt(enScale[par])
+                y_scaled = y/math.pow(enScale[par], stochPow)
+                y_err_scaled = y_err/math.pow(enScale[par], stochPow)
             elif scaling == '1/':
                 y_scaled = y/enScale[par]
                 y_err_scaled = y_err/enScale[par]
@@ -266,7 +266,7 @@ for graph in gnames:
 
 
     if compareNum == 1:
-        f = ROOT.TF1("", "[0]*pow(x,[1])", 0., 0.65)
+        f = ROOT.TF1("", "[0]*pow(x,[1])", 0.2, 0.65)
         f.SetLineColor(1)
         f.SetLineStyle(7)
         f.SetLineWidth(1)

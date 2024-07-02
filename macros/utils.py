@@ -25,11 +25,12 @@ def draw_logo():
     logo_right = 0.82
     logo = ROOT.TLatex()
     logo.SetNDC()
-    logo.SetTextSize(0.045)
+    logo.SetTextSize(0.06)
     logo.SetTextFont(62)
     logo.DrawText(logo_x,0.95,'CMS')
+    logo.SetTextSize(0.045)
     logo.SetTextFont(52)
-    logo.DrawText(logo_x+0.07, 0.95, '   Preliminary')
+    logo.DrawText(logo_x+0.11, 0.95, 'Preliminary')
     logo.DrawText(logo_right, 0.95, 'Phase II')
     return logo
 

@@ -172,6 +172,17 @@
 # python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO815_Vov2.00_angle64_T-35C,HPK_2E14_LYSO815_Vov1.50_angle64_T-35C,HPK_2E14_LYSO815_Vov1.25_angle64_T-35C -o HPK_2E14_LYSO815_angle64_T-35C
 
 
+# #-- angle52 ---- T -35C
+# python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO815_Vov0.60_angle52_T-35C -o HPK_2E14_LYSO815_Vov0.60_angle52_T-35C
+# python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO815_Vov0.80_angle52_T-35C -o HPK_2E14_LYSO815_Vov0.80_angle52_T-35C
+# python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO815_Vov1.00_angle52_T-35C -o HPK_2E14_LYSO815_Vov1.00_angle52_T-35C
+# python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO815_Vov1.25_angle52_T-35C -o HPK_2E14_LYSO815_Vov1.25_angle52_T-35C
+# python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO815_Vov1.50_angle52_T-35C -o HPK_2E14_LYSO815_Vov1.50_angle52_T-35C
+# python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO815_Vov2.00_angle52_T-35C -o HPK_2E14_LYSO815_Vov2.00_angle52_T-35C
+
+python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO815_Vov0.60_angle52_T-35C,HPK_2E14_LYSO815_Vov0.80_angle52_T-35C,HPK_2E14_LYSO815_Vov1.00_angle52_T-35C,HPK_2E14_LYSO815_Vov1.25_angle52_T-35C,HPK_2E14_LYSO815_Vov1.50_angle52_T-35C,HPK_2E14_LYSO815_Vov2.00_angle52_T-35C -o HPK_2E14_LYSO815_angle52_T-35C
+
+
 
 # # # ---- LYSO 100056 --
 # # # -------------------
@@ -245,7 +256,7 @@
 # # python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO300032_Vov0.60_angle64_T-35C,HPK_2E14_LYSO300032_Vov0.80_angle64_T-35C,HPK_2E14_LYSO300032_Vov1.00_angle64_T-35C,HPK_2E14_LYSO300032_Vov1.25_angle64_T-35C,HPK_2E14_LYSO300032_Vov1.50_angle64_T-35C,HPK_2E14_LYSO300032_Vov2.00_angle64_T-35C -o HPK_2E14_LYSO300032_angle64_T-35C
 
 # #python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO300032_Vov0.80_angle64_T-35C,HPK_2E14_LYSO300032_Vov1.00_angle64_T-35C,HPK_2E14_LYSO300032_Vov1.25_angle64_T-35C,HPK_2E14_LYSO300032_Vov1.50_angle64_T-35C,HPK_2E14_LYSO300032_Vov2.00_angle64_T-35C -o HPK_2E14_LYSO300032_angle64_T-35C
-python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO300032_Vov1.00_angle64_T-35C,HPK_2E14_LYSO300032_Vov1.25_angle64_T-35C,HPK_2E14_LYSO300032_Vov1.50_angle64_T-35C -o HPK_2E14_LYSO300032_angle64_T-35C
+#python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO300032_Vov1.00_angle64_T-35C,HPK_2E14_LYSO300032_Vov1.25_angle64_T-35C,HPK_2E14_LYSO300032_Vov1.50_angle64_T-35C -o HPK_2E14_LYSO300032_angle64_T-35C
 
 
 
