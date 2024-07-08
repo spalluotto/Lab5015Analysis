@@ -1096,6 +1096,8 @@ int main(int argc, char** argv)
 	    
 	    float fitXMin = fitFunc_energyRatio[index2]->GetParameter(1) - 3.*fitFunc_energyRatio[index2]->GetParameter(2);
 	    float fitXMax = fitFunc_energyRatio[index2]->GetParameter(1) + 3.*fitFunc_energyRatio[index2]->GetParameter(2);
+
+	    if (prof->GetEntries()<5) continue;
 	    
 	    fitFunc_energyRatioCorr[index2] = new TF1(Form("fitFunc_energyRatioCorr_%s",labelLR_energyBin.c_str()),"pol3",fitXMin,fitXMax);
 	    prof -> Fit(fitFunc_energyRatioCorr[index2],"QRS+");

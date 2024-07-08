@@ -355,10 +355,10 @@ int main(int argc, char** argv)
           if(!opts.GetOpt<std::string>("Input.vth").compare("vth2"))  { vth = vth2;}
 	  
 	  if( opts.GetOpt<int>("Channels.array") == 0){
-	    index.second->GetXaxis()->SetRangeUser(100,900);
+	    index.second->GetXaxis()->SetRangeUser(10,900);
 	  }
 	  if( opts.GetOpt<int>("Channels.array") == 1){
-	    index.second->GetXaxis()->SetRangeUser(100,900);
+	    index.second->GetXaxis()->SetRangeUser(10,900);
 	  }
 
 	  float max = index.second->GetBinCenter(index.second->GetMaximumBin());
