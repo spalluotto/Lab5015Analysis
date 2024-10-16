@@ -165,37 +165,84 @@ def light_output(module):
 
 # ------ stoch ref -----
 def stoch_reference(module):
-    if 'LYSO818' in module:
+    if 'LYSO818' in module:    # T1 25um
         return 0
-    elif 'LYSO813' in module:
+    elif 'LYSO813' in module:  # T2 25um
         return 0
-    elif 'LYSO816' in module:
+    elif 'LYSO816' in module:  # T3 25um
         return 0
-    elif 'LYSO815' in module:
-        return 30
-    elif 'LYSO825' in module:
-        return 35
-    elif 'LYSO819' in module:
+    elif 'LYSO820' in module:  # T2 30 um
+        return 0
+    elif 'LYSO814' in module:  # T2 20um
+        return 0
+    elif 'LYSO528' in module:  # T2 15um
+        return 0
+
+    elif 'LYSO100056' in module: # T1 25um 2E14
         return 25
-    elif 'LYSO817' in module:
+    elif 'LYSO815' in module:    # T2 25um 2E14
+        return 30
+    elif 'LYSO300032' in module: # T3 25 um 2E14
         return 35
-    elif 'LYSO820' in module:
-        return 0
-    elif 'LYSO829' in module:
+
+    
+    elif 'LYSO825' in module:    # T2 20um 2E14
         return 35
-    elif 'LYSO100056' in module:
-        return 25
-    elif 'LYSO300032' in module:
-        return 35
-    elif 'LYSO200104' in module:
+    elif 'LYSO200104' in module: # T2 30um 2E14
         return 30
 
-    elif 'LYSO814' in module:
-        return 0
-    elif 'LYSO528' in module:
-        return 0
+    elif 'LYSO829' in module:    # T1 25um 1E13
+        return 35 
+    elif 'LYSO819' in module:    # T1 25um 1E14
+        return 25
+    elif 'LYSO817' in module:    # T3 25um 1E14
+        return 35
 
 
+
+def stoch_ref_fromFit(module):
+    s = [0,0]
+    if 'LYSO100056' in module or 'LYSO829' in module or 'LYSO819' in module: # T1 25um 2E14
+        if "angle32" in module:
+            s = [41.55, 2.36]
+        elif "angle52" in module:
+            s = [36.72, 2.17]
+        elif "angle64" in module:
+            s = [34.07, 1.95]
+        else:
+            print("ERROR FROM DICT : specify angle")
+            sys.exit(0)
+
+    elif 'LYSO815' in module:    # T2 25um 2E14
+        if "angle64" in module:
+            s = [34.72,0.42]
+        elif "angle52" in module:
+            s = [38.06, 2.27]
+        else:
+            print("ERROR FROM DICT : specify angle")
+            sys.exit(0)
+            
+    elif 'LYSO300032' in module or 'LYSO817' in module: # T3 25 um 2E14
+        if "angle64" in module:
+            s = [38.71, 0.37]
+        else:
+            print("ERROR FROM DICT : specify angle")
+            sys.exit(0)
+            
+    elif 'LYSO825' in module:    # T2 20um 2E14
+        if "angle52" in module:
+            s = [39.13, 3.46]
+        else:
+            print("ERROR FROM DICT : specify angle")
+            sys.exit(0)
+            
+    elif 'LYSO200104' in module: # T2 30um 2E14
+        if "angle52" in	module:
+            s = [34.85, 2.01]
+        else:
+            print("ERROR FROM DICT : specify angle")
+            sys.exit(0)
+    return s
 
 def ov_reference(module):
     if 'LYSO818' in module:
@@ -541,11 +588,11 @@ def good_bars(module, ovs, bars):
         good_bars_[3.00] = [1,2,3,4,5,6,7,10,11,13,14,15]
         good_bars_[2.50] = [0,1,2,3,4,5,7,8,9,10,11,12]
         good_bars_[2.00] = [1,2,3,4,5,7,8,9,10,11,12]
-        good_bars_[1.50] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
-        good_bars_[1.25] = [0,2,3,4,5,7,8,9,10,11,12]
-        good_bars_[1.00] = [0,2,3,4,5,7,8,9,10,11,12,]
-        good_bars_[0.80] = [0,3,4,5,7,8,9,10,11,12,13,15]
-        good_bars_[0.60] = [0,2,3,4,5,7,8,9,10,11,12]
+        good_bars_[1.50] = [3,4,5,7,8,9,10,11,12,13,14,15]
+        good_bars_[1.25] = [3,4,5,7,8,9,10,11,12]
+        good_bars_[1.00] = [3,4,5,7,8,9,10,11,12,]
+        good_bars_[0.80] = [3,4,5,7,8,9,11,12,13,15]
+        good_bars_[0.60] = [3,4,5,7,8,9,11,12]
             
     elif '817' in module:
         good_bars_[3.50] = [2,3,4,5,6,7,8,9,10,11,12,13,14,15]

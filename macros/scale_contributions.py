@@ -41,7 +41,7 @@ angle_offset = 3
 tofVersion = '2c'
 # -------------
 
-stochPow = 0.76
+stochPow = 0.73
 
 ymin = 20.
 pars_to_scale = []
@@ -89,9 +89,8 @@ if compareNum == 1:
     ymin = 0.
 
     gnames = { # name : scaling_needed, xmin, xmax, x_label, ymin, ymax, y_label]
-        'Stoch_vs_PDE_average' : ['1/sqrt',0.1, 0.7, 'PDE', ymin,ymax, '#sigma_{stoch} [ps]']
+        'Stoch_vs_PDE_average' : ['1/sqrt',0.1, 0.7, 'PDE', ymin,ymax, '#sigma_{photo-stat.} [ps]']
     }
-
 
 elif compareNum == 2:
     irr_label = '2 #times 10^{14} 1 MeV n_{eq}/cm^{2}'
@@ -117,7 +116,7 @@ elif compareNum == 2:
                   15 : [22, ROOT.kRed,      '15 #mum']}
 
     gnames = {
-    'DCR_pdescaled_vs_DCR_average' : ['1/',0, 70, 'DCR [GHz]', 0,80, '#sigma_{DCR} x PDE/PDE_{ref} [ps]']
+    'DCR_pdescaled_vs_DCR_average' : ['1/',0, 100, 'DCR [GHz]', 0,100, '#sigma_{DCR} x PDE/PDE_{ref} [ps]']
     }
 
 
@@ -147,6 +146,7 @@ g_StochMeas = {}
 g_SR = {}
 f = {}
 
+g_scaled_all = ROOT.TGraphErrors()
 
 # retrieve files ----
 for par in pars:
@@ -179,7 +179,7 @@ if compareNum == 2:
         g_sdcr_vs_vov = f[par].Get('g_DCR_vs_Vov_average_HPK_2E14_LYSO796_T-40C')
         for i in range(g_dcr_vs_vov.GetN()):
             ov = g_dcr_vs_vov.GetX()[i]
-            g[par][graph].SetPoint(g[par][graph].GetN(),g_dcr_vs_vov.GetY()[i], g_sdcr_vs_vov.GetY()[i]*PDE_(ov,'LYSO796')/PDE_(3.5,'LYSO818','0'))
+            g[par][graph].SetPoint(g[par][graph].GetN(),g_dcr_vs_vov.GetY()[i], g_sdcr_vs_vov.GetY()[i]*PDE_(ov,'LYSO796')/PDE_(1.0,'LYSO818','0'))
             #g[par][graph].SetPointError(g[par][graph].GetN()-1, g_dcr_vs_vov.GetEY()[i], )                
         
 # scale Sep data to take into account angle offset in 2023 Sep TB 
@@ -210,10 +210,12 @@ for par in pars:
             g_scaled[par][graph].SetPoint(i, x, y_scaled)
             g_scaled[par][graph].SetPointError(i, 0, y_err_scaled)
 
+            g_scaled_all.SetPoint(g_scaled_all.GetN(), x, y_scaled)
+            g_scaled_all.SetPointError(g_scaled_all.GetN()-1, 0, y_err_scaled)
 
-
+g_scaled_all.Sort()
 # plot    
-leg = ROOT.TLegend(0.70, 0.60, 0.89, 0.89)
+leg = ROOT.TLegend(0.75, 0.60, 0.89, 0.89)
 leg.SetBorderSize(0)
 leg.SetFillStyle(0)
 leg.SetTextFont(42)
@@ -279,8 +281,24 @@ for graph in gnames:
         lat_fit.SetTextFont(42)
         lat_fit.Draw("same")
 
+        # Create a TGraphErrors to hold the confidence intervals                                                                                                                                                                                                                        
+        cl = ROOT.TGraphErrors(g_scaled_all.GetN())
+        for i in range(g_scaled_all.GetN()):
+            cl.SetPoint(cl.GetN(), g_scaled_all.GetX()[i], 0)
+
+        # Compute the confidence intervals at the x points of the created graph
+        fitter = ROOT.TVirtualFitter.GetFitter()
+        fitter.GetConfidenceIntervals(cl)
+
+        # Extract confidence intervals
+        for i in range(g_scaled_all.GetN()):
+            x = g_scaled_all.GetX()[i]
+            y = g_scaled_all.GetY()[i]
+            ey = g_scaled_all.GetErrorY(i)
+            print(f"PDE: {x}, stoch: {y}, CL: {ey}")
+        
     elif compareNum == 2:
-        f = ROOT.TF1("", "[0]*pow(x,[1])", 0, 80)
+        f = ROOT.TF1("", "[0]*pow(x,[1])", 0, 70)
         f.SetLineColor(1)
         f.SetLineStyle(7)
         f.SetLineWidth(1)
@@ -294,10 +312,9 @@ for graph in gnames:
         lat_fit.Draw("same")
 
         
-    cms_logo = draw_logo()
-    cms_logo.Draw()
+    #cms_logo = draw_logo()
+    #cms_logo.Draw()
 
     c.SaveAs(outdir+'%s.png'%c.GetName())
     c.SaveAs(outdir+'%s.pdf'%c.GetName())
-
 

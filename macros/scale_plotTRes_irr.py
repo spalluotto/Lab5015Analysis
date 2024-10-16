@@ -41,9 +41,10 @@ ROOT.gErrorIgnoreLevel = ROOT.kWarning
 outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/for_paper/'
 angle_offset = 3
 pars_to_scale = []
+verbose = False
 # -------------
 
-stochPow = 0.76
+stochPow = 0.73
 
 srScale = 1.20 # scaling SR from TOFHIR2X to 2C
 pars_srScale = []
@@ -53,6 +54,8 @@ ov_max = 2.
 power_min = 0.
 power_max = 120.
 ymin = 20.
+
+latexOnTop = True
 
 parser = argparse.ArgumentParser()  
 parser.add_argument("-n","--comparisonNumber", required = True, type=str, help="comparison number")    
@@ -94,10 +97,11 @@ if compareNum == 1:
                   20 : [21, ROOT.kBlue,     '20 #mum'],
                   15 : [22, ROOT.kRed,      '15 #mum']
                  }
-    ymax = 160.
-    ov_min = 0.2
+    ymin = 40.
+    ymax = 140.
+    ov_min = 0.
     ov_max = 2.4
-
+    latexOnTop = False
     
 # types
 elif compareNum == 2:
@@ -338,14 +342,13 @@ if pars_srScale:
             sr = g_SR[par].GetY()[i]
             err_sr = g_SR[par].GetEY()[i]
 
-            #sr = g_SR[par].Eval(vov)  # AGGIUNGI ERRORE SU SR
-            s_noise_scaled = sigma_noise(sr*srScale, '2c', err_sr)
+            s_noise_scaled = sigma_noise(sr*srScale, '2c', err_sr*srScale)
             s_stoch = g_Stoch[par].Eval(vov)
             s_dcr = g_DCR[par].Eval(vov)
             s_tot = math.sqrt(s_noise_scaled*s_noise_scaled + s_stoch*s_stoch + s_dcr*s_dcr)
             g_scaled[par].SetPoint(i, vov, s_tot)
             g_scaled[par].SetPointError(i, 0, g[par].GetErrorY(i))
-
+            
             g_scaled_vs_power[par].SetPoint(i, g_vs_power[par].GetX()[i], s_tot)
             g_scaled_vs_power[par].SetPointError(i, 0 , g_scaled_vs_power[par].GetErrorY(i))
 
@@ -364,7 +367,7 @@ for par in pars_to_scale:
             sys.exit()
         sr = g_SR[par].GetY()[i]
         err_sr = g_SR[par].GetEY()[i]
-        s_noise,err_s_noise =  sigma_noise(sr*enScale[par], '2c', err_sr)  # AGGIUNGI ERRORE SU SR
+        s_noise,err_s_noise =  sigma_noise(sr*enScale[par], '2c', err_sr*enScale[par])  # AGGIUNGI ERRORE SU SR
 
         if round(vov,2) != round(g_Stoch[par].GetX()[i],2):
             print("Vov from Stoch vs Vov is different in index wrt data vs Vov")
@@ -377,14 +380,17 @@ for par in pars_to_scale:
         err_s_dcr = g_DCR[par].GetEY()[i]/enScale[par]
 
         s_tot = math.sqrt(s_noise*s_noise + s_stoch*s_stoch + s_dcr*s_dcr)
-        err_s_tot = 1./s_tot * math.sqrt( pow( err_s_stoch*s_stoch,2) + pow(s_noise*err_s_noise,2) + pow(s_dcr*err_s_dcr,2))
-        
-        print("tot : ", s_tot, " ---- noise true : ", sigma_noise(sr,"2c",err_sr), "  noise scaled: ", s_noise, "  stoch true ", g_Stoch[par].Eval(vov), "  stoch scaled ", s_stoch, ' dcr true : ', g_DCR[par].Eval(vov), ' dcr scaled : ', s_dcr)
+        #err_s_tot = 1./s_tot * math.sqrt( pow( err_s_stoch*s_stoch,2) + pow(s_noise*err_s_noise,2) + pow(s_dcr*err_s_dcr,2))
+        err_s_tot = g[par].GetEY()[i]
+        if verbose:
+            print("tot : ", s_tot, " ---- noise true : ", sigma_noise(sr,"2c",err_sr), "  noise scaled: ", s_noise, "  stoch true ", g_Stoch[par].Eval(vov), "  stoch scaled ", s_stoch, ' dcr true : ', g_DCR[par].Eval(vov), ' dcr scaled : ', s_dcr)
 
         g_scaled[par].SetPoint(g_scaled[par].GetN(), vov, s_tot) # correct for angle offset
         g_scaled[par].SetPointError(g_scaled[par].GetN()-1, 0, err_s_tot)
         #g_scaled[par].SetPointError(i, 0, g[par].GetErrorY(i)/enScale[par]) # correct for angle offset                            
 
+        print("ov : ", vov, "\t data scaled : ", round(s_tot,2))
+        
         try:
             g_scaled_vs_power[par].SetPoint(i, g_vs_power[par].GetX()[i], s_tot)
             g_scaled_vs_power[par].SetPointError(i, 0 , err_s_tot)
@@ -395,7 +401,7 @@ for par in pars_to_scale:
             
         
 # plot
-leg = ROOT.TLegend(0.70, 0.60, 0.89, 0.89)
+leg = ROOT.TLegend(0.75, 0.60, 0.89, 0.89)
 leg.SetBorderSize(0)
 leg.SetFillStyle(0)
 leg.SetTextFont(42)
@@ -429,18 +435,23 @@ tl2 = ROOT.TLatex()
 tl2.SetNDC()
 tl2.SetTextFont(42)
 tl2.SetTextSize(0.045)
-#tl2.DrawLatex(0.20,0.86,'%s'%nameComparison.split('_')[0])
-tl2.DrawLatex(0.20,0.86,'%s'%label_on_top)
+if latexOnTop:
+    tl2.DrawLatex(0.20,0.86,'%s'%label_on_top)  # scritta in alto  
+else:
+    tl2.DrawLatex(0.20,0.26,'%s'%label_on_top) # scritta in basso
 
 
 tl = ROOT.TLatex()
 tl.SetNDC()
 tl.SetTextFont(42)
 tl.SetTextSize(0.045)
-tl.DrawLatex(0.20,0.80, irr_label)
+if latexOnTop:
+    tl.DrawLatex(0.20,0.80, irr_label) # scritta in alto  
+else:
+    tl.DrawLatex(0.20,0.20, irr_label) # scritta in basso
 
-cms_logo = draw_logo()
-cms_logo.Draw()
+#cms_logo = draw_logo()
+#cms_logo.Draw()
 
 c.SaveAs(outdir+'%s.png'%c.GetName())
 c.SaveAs(outdir+'%s.pdf'%c.GetName())
@@ -480,8 +491,8 @@ if not index_out_of_bounds:
     tl2.DrawLatex(0.20,0.86,'%s'%label_on_top)
     tl.DrawLatex(0.20,0.80, irr_label)
     
-    cms_logo = draw_logo()
-    cms_logo.Draw()
+    #cms_logo = draw_logo()
+    #cms_logo.Draw()
     
     c_.SaveAs(outdir+'%s.png'%c_.GetName())
     c_.SaveAs(outdir+'%s.pdf'%c_.GetName())

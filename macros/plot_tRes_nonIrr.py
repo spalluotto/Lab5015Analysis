@@ -609,7 +609,7 @@ for it,sipm in enumerate(sipmTypes):
 
 
             # compute expected stochastic term  by scaling from 3.5 V OV    
-            s_stoch_exp = s_stoch_ref / math.pow( PDE_(ov,sipm)/PDE_(ov_ref,sipm)  , 0.66)
+            s_stoch_exp = s_stoch_ref / math.pow( PDE_(ov,sipm)/PDE_(ov_ref,sipm)  , 0.76)
             #s_stoch_exp = s_stoch_ref / math.pow( PDE_(ov,sipm)/PDE_(ov_ref,sipm)  , 0.5)
             err_s_stoch_exp = err_s_stoch_ref/math.sqrt( PDE_(ov, sipm)/PDE_(ov_ref, sipm) )
 
@@ -658,6 +658,9 @@ g_Stoch_vs_Npe_average = {}
 
 g_Noise_vs_Gain_average =  {}
 
+g_bestTh_vs_Vov_average = {}
+g_bestTh_vs_bar
+
 for sipm in sipmTypes:
     print("\n ", sipm)
     g_SR_vs_Vov_average[sipm]     = ROOT.TGraphErrors()
@@ -672,6 +675,8 @@ for sipm in sipmTypes:
     g_Stoch_vs_Npe_average[sipm] = ROOT.TGraphErrors()
 
     g_Noise_vs_Gain_average[sipm] = ROOT.TGraphErrors()
+
+    g_bestTh_vs_Vov_average[sipm] = ROOT.TGraphErrors()
     
     for ov in Vovs[sipm]:
         if (ov in  g_SR_vs_bar[sipm].keys()): 
@@ -717,9 +722,12 @@ for sipm in sipmTypes:
             fitpol0_stoch_exp = ROOT.TF1('fitpol0_stoch_exp','pol0',-100,100)
             g_StochExp_vs_bar[sipm][ov].Fit(fitpol0_stoch_exp,'QNR')
             s_stoch_exp = fitpol0_stoch_exp.GetParameter(0)
-            err_s_stoch_exp = g_StochExp_vs_bar[sipm][ov].GetRMS(2)/math.sqrt(16)
+            err_s_stoch_exp = g_StochExp_vs_bar[sipm][ov].GetRMS(2)/math.sqrt(g_StochExp_vs_bar[sipm][ov].GetN())
             g_StochExp_vs_Vov_average[sipm].SetPoint(g_StochExp_vs_Vov_average[sipm].GetN(), ov, s_stoch_exp)
             g_StochExp_vs_Vov_average[sipm].SetPointError(g_StochExp_vs_Vov_average[sipm].GetN()-1, 0, err_s_stoch_exp)
+
+            if ov ==3.5:
+                print("\n\n\n STOCH REF : ", s_stoch_exp, "  \n\n\n")
 
 
             # tot resolution summing noise + expected stochastic in quadrature        
@@ -742,6 +750,15 @@ for sipm in sipmTypes:
             g_Stoch_vs_Npe_average[sipm].SetPoint(g_Stoch_vs_Npe_average[sipm].GetN(), Npe[sipm][ov], s_stoch)
             g_Stoch_vs_Npe_average[sipm].SetPointError(g_Stoch_vs_Npe_average[sipm].GetN()-1, 0, err_s_stoch)
 
+
+            # average best Th vs Vov
+            fitpol0_bestTh = ROOT.TF1('fitpol0_bestTh','pol0',-100,100)
+            g_bestTh_vs_bar[sipm][ov].Fit(fitpol0_bestTh,'QNR')
+            bestTh = fitpol0_bestTh.GetParameter(0)
+            err_bestTh = g_bestTh_vs_bar[sipm][ov].GetRMS(2)/math.sqrt(g_bestTh_vs_bar[sipm][ov].GetN())
+            g_bestTh_vs_Vov_average[sipm].SetPoint(g_bestTh_vs_Vov_average[sipm].GetN(), ov, bestTh)
+            g_bestTh_vs_Vov_average[sipm].SetPointError(g_bestTh_vs_Vov_average[sipm].GetN()-1, 0, err_bestTh)
+            
 
 for sipm in sipmTypes:
     # ---- noise vs gain ----                                                                                                                                      
@@ -1433,6 +1450,18 @@ for it,sipm in enumerate(sipmTypes):
     g_Stoch_vs_PDE_average[sipm].SetLineWidth(1)
     g_Stoch_vs_PDE_average[sipm].SetLineColor(cols[sipm])
     g_Stoch_vs_PDE_average[sipm].Draw('psame')
+
+    # ----------- Confidence Level ---------------
+    cl = ROOT.TGraphErrors(g_Stoch_vs_PDE_average[sipm].GetN())
+    for i in range(g_Stoch_vs_PDE_average[sipm].GetN()):
+        cl.SetPoint(cl.GetN(), g_Stoch_vs_PDE_average[sipm].GetX()[i], 0)        
+    fitter = ROOT.TVirtualFitter.GetFitter()
+    fitter.GetConfidenceIntervals(cl)
+    for i in range(g_Stoch_vs_PDE_average[sipm].GetN()):
+        x = g_Stoch_vs_PDE_average[sipm].GetX()[i]
+        y = g_Stoch_vs_PDE_average[sipm].GetY()[i]
+        ey = g_Stoch_vs_PDE_average[sipm].GetErrorY(i)
+        print(f"PDE: {x}, stoch: {y}, CL: {ey}")
     outfile.cd()
     g_Stoch_vs_PDE_average[sipm].Write('g_Stoch_vs_PDE_average_%s'%(sipm))
     it+=1
@@ -1459,6 +1488,40 @@ c.SaveAs(outdir+'/'+c.GetName()+'.png')
 c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
 hdummy.Delete()
 del(lat_fit)
+
+
+
+
+
+# ------ best Th average vs vov
+c =  ROOT.TCanvas('c_bestTh_vs_Vov_average','c_bestTh_vs_Vov_average',650,500)
+c.SetGridx()
+c.SetGridy()
+c.cd()
+ROOT.gStyle.SetOptFit(0)
+hdummy = ROOT.TH2F('hdummy','',2, 0., 4., 2, 0, 30)
+hdummy.GetXaxis().SetTitle('V_{OV} [V]')
+hdummy.GetYaxis().SetTitle('timing threshold [DAC]')
+hdummy.Draw()
+for it,sipm in enumerate(sipmTypes):
+    g_bestTh_vs_Vov_average[sipm].SetMarkerStyle(markers[sipm])
+    g_bestTh_vs_Vov_average[sipm].SetMarkerColor(cols[sipm])
+    g_bestTh_vs_Vov_average[sipm].SetLineWidth(1)
+    g_bestTh_vs_Vov_average[sipm].SetLineColor(cols[sipm])
+    g_bestTh_vs_Vov_average[sipm].Draw('psame')
+    outfile.cd()
+    g_bestTh_vs_Vov_average[sipm].Write('g_bestTh_vs_Vov_average_%s'%(sipm))    
+leg2.Draw()
+cms_logo = draw_logo()
+cms_logo.Draw()
+c.SaveAs(outdir+'/'+c.GetName()+'.png')
+c.SaveAs(outdir+'/'+c.GetName()+'.pdf')
+hdummy.Delete()
+
+
+
+
+
 
 outfile.Close()
 print("outfile closed")

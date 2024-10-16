@@ -1047,7 +1047,7 @@ int main(int argc, char** argv)
       std::cout << std::endl;
     }
   
-  
+  std::cout <<"drawing 3rd plots" << std::endl;
   //------------------
   //--- draw 3rd plots
   std::map<double,TF1*> fitFunc_energyRatioCorr;
@@ -1096,6 +1096,20 @@ int main(int argc, char** argv)
 	    
 	    float fitXMin = fitFunc_energyRatio[index2]->GetParameter(1) - 3.*fitFunc_energyRatio[index2]->GetParameter(2);
 	    float fitXMax = fitFunc_energyRatio[index2]->GetParameter(1) + 3.*fitFunc_energyRatio[index2]->GetParameter(2);
+
+	    // Debugging output
+	    std::cout << "fitXMin: " << fitXMin << ", fitXMax: " << fitXMax << std::endl;
+	    std::cout << "CTRMeans[index2]: " << CTRMeans[index2] << ", CTRSigmas[index2]: " << CTRSigmas[index2] << std::endl;
+
+	    if (prof->GetEntries()<5) continue;
+	    fitFunc_energyRatioCorr[index2] = new TF1(Form("fitFunc_energyRatioCorr_%s",labelLR_energyBin.c_str()),"pol3",fitXMin,fitXMax);
+	    int fitStatus = prof->Fit(fitFunc_energyRatioCorr[index2], "QRS+");
+
+	    // Check fit status
+	    if (fitStatus != 0) {
+	      std::cerr << "Fit failed for index2: " << index2 << " with status: " << fitStatus << std::endl;
+	      continue;
+	    }
 	    
 	    fitFunc_energyRatioCorr[index2] = new TF1(Form("fitFunc_energyRatioCorr_%s",labelLR_energyBin.c_str()),"pol3",fitXMin,fitXMax);
 	    prof -> Fit(fitFunc_energyRatioCorr[index2],"QRS+");

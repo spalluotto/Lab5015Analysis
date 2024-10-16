@@ -1001,7 +1001,8 @@ int main(int argc, char** argv)
     int index2 = mapIt.first;
     float Vov =  int(index2/10000)/100.;
     int iBar = index2 - (Vov*10000*100);
-
+    
+    std::cout << "vov  = " <<Vov <<"   bar" <<iBar << std::endl;
     c = new TCanvas("c","c");
     hPad = (TH1F*)( gPad->DrawFrame(-2.,0.,25.,65*dac_to_uA) );
     hPad -> SetTitle(Form(";time [ns]; pulse shape [#muA]"));
@@ -1055,6 +1056,7 @@ int main(int argc, char** argv)
     std::cout << "ch1 - Slew rate at low threshold = " << slewRate_low << std::endl;
     delete g_temp;
 
+    if (slewRate==0&&slewRate_low<0.1) continue;
     // -- draw
     fitFuncL -> SetLineColor(kRed-4);
     fitFuncL -> Draw("same");
@@ -1078,20 +1080,33 @@ int main(int argc, char** argv)
     
     g_pulseShapeL[index2] ->Write(Form("g_pulseShapeL_bar%02d_Vov%.2f",iBar,Vov));
 
+    std::cout << "channel 2" <<std::endl;
     // --- channel R
     if( !g_pulseShapeR[index2] ) continue;
     slewRate = 0.;
     TF1* fitFuncR = new TF1("fitFuncR","pol1",-5.,7.);
+    std::cout << "points" <<std::endl;
     for(int point1 = 0; point1 <  g_pulseShapeR[index2]->GetN()-npoints; ++point1)
     {
+      std::cout << "g temp" <<std::endl;
       TGraph* g_temp = new TGraph();
       for(int point2 = point1; point2 < point1+npoints; ++point2)
       {
         g_temp -> SetPoint(g_temp->GetN(), g_pulseShapeR[index2]->GetPointX(point2), g_pulseShapeR[index2]->GetPointY(point2));
       }
+
+      if(g_temp->GetN()<3) continue;
+      std::cout << "qui - " <<g_temp->GetN() <<std::endl;
       
-      TF1* f_temp = new TF1("f_temp","pol1",-10.,100.);
-      g_temp -> Fit(f_temp,"QNRS");
+      TF1* f_temp = new TF1("f_temp","pol1",-10.,50.);
+      int fitResult = g_temp -> Fit(f_temp,"QNRS");
+      std::cout << "fit result "<<fitResult <<std::endl;
+      if (fitResult != 0)
+        {
+	  std::cerr << "Fit failed for temporary fit function f_temp." << std::endl;
+	  delete g_temp;
+	  continue;
+        }
       
       if( f_temp->GetParameter(1) > slewRate )
       {

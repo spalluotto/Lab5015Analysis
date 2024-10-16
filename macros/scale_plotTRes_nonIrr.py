@@ -40,12 +40,12 @@ outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/for_paper/'
 angle_offset = 3
 tofVersion = '2c'
 meas = True
-verbose = True
+verbose = False
 # -------------
 
 print("\n USING STOCH MEASURED ? ", meas)
 
-stochPow = 0.76
+stochPow = 0.73
 ymin = 20.
 pars_to_scale = []
 
@@ -235,10 +235,12 @@ for par in pars_to_scale:
         err_s_dcr = 0.
 
         s_tot = math.sqrt(s_noise*s_noise + s_stoch*s_stoch + s_dcr*s_dcr)
-        err_s_tot = 1/s_tot * math.sqrt(math.pow(s_noise*err_s_noise,2) + math.pow(s_stoch*err_s_stoch,2) + math.pow(s_dcr*err_s_dcr,2))
-
+        #err_s_tot = 1/s_tot * math.sqrt(math.pow(s_noise*err_s_noise,2) + math.pow(s_stoch*err_s_stoch,2) + math.pow(s_dcr*err_s_dcr,2))
+        err_s_tot = g[par].GetEY()[i]
+        
         s_totMeas = math.sqrt(s_noise*s_noise + s_stochMeas*s_stochMeas + s_dcr*s_dcr)
-        err_s_totMeas = 1/s_totMeas * math.sqrt(math.pow(s_noise*err_s_noise,2) + math.pow(s_stochMeas*err_s_stochMeas,2) + math.pow(s_dcr*err_s_dcr,2))
+        #err_s_totMeas = 1/s_totMeas * math.sqrt(math.pow(s_noise*err_s_noise,2) + math.pow(s_stochMeas*err_s_stochMeas,2) + math.pow(s_dcr*err_s_dcr,2))
+        err_s_totMeas = g[par].GetEY()[i]
 
         g_scaled[par].SetPoint(i, vov, s_tot) # correct for angle offset 
         g_scaled[par].SetPointError(i, 0, err_s_tot) # correct for angle offset
@@ -246,12 +248,15 @@ for par in pars_to_scale:
         g_scaledMeas[par].SetPoint(i, vov, s_totMeas) # correct for angle offset 
         g_scaledMeas[par].SetPointError(i, 0, err_s_totMeas) # correct for angle offset
 
+        print("ov : ", vov, "\t data scaled : ", round(s_totMeas,2))
         if verbose:
             print("OV : ", vov)
             print("scaling -- > ", round(enScale[par],2))
             print("data : ",round(g[par].GetY()[i],1), "tot scaled : ", round(s_tot,1), " ---- noise true : ", round(sigma_noise(sr,tofVersion,err_sr)[0],1), "  noise scaled: ", round(s_noise,1), "  stoch true ", round(g_Stoch[par].Eval(vov),1), "  stoch scaled ", round(s_stoch,1), "  stoch meas true : ", round(s_stochMeas,1))
             print("err on stoch : ", err_s_stochMeas)
 
+            
+            
 
 g_uff={}
 if meas:
@@ -313,8 +318,8 @@ tl.SetTextFont(42)
 tl.SetTextSize(0.045)
 tl.DrawLatex(0.20,0.80,'non-irradiated')
 
-cms_logo = draw_logo()
-cms_logo.Draw()
+#cms_logo = draw_logo()
+#cms_logo.Draw()
 
 c.SaveAs(outdir+'%s.png'%c.GetName())
 c.SaveAs(outdir+'%s.pdf'%c.GetName())

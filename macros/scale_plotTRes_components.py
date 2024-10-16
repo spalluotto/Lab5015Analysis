@@ -39,7 +39,7 @@ angle_offset = 3
 pars_to_scale = []
 # -------------
 
-stochPow = 0.76
+stochPow = 0.73
 
 
 #---- init ---
@@ -54,7 +54,7 @@ fnames = {}
 gnames = {}
 labels = {}
 
-
+ymin = 0.
 ymax = 100
 xmax = 4.
 xmin = 0.
@@ -143,23 +143,28 @@ elif compareNum == 4:
 elif compareNum == 1:
     nameComparison = '2E14_cellSizes'
     irr_label = '2 #times 10^{14} 1 MeV n_{eq}/cm^{2}'  
-    pars = [20, 25, 30]
-    pars_to_scale = pars
+    pars = [15,20, 25, 30]
+    pars_to_scale = [20, 25, 30]
     angle_true = 49
 
     fnames = { 30 : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_T-35C_angle52_cellSize.root',
                25 : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_T-35C_angle52_cellSize.root',
-               20 : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_T-35C_angle52_cellSize.root'
+               20 : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_T-35C_angle52_cellSize.root',
+               15 : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plots_timeResolution_2E14_15um_T2_TBJune22_TOFHIR2X.root'
               }
     labels = { 30 : 'HPK_2E14_LYSO200104_angle52_T-35C',
                25 : 'HPK_2E14_LYSO815_angle52_T-35C',
-               20 : 'HPK_2E14_LYSO825_angle52_T-35C'
+               20 : 'HPK_2E14_LYSO825_angle52_T-35C',
+               15 : 'HPK_2E14_LYSO796_T-40C'
               }
     plotAttrs = { 30 : [23, ROOT.kOrange+1, '30 #mum'],
                   25 : [20, ROOT.kGreen+2,  '25 #mum'],
-                  20 : [21, ROOT.kBlue,     '20 #mum']
+                  20 : [21, ROOT.kBlue,     '20 #mum'],
+                  15 : [22, ROOT.kRed,      '15 #mum']
                  }
-    ymax = 120.
+    ymin = 0.
+    ymax = 160.
+    xmin = 0.3
     xmax = 1.6
 
 
@@ -348,6 +353,7 @@ for par in pars:
 
     for i in range(0, g_data[par].GetN()):
         vov = g_data[par].GetX()[i]
+        s_meas = g_data[par].GetY()[i]
         sr = g_sr[par].GetY()[i]
         err_sr = g_sr[par].GetEY()[i]
         if par in pars_to_scale:
@@ -368,14 +374,15 @@ for par in pars:
                 g_dcr_scaled[par].SetPointError(i, 0, err_s_dcr) 
 
             s_tot = math.sqrt(s_noise*s_noise + s_stoch*s_stoch + s_dcr*s_dcr)
-            err_s_tot = 1/s_tot * math.sqrt(math.pow(s_noise*err_s_noise,2) + math.pow(s_stoch*err_s_stoch,2) + math.pow(s_dcr*err_s_dcr,2))
+            #err_s_tot = 1/s_tot * math.sqrt(math.pow(s_noise*err_s_noise,2) + math.pow(s_stoch*err_s_stoch,2) + math.pow(s_dcr*err_s_dcr,2))
+            err_s_tot = g_data[par].GetEY()[i]
             
             g_data_scaled[par].SetPoint(i, vov, s_tot) 
             g_data_scaled[par].SetPointError(i, 0, err_s_tot) 
 
             
 
-            #print("tot : ", s_tot, " ---- noise true : ", sigma_noise(sr,"2c"), "  noise scaled: ", s_noise, "  stoch true ", g_stoch[par].Eval(vov), "  stoch scaled ", s_stoch, ' dcr true : ', g_dcr[par].Eval(vov), ' dcr scaled : ', s_dcr)
+            #print("tot meas : ", round(s_meas,1), " tot scal in quadr: ", round(s_tot,1), " ---- noise true : ", round(sigma_noise(sr,"2c",err_sr)[0],1), "  noise scaled: ", round(s_noise,1), "  stoch true ", round(g_stoch[par].Eval(vov),1), "  stoch scaled ", round(s_stoch,1), ' dcr true : ', round(g_dcr[par].Eval(vov),1), ' dcr scaled : ', round(s_dcr,1))
 
 for par in pars:
     if par in pars_to_scale:
@@ -396,7 +403,11 @@ for par in pars:
 # plot        
 for par in pars:
     c = ROOT.TCanvas('c_timeResolution_components_%s_%s_vs_Vov'%(par, nameComparison), 'c_timeResolution_components_%s_%s_vs_Vov'%(par, nameComparison), 600, 500)
-    hPad = ROOT.gPad.DrawFrame(xmin, 0., xmax, ymax)
+    if compareNum == 1 and par == 15:
+        hPad = ROOT.gPad.DrawFrame(0.9, ymin, 2.2, ymax)
+    else:
+        hPad = ROOT.gPad.DrawFrame(xmin, ymin, xmax, ymax)
+        
     #if (nameComparison == '2E14'): hPad = ROOT.gPad.DrawFrame(0., 0., 2., 160.)
     #    if '2E14' in nameComparison:
         #hPad = ROOT.gPad.DrawFrame(g_data_scaled[par].GetX()[0] - 0.2, 0., g_data_scaled[par].GetX()[0] + 1.2, ymax)
@@ -429,14 +440,14 @@ for par in pars:
         g_dcr_final[par].SetFillStyle(3005)
         g_dcr_final[par].Draw('E3lsame')
 
-    leg = ROOT.TLegend(0.60, 0.60, 0.89, 0.89)
+    leg = ROOT.TLegend(0.70, 0.62, 0.89, 0.89)
     leg.SetBorderSize(0)
     leg.SetFillColor(0)
     leg.SetTextFont(42)
     leg.SetTextSize(0.050)
     leg.AddEntry(g_data_final[par], 'data', 'PL')
     leg.AddEntry(g_noise_final[par], 'electronics', 'FL')
-    leg.AddEntry(g_stoch_final[par], 'stochastic', 'FL')    
+    leg.AddEntry(g_stoch_final[par], 'photo-stat.', 'FL')    
     if not 'nonIrr' in nameComparison:
         leg.AddEntry(g_dcr_final[par], 'DCR', 'FL')    
     leg.Draw()
@@ -457,8 +468,8 @@ for par in pars:
     tl3.SetTextSize(0.050)
     tl3.DrawLatex(0.20,0.80,'{}'.format(irr_label))
 
-    cms_logo = draw_logo()
-    cms_logo.Draw()
+    #cms_logo = draw_logo()
+    #cms_logo.Draw()
 
     c.SaveAs(outdir+'%s.png'%c.GetName())
     c.SaveAs(outdir+'%s.pdf'%c.GetName())

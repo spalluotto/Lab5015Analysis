@@ -79,8 +79,9 @@
 # python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO528_Vov3.50_angle52_T5C -o HPK_nonIrr_LYSO528_Vov3.50_angle52_T5C
 
 
-# python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO528_Vov0.80_angle52_T5C,HPK_nonIrr_LYSO528_Vov1.00_angle52_T5C,HPK_nonIrr_LYSO528_Vov1.25_angle52_T5C,HPK_nonIrr_LYSO528_Vov1.50_angle52_T5C,HPK_nonIrr_LYSO528_Vov2.00_angle52_T5C,HPK_nonIrr_LYSO528_Vov3.50_angle52_T5C -o HPK_nonIrr_LYSO528_angle52_T5C
-# python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO528_Vov1.25_angle52_T5C,HPK_nonIrr_LYSO528_Vov1.50_angle52_T5C,HPK_nonIrr_LYSO528_Vov2.00_angle52_T5C,HPK_nonIrr_LYSO528_Vov3.50_angle52_T5C  -o HPK_nonIrr_LYSO528_angle52_T5C
+## python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO528_Vov0.80_angle52_T5C,HPK_nonIrr_LYSO528_Vov1.00_angle52_T5C,HPK_nonIrr_LYSO528_Vov1.25_angle52_T5C,HPK_nonIrr_LYSO528_Vov1.50_angle52_T5C,HPK_nonIrr_LYSO528_Vov2.00_angle52_T5C,HPK_nonIrr_LYSO528_Vov3.50_angle52_T5C -o HPK_nonIrr_LYSO528_angle52_T5C
+python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO528_Vov1.00_angle52_T5C,HPK_nonIrr_LYSO528_Vov1.25_angle52_T5C,HPK_nonIrr_LYSO528_Vov1.50_angle52_T5C,HPK_nonIrr_LYSO528_Vov2.00_angle52_T5C,HPK_nonIrr_LYSO528_Vov3.50_angle52_T5C -o HPK_nonIrr_LYSO528_angle52_T5C
+## python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_nonIrr_LYSO528_Vov1.25_angle52_T5C,HPK_nonIrr_LYSO528_Vov1.50_angle52_T5C,HPK_nonIrr_LYSO528_Vov2.00_angle52_T5C,HPK_nonIrr_LYSO528_Vov3.50_angle52_T5C  -o HPK_nonIrr_LYSO528_angle52_T5C
 
 
 # # # ---- LYSO 820 -- angle52 
@@ -180,7 +181,7 @@
 # python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO815_Vov1.50_angle52_T-35C -o HPK_2E14_LYSO815_Vov1.50_angle52_T-35C
 # python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO815_Vov2.00_angle52_T-35C -o HPK_2E14_LYSO815_Vov2.00_angle52_T-35C
 
-python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO815_Vov0.60_angle52_T-35C,HPK_2E14_LYSO815_Vov0.80_angle52_T-35C,HPK_2E14_LYSO815_Vov1.00_angle52_T-35C,HPK_2E14_LYSO815_Vov1.25_angle52_T-35C,HPK_2E14_LYSO815_Vov1.50_angle52_T-35C,HPK_2E14_LYSO815_Vov2.00_angle52_T-35C -o HPK_2E14_LYSO815_angle52_T-35C
+# python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO815_Vov0.60_angle52_T-35C,HPK_2E14_LYSO815_Vov0.80_angle52_T-35C,HPK_2E14_LYSO815_Vov1.00_angle52_T-35C,HPK_2E14_LYSO815_Vov1.25_angle52_T-35C,HPK_2E14_LYSO815_Vov1.50_angle52_T-35C,HPK_2E14_LYSO815_Vov2.00_angle52_T-35C -o HPK_2E14_LYSO815_angle52_T-35C
 
 
 
@@ -194,7 +195,7 @@ python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO815_Vov0.60_an
 # python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO100056_Vov1.50_angle52_T-35C -o HPK_2E14_LYSO100056_Vov1.50_angle52_T-35C
 # python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO100056_Vov2.00_angle52_T-35C -o HPK_2E14_LYSO100056_Vov2.00_angle52_T-35C
 
-#python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO100056_Vov0.60_angle52_T-35C,HPK_2E14_LYSO100056_Vov0.80_angle52_T-35C,HPK_2E14_LYSO100056_Vov1.00_angle52_T-35C,HPK_2E14_LYSO100056_Vov1.25_angle52_T-35C,HPK_2E14_LYSO100056_Vov1.50_angle52_T-35C,HPK_2E14_LYSO100056_Vov2.00_angle52_T-35C -o HPK_2E14_LYSO100056_angle52_T-35C
+##python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO100056_Vov0.60_angle52_T-35C,HPK_2E14_LYSO100056_Vov0.80_angle52_T-35C,HPK_2E14_LYSO100056_Vov1.00_angle52_T-35C,HPK_2E14_LYSO100056_Vov1.25_angle52_T-35C,HPK_2E14_LYSO100056_Vov1.50_angle52_T-35C,HPK_2E14_LYSO100056_Vov2.00_angle52_T-35C -o HPK_2E14_LYSO100056_angle52_T-35C
 #python moduleCharacterizationSummaryPlots.py -m 2 -i HPK_2E14_LYSO100056_Vov0.80_angle52_T-35C,HPK_2E14_LYSO100056_Vov1.00_angle52_T-35C,HPK_2E14_LYSO100056_Vov1.25_angle52_T-35C,HPK_2E14_LYSO100056_Vov1.50_angle52_T-35C,HPK_2E14_LYSO100056_Vov2.00_angle52_T-35C -o HPK_2E14_LYSO100056_angle52_T-35C
 
 # # # angle64 ---- T -35C

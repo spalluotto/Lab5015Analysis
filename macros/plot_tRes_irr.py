@@ -15,7 +15,7 @@ color_code = True
 marker_code = True
 tofhirVersion = '2c'
 
-verbose = False
+verbose = True
 refTh = args.refTh
 # ------------------ 
 
@@ -148,12 +148,6 @@ elif comparisonNum == 30:
     extraLabel =    ['',        '',              '']
     outSuffix =     'HPK_2E14_T-35C_angle52_cellSize'
 
-elif comparisonNum == 31:
-    modules =       ['LYSO200104', 'LYSO815',       'LYSO825', '']
-    temperatures =  ['-35',     '-35',           '-35']
-    extraName =     ['_angle52', '_angle52',      '_angle52']
-    extraLabel =    ['',        '',              '']
-    outSuffix =     'HPK_2E14_T-35C_angle52_cellSize'
 
     
 #--------------------------------------------------------------------------------------
@@ -181,7 +175,7 @@ for it,module in enumerate(modules):
 
 
 if verbose:
-    print('module: ', sipmTypes , '\t outfile: ', outfile)
+    print('---- module: ', sipmTypes , '\t outfile: ', outfile," --------")
 
 
 if color_code:
@@ -365,6 +359,7 @@ gain   = {}
 for it,sipm in enumerate(sipmTypes):
     if verbose:
         print("\n  --->  ", fnames[sipm])
+        print("\n  --->  ", sipm)
     f[sipm] = ROOT.TFile.Open(fnames[sipm])
     if not f[sipm]:
         print('summary plot file not found')
@@ -423,7 +418,7 @@ for it,sipm in enumerate(sipmTypes):
 
 
     if verbose:
-        print('retrieving pulse shapes')
+        print('       retrieving pulse shapes')
 
     fPS[sipm] = {}
     for ov in Vovs[sipm]:
@@ -447,7 +442,7 @@ for it,sipm in enumerate(sipmTypes):
 
 
     if verbose:
-        print('retrieving summary plots')
+        print('           retrieving summary plots, loop on bars')
 
 
     for bar in bars[sipm]:
@@ -461,9 +456,9 @@ for it,sipm in enumerate(sipmTypes):
             sys.exit()
 
         if verbose:
-            print('\n check sipm ', sipm , '  bar ', bar)
+            print('\n            bar ', bar)
             for ipoint in range(g_data[sipm][bar].GetN()):
-                print('tres ', g_data[sipm][bar].GetPointY(ipoint), '  ov: ', g_data[sipm][bar].GetPointX(ipoint))
+                print('              tres from g_data ', g_data[sipm][bar].GetPointY(ipoint), '  ov: ', g_data[sipm][bar].GetPointX(ipoint))
 
         g_Noise_vs_Vov[sipm][bar]     = ROOT.TGraphErrors()
         g_Stoch_vs_Vov[sipm][bar]     = ROOT.TGraphErrors()
@@ -483,13 +478,11 @@ for it,sipm in enumerate(sipmTypes):
 
 
         if verbose:
-            print('starting loop on ov')
+            print('           starting loop on ov')
 
     # --- loop on ov ----        g_data = tRes vs vov
         for ov in Vovs[sipm]:
 
-            if verbose:
-                print("\nov: ", ov)
             ovEff = Vovs_eff(sipm, ov)
 
             # -- current vs ov eff
@@ -502,6 +495,10 @@ for it,sipm in enumerate(sipmTypes):
             s_data = g_data[sipm][bar].Eval(ovEff)
             indref = [i for i in range(0, g_data[sipm][bar].GetN()) if g_data[sipm][bar].GetPointX(i) == ovEff]
             if ( len(indref)<1 ): continue
+            if verbose:
+                print("\n              ov: ", ov)
+                print("\n              computing slew rates")
+
             err_s_data = g_data[sipm][bar].GetErrorY(indref[0])            
             
             # Npe and Gain at this OVeff
@@ -568,19 +565,32 @@ for it,sipm in enumerate(sipmTypes):
 
             if errSR>5:
                 continue
-            
+
+            if verbose:
+                print("            slew rate computed : ", sr)
             s_noise,err_s_noise = sigma_noise(sr, tofhirVersion, errSR)
             #err_s_noise =  0.5*(sigma_noise(sr*(1-errSR/sr), tofhirVersion )-sigma_noise(sr*(1+errSR/sr), tofhirVersion) )
 
             # compute s_stoch by scaling the stochastic term measured for non-irradiated SiPMs for sqrt(PDE) 
-            alpha = 0.75
+            alpha = 0.73
             PDE = PDE_(ovEff,sipm)
-            PDE_nonIrr = PDE_(ov_reference(module),sipm,'0')
-            s_stoch = stoch_reference(sipm)/pow( PDE / PDE_nonIrr, alpha )
+            PDE_nonIrr = PDE_(1.0,sipm,'0') 
+            PDE_ratio = PDE / PDE_nonIrr
+            #            PDE_nonIrr = PDE_(ov_reference(module),sipm,'0')
+
+            stoch_ref,err_stoch_ref = stoch_ref_fromFit(sipm)
+            s_stoch = stoch_ref/pow( PDE_ratio, alpha ) 
+            err_s_stoch = math.sqrt( math.pow(math.pow(1/PDE_ratio,alpha)*err_stoch_ref ,2) + math.pow(stoch_ref/math.pow(PDE,alpha)*alpha*math.pow(PDE_nonIrr,(alpha-1))*PDE_nonIrr*errPDE ,2)+ math.pow(stoch_ref *math.pow(PDE_nonIrr, alpha)*(-alpha) * math.pow(PDE,-alpha-1)*PDE*errPDE,2) )
+            
+            # old method ----
+            #stoch_ref = 15/math.pow(PDE_nonIrr, alpha)
+            # stoch_ref = stoch_reference(sipm)
+
             # assume 5% uncertainty on PDE...
-            s_stoch_up = stoch_reference(sipm)/pow( PDE*(1-errPDE)/PDE_nonIrr, alpha  )
-            s_stoch_down = stoch_reference(sipm)/pow( PDE*(1+errPDE)/PDE_nonIrr, alpha  )
-            err_s_stoch = 0.5*(s_stoch_up-s_stoch_down)
+            # s_stoch_up = stoch_ref/pow( PDE*(1-errPDE)/PDE_nonIrr, alpha  )
+            # s_stoch_down = stoch_ref/pow( PDE*(1+errPDE)/PDE_nonIrr, alpha  )
+            # err_s_stoch = 0.5*(s_stoch_up-s_stoch_down)
+
             
             g_SR_vs_GainNpe[sipm][bar].SetPoint( g_SR_vs_GainNpe[sipm][bar].GetN(), gain[sipm][ov]*Npe[sipm][ov], sr )
             g_SR_vs_GainNpe[sipm][bar].SetPointError( g_SR_vs_GainNpe[sipm][bar].GetN()-1, 0, errSR )
@@ -596,6 +606,7 @@ for it,sipm in enumerate(sipmTypes):
             
             # vs bar
             if bar in goodbars[sipm][ov]:
+                print("           this bar is ok")
                 g_SR_vs_bar[sipm][ov].SetPoint( g_SR_vs_bar[sipm][ov].GetN(), bar, sr )
                 g_SR_vs_bar[sipm][ov].SetPointError( g_SR_vs_bar[sipm][ov].GetN()-1, 0, errSR )
                 g_bestTh_vs_bar[sipm][ov].SetPoint( g_bestTh_vs_bar[sipm][ov].GetN(), bar, timingThreshold )
@@ -609,15 +620,14 @@ for it,sipm in enumerate(sipmTypes):
             g_Stoch_vs_Vov[sipm][bar].SetPointError(g_Stoch_vs_Vov[sipm][bar].GetN()-1, 0, err_s_stoch)
 
             if verbose:
-                print("\nsipm _ ", sipm, '  ov: ', ov)
-                print(' s_data ', s_data, '  s_stoch  ', s_stoch, '   s_noise  ',s_noise)
+                print('          s_data ', s_data, '  s_stoch  ', s_stoch, '   s_noise  ',s_noise)
 
             # compute sigma_DCR as difference in quadrature between measured tRes and noise, stoch
             if ( s_data*s_data - s_stoch*s_stoch - s_noise*s_noise > 0):
                 s_dcr = math.sqrt( s_data*s_data - s_stoch*s_stoch - s_noise*s_noise )
                 err_s_dcr = 1./s_dcr * math.sqrt( pow( err_s_data*s_data,2) + pow( err_s_stoch*s_stoch,2) + pow(err_s_noise*s_noise,2))
                 if verbose:
-                    print("\ncheck : ", s_dcr)
+                    print("\n          check : ", s_dcr)
 
                 
                 g_sDCR_vs_Vov[sipm][bar].SetPoint(g_sDCR_vs_Vov[sipm][bar].GetN(), ovEff, s_dcr)
@@ -657,7 +667,7 @@ for it,sipm in enumerate(sipmTypes):
 
 
             if verbose:
-                print("end loop")
+                print("           end loop")
 
 
 if verbose:
@@ -711,25 +721,26 @@ for sipm in sipmTypes:
     
     g_Stoch_vs_Npe_average[sipm]  = ROOT.TGraphErrors()
     g_SR_vs_GainPDE_average[sipm] = ROOT.TGraphErrors()
-    
+
     if verbose:
-        print("\n sipm ", sipm)
+        print("\n\n ---------------    sipm ", sipm)
     for ov in Vovs[sipm]:
+        print(ov)
         ovEff = Vovs_eff(sipm, ov) 
         dcr   = DCR(sipm, ov)
         staticCurrent = float(current_(sipm,ov)) * 1E-03
         #staticCurrent = dcr*1E09 * Gain_(ovEff,sipm) * 1.602E-19
         staticPower = staticCurrent * (37. + ovEff) * 1000.    # in mW
         if verbose:
-            print('ov   : ',ov ,'static power: ', staticPower)
+            print('    ov   : ',ov ,'static power: ', staticPower)
 
         if (ov in  g_SR_vs_bar[sipm].keys()): 
 
             # data
-            g = g_data_vs_Vov_average[sipm]
-            closest_index = numpy.argmin([abs(g.GetX()[i] - ov) for i in range(g.GetN())])
-            s_meas = g.GetY()[closest_index]
-            err_s_meas = g.GetEY()[closest_index]
+            s_meas = g_data_vs_Vov_average[sipm].Eval(ovEff)
+            err_s_meas = interp1d(g_data_vs_Vov_average[sipm].GetX(), g_data_vs_Vov_average[sipm].GetEY(), kind='linear')(ovEff)   # interpolating error associated to evaluated point  
+            print("s_meas  ", round(s_meas,2), ' err_s_meas ', err_s_meas)
+            
             
             # average SR
             fitpol0_sr = ROOT.TF1('fitpol0_sr','pol0',-100,100)
@@ -741,13 +752,15 @@ for sipm in sipmTypes:
 
             # noise using average SR
             sr_err = max(fitpol0_sr.GetParError(0), errSRsyst*sr)
-            s_noise,noise_err = sigma_noise(sr, tofhirVersion,sr_err)
+            s_noise,err_s_noise = sigma_noise(sr, tofhirVersion,sr_err)
             g_Noise_vs_Vov_average[sipm].SetPoint(g_Noise_vs_Vov_average[sipm].GetN(), ovEff, s_noise)
             #sr_up   = sr + sr_err 
             #sr_down = sr - sr_err 
-            #noise_err  = 0.5 * ( sigma_noise(sr_down, tofhirVersion) - sigma_noise(sr_up, tofhirVersion) ) 
-            g_Noise_vs_Vov_average[sipm].SetPointError(g_Noise_vs_Vov_average[sipm].GetN()-1, 0, noise_err) 
-    
+            #err_s_noise  = 0.5 * ( sigma_noise(sr_down, tofhirVersion) - sigma_noise(sr_up, tofhirVersion) ) 
+            g_Noise_vs_Vov_average[sipm].SetPointError(g_Noise_vs_Vov_average[sipm].GetN()-1, 0, err_s_noise) 
+            print("s_noise  ", round(s_noise,2), ' err_s_noise ', round(err_s_noise,2))
+
+            
             # average stochastic 
             fitpol0_stoch = ROOT.TF1('fitpol0_stoch','pol0',-100,100)  
             g_Stoch_vs_bar[sipm][ov].Fit(fitpol0_stoch,'QNR')
@@ -755,7 +768,8 @@ for sipm in sipmTypes:
             err_s_stoch = fitpol0_stoch.GetParError(0)
             g_Stoch_vs_Vov_average[sipm].SetPoint(g_Stoch_vs_Vov_average[sipm].GetN(), ovEff, s_stoch)
             g_Stoch_vs_Vov_average[sipm].SetPointError(g_Stoch_vs_Vov_average[sipm].GetN()-1, 0, err_s_stoch)
-
+            print("s_stoch  ", round(s_stoch,2), ' err_s_stoch ', round(err_s_stoch,2))
+            
             # average dcr
             fitpol0_sdcr = ROOT.TF1('fitpol0_sdcr','pol0',-100,100)  
             g_sDCR_vs_bar[sipm][ov].Fit(fitpol0_sdcr,'QNR')
@@ -763,19 +777,24 @@ for sipm in sipmTypes:
             #err_s_dcr = fitpol0_sdcr.GetParError(0)
             if (s_meas*s_meas - s_noise*s_noise - s_stoch*s_stoch > 0):
                 s_dcr = math.sqrt(s_meas*s_meas - s_noise*s_noise - s_stoch*s_stoch)
-                err_s_dcr = 1./s_dcr * math.sqrt( pow(s_meas*err_s_meas,2) + pow( err_s_stoch*s_stoch,2) + pow(noise_err*s_noise,2))
+                err_s_dcr = 1./s_dcr * math.sqrt( pow(s_meas*err_s_meas,2) + pow( err_s_stoch*s_stoch,2) + pow(err_s_noise*s_noise,2))
             else:
-                s_dcr = 0.
-                err_s_dcr = 0.
+                s_dcr =  fitpol0_sdcr.GetParameter(0)
+                err_s_dcr = fitpol0_sdcr.GetParError(0)
+
+            print("s_dcr  ", round(s_dcr,2), ' err_s_dcr ', round(err_s_dcr,2))
             g_sDCR_vs_Vov_average[sipm].SetPoint(g_sDCR_vs_Vov_average[sipm].GetN(), ovEff, s_dcr)
             g_sDCR_vs_Vov_average[sipm].SetPointError(g_sDCR_vs_Vov_average[sipm].GetN()-1, 0, err_s_dcr)
 
             # tot resolution summing noise + stochastic + dcr in quadrature
             tot = math.sqrt( s_stoch*s_stoch + s_noise*s_noise + s_dcr*s_dcr )
-            err_tot = 1./tot * math.sqrt( pow( err_s_stoch*s_stoch,2) + pow(noise_err*s_noise,2) + pow(s_dcr*err_s_dcr, 2) )
+            err_tot = 1./tot * math.sqrt( pow( err_s_stoch*s_stoch,2) + pow(err_s_noise*s_noise,2) + pow(s_dcr*err_s_dcr, 2) )
             g_TotExp_vs_Vov_average[sipm].SetPoint(g_TotExp_vs_Vov_average[sipm].GetN(), ovEff, tot)
             g_TotExp_vs_Vov_average[sipm].SetPointError(g_TotExp_vs_Vov_average[sipm].GetN()-1, 0, err_tot)
 
+
+            print("      CHECKONE ::: ", round(s_meas,1), " noise : ", round(s_noise,1)," stoch : ",round(s_stoch,1), " dcr : ", round(s_dcr,1))
+            
             # DCR, non sigma DCR
             dcr = getVovEffDCR(sipm, ov)[1]
             err_dcr = 0
@@ -818,7 +837,7 @@ for sipm in sipmTypes:
             # ----------------
 
             # ------ sigma dcr scaled per pde ratio vs dcr ------
-            pderef = PDE_(3.5,'LYSO818','0')
+            pderef = PDE_(1.0,'LYSO818','0')
             pde = PDE_(ovEff,sipm)
             err_pderef = pderef*errPDE
             err_pde = pde*errPDE
@@ -829,7 +848,7 @@ for sipm in sipmTypes:
 
             # ---- noise vs gain ----
             g_Noise_vs_Gain_average[sipm].SetPoint(g_Noise_vs_Gain_average[sipm].GetN(),Gain_(ovEff,sipm), s_noise)
-            g_Noise_vs_Gain_average[sipm].SetPointError(g_Noise_vs_Gain_average[sipm].GetN()-1, Gain_(ovEff,sipm)*errGain, noise_err)
+            g_Noise_vs_Gain_average[sipm].SetPointError(g_Noise_vs_Gain_average[sipm].GetN()-1, Gain_(ovEff,sipm)*errGain, err_s_noise)
             
 
             
