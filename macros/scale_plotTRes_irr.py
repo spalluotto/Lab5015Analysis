@@ -151,6 +151,7 @@ elif compareNum == 3:
                   '32' : [20, ROOT.kGreen+2,  '32^{o}'],
                   '52' : [21, ROOT.kBlue,     '52^{o}'],
                   '64' : [22, ROOT.kRed,      '64^{o}']}
+    ymin = 0.
     ymax = 120.
     ov_min = 0.2
     ov_max = 1.4

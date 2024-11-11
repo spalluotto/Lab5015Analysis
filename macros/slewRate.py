@@ -129,33 +129,36 @@ def findTimingThreshold(g2):
 # ----------------------------------------------------- 
 # ------------ noise parametrization --------------
 # ----------------------------------------------------- 
+def get_noise_pars(tofVersion):
+    if '2x' in tofVersion:
+        n = 420.
+        const = 16
+        err_n = 35
+        err_const = 2
+    elif '2c' in tofVersion:
+        n = 420.
+        const = 16
+        err_n = 35
+        err_const = 2
+    else:
+        return None
+    return n,err_n,const,err_const
+
 def sigma_noise(sr, tofVersion, err_sr):
     if sr < 0 :
         return 0
-    if '2x' in tofVersion:
-        n = 420.
-        const = 16.7
-        noise_single = math.sqrt( pow(n/sr,2) + const*const )        
-    elif '2c' in tofVersion:
-        n = 420.
-        # n = 463     # dal fittone di andrea
-        # n = 278     # dalle misure in lab
-        const = 16
-        # const = 19.1    # dalle misure in lab
-        noise_single = math.sqrt( pow(n/sr,2) + const*const )
-    else:
-        print("  ----      UNKNOWN TOFHIR VERSION ------")
-        return None
+    n, err_n, const, err_const = get_noise_pars(tofVersion)
+    # Check if the parameters are valid (in case of unknown tofVersion)
+    if n is None or const is None:
+        return None    
+    # Calculate the single noise value
+    noise_single = math.sqrt(pow(n / sr, 2) + const ** 2)
+    # Normalize the noise
     noise = noise_single / math.sqrt(2)
-
-
-    # --- errors on parameters
-    err_n = 35
-    err_const = 2
-
-    err_noise = 1/math.sqrt(2) * 1/noise * n/(sr*sr) * math.sqrt(math.pow(err_n,2) + math.pow(n/sr*err_sr,2) + math.pow(const*err_const,2))
+    # Calculate the error in noise
+    err_noise = (1 / math.sqrt(2)) * (1 / noise) * (n / (sr**2)) * math.sqrt(math.pow(err_n, 2) + math.pow((n / sr) * err_sr, 2) + math.pow(const * err_const, 2))
     
-    return (noise, err_noise)
+    return noise, err_noise
 # -----------------------------------------------------
 
 

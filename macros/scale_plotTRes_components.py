@@ -133,7 +133,7 @@ elif compareNum == 4:
                   '32' : [20, ROOT.kGreen+2,  '32^{o}'],
                   '52' : [21, ROOT.kBlue,     '52^{o}'],
                   '64' : [22, ROOT.kRed,      '64^{o}']}
-    ymax = 100.
+    ymax = 120.
 
 
 

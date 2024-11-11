@@ -137,6 +137,7 @@ elif compareNum == 3:
                   '52' : [21, ROOT.kBlue,     '52^{o}'],
                   '64' : [22, ROOT.kRed,      '64^{o}']}
     ymax = 120.
+    ymin = 0.
 
 
 elif compareNum == 4: 

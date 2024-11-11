@@ -11,18 +11,19 @@ import json
 
 import math
 import ROOT
-
-import numpy
+import numpy as np
 from scipy.interpolate import interp1d
+
 import CMS_lumi, tdrstyle
 
 from slewRate import *
 from SiPM import *
 from moduleDict import *
+from energy_scaling import *
 
 def draw_logo():
     logo_x = 0.16
-    logo_right = 0.82
+    logo_right = 0.78
     logo = ROOT.TLatex()
     logo.SetNDC()
     logo.SetTextSize(0.06)
@@ -76,6 +77,22 @@ def remove_points_beyond_rms(g, rms_thr):
             print(" ~~~~~~~~~~~   point at ", x_vals[i], ' removed')
 
     return new_g
+
+def interpolate_error(graph, x_val,verbose=False):
+    n_points = graph.GetN()
+    x_values = np.zeros(n_points)
+    y_values = np.zeros(n_points)
+    y_errors = np.zeros(n_points)
+    for i in range(n_points):
+        x_values[i] = graph.GetX()[i]
+        y_values[i] = graph.GetY()[i]
+        y_errors[i] = graph.GetEY()[i]
+        error_interpolator = interp1d(x_values, y_errors, bounds_error=False, fill_value="extrapolate")
+    if verbose:    
+        print("\ny values: ", y_values, "\ty err : ", y_errors)
+        print("x values: ", x_values)
+    return error_interpolator(x_val)
+
 
 
 #set the tdr style
