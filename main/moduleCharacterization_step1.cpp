@@ -552,14 +552,15 @@ int main(int argc, char** argv)
 	    
 
 	    // check energy in adjacent bars
-	    for (int jBar = int(iBar) - 2; jBar < int(iBar) + 3; ++jBar){
+	    for (int jBar = int(iBar) - 1; jBar < int(iBar) + 2; ++jBar){
 	      if (jBar == int(iBar)) continue;
 	      if (jBar < 0 || jBar > 15 ) continue;
 	      if (totL[jBar]<-10 || totL[jBar]>100) continue;
 	      if (totR[jBar]<-10 || totR[jBar]>100) continue;
 	      float en = (energyL[jBar]+energyR[jBar])/2;
 	      //if ( en > minE[std::make_pair(jBar, Vov)] && en<1024 ){
-	      if ( en > minE[std::make_pair(jBar, Vov)] && minE[std::make_pair(jBar, Vov)]>1 && en<1024 ){
+	      //if ( en > minE[std::make_pair(jBar, Vov)] && minE[std::make_pair(jBar, Vov)]>1 && en<1024 ){
+	      if ( en >200 && en<1024 ){
 		nBarsVeto[iBar]+=1;
 	      }
 	    }

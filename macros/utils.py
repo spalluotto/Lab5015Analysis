@@ -19,7 +19,9 @@ import CMS_lumi, tdrstyle
 from slewRate import *
 from SiPM import *
 from moduleDict import *
-from energy_scaling import *
+
+
+stochPow=0.73
 
 def draw_logo():
     logo_x = 0.16

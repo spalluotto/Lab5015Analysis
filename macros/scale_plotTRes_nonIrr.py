@@ -41,12 +41,17 @@ angle_offset = 3
 tofVersion = '2c'
 meas = True
 verbose = False
+savefile=True
 # -------------
 
 print("\n USING STOCH MEASURED ? ", meas)
 
 stochPow = 0.73
 ymin = 20.
+
+xmin = 0.
+xmax = 4.0
+
 pars_to_scale = []
 
 parser = argparse.ArgumentParser()  
@@ -133,9 +138,9 @@ elif compareNum == 3:
     label_on_top = 'HPK, 25 #mum'
 
     plotAttrs = { 
-                  '32' : [20, ROOT.kGreen+2,  '32^{o}'],
-                  '52' : [21, ROOT.kBlue,     '52^{o}'],
-                  '64' : [22, ROOT.kRed,      '64^{o}']}
+                  '32' : [20, ROOT.kGreen+2,  '#theta = 32^{o}'],
+                  '52' : [21, ROOT.kBlue,     '#theta = 52^{o}'],
+                  '64' : [22, ROOT.kRed,      '#theta = 64^{o}']}
     ymax = 120.
     ymin = 0.
 
@@ -163,7 +168,6 @@ elif compareNum == 4:
                   'T3' : [22, ROOT.kRed,      'type 3']}
     ymax = 80.
 
-    
     
 enScale = {}
 
@@ -250,12 +254,14 @@ for par in pars_to_scale:
         g_scaledMeas[par].SetPointError(i, 0, err_s_totMeas) # correct for angle offset
 
         print("ov : ", vov, "\t data scaled : ", round(s_totMeas,2))
+        print("error data ", err_s_totMeas)
+
         if verbose:
             print("OV : ", vov)
             print("scaling -- > ", round(enScale[par],2))
             print("data : ",round(g[par].GetY()[i],1), "tot scaled : ", round(s_tot,1), " ---- noise true : ", round(sigma_noise(sr,tofVersion,err_sr)[0],1), "  noise scaled: ", round(s_noise,1), "  stoch true ", round(g_Stoch[par].Eval(vov),1), "  stoch scaled ", round(s_stoch,1), "  stoch meas true : ", round(s_stochMeas,1))
             print("err on stoch : ", err_s_stochMeas)
-
+            
             
             
 
@@ -281,10 +287,27 @@ leg.SetTextSize(0.045)
 
 
 c = ROOT.TCanvas('c_timeResolution_%s_nonIrr_vs_Vov'%nameComparison,'c_timeResolution_%s_nonIrr_vs_Vov'%nameComparison, 600, 500)
-hPad = ROOT.gPad.DrawFrame(0.,ymin,4.0,ymax)
+hPad = ROOT.gPad.DrawFrame(xmin,ymin,xmax,ymax)
 hPad.SetTitle(";V_{OV} [V];time resolution [ps]")
 hPad.Draw()
 ROOT.gPad.SetTicks(1)
+
+
+# review comparative paper 
+# # Draw dashed lines at y=30 and y=60
+# line1 = ROOT.TLine(xmin, 30, xmax, 30) 
+# line1.SetLineStyle(2)              
+# line1.SetLineColor(ROOT.kGray + 1) 
+# line1.Draw("same")
+
+# line2 = ROOT.TLine(xmin, 60, xmax, 60)
+# line2.SetLineStyle(2)              
+# line2.SetLineColor(ROOT.kGray + 1) 
+# line2.Draw("same")
+
+
+if savefile:
+    root_file = ROOT.TFile(f"../plots/graphs_nonIrr_{nameComparison}.root", "RECREATE")
 
 for par in pars:
     if par in pars_to_scale:
@@ -296,6 +319,8 @@ for par in pars:
         g_uff[par].SetLineColor(plotAttrs[par][1])
         leg.AddEntry(g_uff[par], '%s'%plotAttrs[par][2],'PL')
         g_uff[par].Draw('plsame')
+        if savefile:
+            g_uff[par].Write()
     else:
         g[par].SetMarkerStyle(plotAttrs[par][0])
         g[par].SetMarkerColor(plotAttrs[par][1])
@@ -304,20 +329,23 @@ for par in pars:
         g[par].SetLineWidth(1)
         leg.AddEntry(g[par], '%s'%plotAttrs[par][2],'PL')
         g[par].Draw('plsame')
+        if savefile:
+            g[par].Write()
 leg.Draw()
 
 tl2 = ROOT.TLatex()
 tl2.SetNDC()
 tl2.SetTextFont(42)
 tl2.SetTextSize(0.045)
-tl2.DrawLatex(0.20,0.86,'%s'%label_on_top)
+#tl2.DrawLatex(0.20,0.86,'%s'%label_on_top)
 #tl2.DrawLatex(0.20,0.86,'%s'%nameComparison.split('_')[0])
 
 tl = ROOT.TLatex()
 tl.SetNDC()
 tl.SetTextFont(42)
 tl.SetTextSize(0.045)
-tl.DrawLatex(0.20,0.80,'non-irradiated')
+#tl.DrawLatex(0.20,0.80,'non-irradiated')
+tl.DrawLatex(0.20,0.83,'non-irradiated')
 
 #cms_logo = draw_logo()
 #cms_logo.Draw()
@@ -326,3 +354,5 @@ c.SaveAs(outdir+'%s.png'%c.GetName())
 c.SaveAs(outdir+'%s.pdf'%c.GetName())
 
 
+if savefile:
+    root_file.Close() 

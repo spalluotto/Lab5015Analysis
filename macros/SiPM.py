@@ -122,7 +122,7 @@ def Gain_(ov,sipm,flag='1'):
 
     # Market Survey    
     if   (type == "HPK-MS"): 
-        gain_val =  k * 36890.187 + 97602.9*ov
+        gain_val =  k * (36890.187 + 97602.9*ov)
 
     # --- FBK 
     elif (type == "FBK-MS"): 
@@ -138,7 +138,7 @@ def Gain_(ov,sipm,flag='1'):
     elif   (type == "HPK-ES2-25um"): 
         gain_val =  k * (7.044E04 + 2.895E05*ov)
     elif type == 'HPK-ES2-30um':
-        gain_val =  k * 9.067E04 + 4.020E05*ov
+        gain_val =  k * (9.067E04 + 4.020E05*ov)
         
     # -- low Cg --  
     elif   (type == "HPK-ES3-20um"): 

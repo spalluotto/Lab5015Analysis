@@ -1076,6 +1076,8 @@ int main(int argc, char** argv)
 	    //if (ranges["L-R"][index1]->at(iEnergyBin)<0) continue;
 	    double  index2( 10000000*iEnergyBin+index1 );
 	    if(!p1_deltaT_vs_energyRatio[index2] || p1_deltaT_vs_energyRatio[index2]->GetEntries() < 100) continue;
+
+	    std::cout << "index " <<index2 <<std::endl;
 	    
 	    std::string labelLR_energyBin(Form("%s_energyBin%02d",labelLR.c_str(),iEnergyBin));
 	    
@@ -1086,7 +1088,8 @@ int main(int argc, char** argv)
 	    prof -> SetTitle(Form(";energy_{right} / energy_{left};#Deltat [ps]"));
 	    prof -> GetYaxis() -> SetRangeUser(CTRMeans[index2]-3.*CTRSigmas[index2],CTRMeans[index2]+3.*CTRSigmas[index2]);
 	    prof -> Draw("");
-	    
+
+	    std::cout << "prof entries " << prof->GetEntries() <<std::endl;
 	    latex = new TLatex(0.40,0.85,Form("#splitline{bar %02d}{V_{OV} = %.2f V, th. = %d DAC}",iBar,Vov,int(vth1)));
 	    latex -> SetNDC();
 	    latex -> SetTextFont(42);
@@ -1111,8 +1114,10 @@ int main(int argc, char** argv)
 	      continue;
 	    }
 	    
+	    
 	    fitFunc_energyRatioCorr[index2] = new TF1(Form("fitFunc_energyRatioCorr_%s",labelLR_energyBin.c_str()),"pol3",fitXMin,fitXMax);
 	    prof -> Fit(fitFunc_energyRatioCorr[index2],"QRS+");
+	    std::cout << "prof fit" <<std::endl;
 	    fitFunc_energyRatioCorr[index2] -> SetLineColor(kRed);
 	    fitFunc_energyRatioCorr[index2] -> SetLineWidth(2);
 	    fitFunc_energyRatioCorr[index2] -> Draw("same");
@@ -1130,9 +1135,13 @@ int main(int argc, char** argv)
 	    
 	    prof = p1_deltaT_vs_totRatio[index2];
 	    prof -> SetTitle(Form(";ToT_{right} / ToT_{left};#Deltat [ps]"));
+	    std::cout << "CTRMeans[index2]: " << CTRMeans[index2] << ", CTRSigmas[index2]: " << CTRSigmas[index2] << std::endl;
+
 	    prof -> GetYaxis() -> SetRangeUser(CTRMeans[index2]-3.*CTRSigmas[index2],CTRMeans[index2]+3.*CTRSigmas[index2]);
             //prof -> GetXaxis() -> SetRangeUser(-1.2,1.2);
 	    prof -> Draw("");
+
+	    std::cout << "prof entries tot " << prof->GetEntries() <<std::endl;
 	    
 	    latex = new TLatex(0.40,0.85,Form("#splitline{bar %02d}{V_{OV} = %.2f V, th. = %d DAC}",iBar,Vov,int(vth1)));
 	    latex -> SetNDC();
@@ -1143,6 +1152,21 @@ int main(int argc, char** argv)
 	    
             fitXMin = fitFunc_totRatio[index2]->GetParameter(1) - 3.*fitFunc_totRatio[index2]->GetParameter(2);
 	    fitXMax = fitFunc_totRatio[index2]->GetParameter(1) + 3.*fitFunc_totRatio[index2]->GetParameter(2);
+
+
+	    // Debugging output
+	    std::cout << "fitXMin: " << fitXMin << ", fitXMax: " << fitXMax << std::endl;
+
+	    if (prof->GetEntries()<3) continue;
+	    fitFunc_energyRatioCorr[index2] = new TF1(Form("fitFunc_energyRatioCorr_%s",labelLR_energyBin.c_str()),"pol3",fitXMin,fitXMax);
+	    fitStatus = prof->Fit(fitFunc_energyRatioCorr[index2], "QRS+");
+
+	    // Check fit status
+	    if (fitStatus != 0) {
+	      std::cerr << "Fit failed for index2: " << index2 << " with status: " << fitStatus << std::endl;
+	      continue;
+	    }
+
 	    
 	    fitFunc_totRatioCorr[index2] = new TF1(Form("fitFunc_totRatioCorr_%s",labelLR_energyBin.c_str()),"pol3",fitXMin,fitXMax);
 	    prof -> Fit(fitFunc_totRatioCorr[index2],"QRS+");
@@ -1163,7 +1187,6 @@ int main(int argc, char** argv)
   
   //------------------------
   //--- 4th loop over events
-  
   gStyle->SetOptFit(1111);
   for(auto mapIt : trees)
     {

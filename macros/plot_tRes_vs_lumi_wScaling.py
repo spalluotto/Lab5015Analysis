@@ -25,10 +25,12 @@ labels = {
 }
 lumiMap = { 
     '0'    : 0,
-    '1E13' : 134,
-    '1E14' : 1340,
-    '2E14' : 2680,
+    '1E13' : 150,
+    '1E14' : 1500,
+    '2E14' : 3000,
 }
+errLumi = 0.15
+
 alphaMap = {
     '0'    : 0,
     '1E13' : 0.0345,
@@ -198,7 +200,7 @@ for par in fnames:
         tres = g_scaled[par][n].Eval(3.5)
         err_tres = interpolate_error(g_scaled[par][n], 3.5)
     g_vs_lumi.SetPoint(g_vs_lumi.GetN(), lumiMap[par] , tres)
-    g_vs_lumi.SetPointError(g_vs_lumi.GetN()-1, 0.1*lumiMap[par], err_tres)
+    g_vs_lumi.SetPointError(g_vs_lumi.GetN()-1, errLumi*lumiMap[par], err_tres)
 
     if verbose:
         print("t res : ", tres, " errore ", err_tres)
@@ -207,7 +209,7 @@ for par in fnames:
 if verbose:
     print("drawing")
 # Drawing 
-tdrLine = ROOT.TLine(0, 30, 3100, 65)
+tdrLine = ROOT.TLine(0, 30, 4000, 65)
 tdrLine.SetLineStyle(2)
 tdrLine.SetLineColor(ROOT.kGray+2)
 
@@ -220,7 +222,8 @@ leg.SetTextSize(0.045)
 # vs lumi
 cname = 'c_timeResolution_vs_lumi'
 c = ROOT.TCanvas(cname, cname, 600, 500)
-hPad = ROOT.gPad.DrawFrame(0.,0.,3100.0,120.)
+hPad = ROOT.gPad.DrawFrame(0.,0.,4000.0,120.)
+hPad.GetXaxis().SetNdivisions(505)
 hPad.SetTitle(";Integrated luminosity [fb^{-1}]; time resolution [ps]")
 hPad.Draw()
 ROOT.gPad.SetTicks(1)
@@ -228,12 +231,12 @@ g_vs_lumi.SetMarkerSize(1)
 g_vs_lumi.SetMarkerStyle(plotAttrs[0])
 g_vs_lumi.SetMarkerColor(plotAttrs[1])
 g_vs_lumi.SetLineColor(plotAttrs[1])
-g_vs_lumi.SetFillColorAlpha(plotAttrs[1], 0.4)
-g_vs_lumi.SetFillStyle(3001)
-g_vs_lumi.Draw('E3 same')  # "E3" per la banda d'errore continua
+#g_vs_lumi.SetFillColorAlpha(plotAttrs[1], 0.4)
+#g_vs_lumi.SetFillStyle(3001)
+#g_vs_lumi.Draw('E3 same')  # "E3" per la banda d'errore continua
 g_vs_lumi.Draw('PL same')  # "PL" per disegnare i punti e la linea
-leg.AddEntry( g_vs_lumi, '%s'%plotAttrs[2], 'PL')
-leg.AddEntry( tdrLine, 'TDR', 'L')
+leg.AddEntry( g_vs_lumi, 'Test beam data', 'PL')
+leg.AddEntry( tdrLine, 'TDR expectation', 'L')
 tdrLine.Draw()
 leg.Draw()
 c.SaveAs(outdir+'%s.png'%c.GetName())

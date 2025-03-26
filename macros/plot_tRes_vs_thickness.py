@@ -250,7 +250,7 @@ for g in graphs:
         graphs[g].SetMarkerStyle(20)
         graphs[g].SetLineColor(col)
 
-    #"""
+    """
     if (g=="data"):
         f = ROOT.TF1("func", "[0]*pow(x,[1])", 2.3,3.85)
         f.SetLineColor(col)
@@ -270,15 +270,15 @@ for g in graphs:
         tl3.SetTextSize(0.050)
         tl3.DrawLatex(0.20,0.80,'(%.0f #pm %.0f) x thickness^{%.2f #pm %.2f}'%(f.GetParameter(0), f.GetParError(0),f.GetParameter(1), f.GetParError(1) ))
     else:
-        graphs[g].Draw("E3SAMEPL")
-    #"""
-
+        graphs[g].Draw("E3SAMEL")
     """
+
+    #"""
     if (g=="data"):
         graphs[g].Draw("PLSAME")
     else:
-        graphs[g].Draw("E3SAMEPL")
-    """
+        graphs[g].Draw("E3SAMEL")
+    #"""
     leg = ROOT.TLegend(0.7, 0.60, 0.89, 0.89)
     leg.SetBorderSize(0)
     leg.SetFillColor(0)

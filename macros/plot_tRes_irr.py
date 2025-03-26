@@ -103,16 +103,20 @@ elif comparisonNum == 10:
     outSuffix =     'HPK_2E14_LYSO100056_T-35C_angles'
 
 elif comparisonNum == 11:
-             #   --- angle 32 missing run ---
+    print("!! -- WARNING -- !!\nHARD-CODED : 819 and 829 currents taken from may TB")
+
+    tofhirVersion = '2x'
+    plotsdir = '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/'
+    #   --- angle 32 missing run ---
     # modules =       ['LYSO819', 'LYSO819',       'LYSO819']
     # temperatures =  ['-32',     '-32',           '-32']
     # extraName =     ['_angle32','_angle52',      '_angle64']
     # extraLabel =    [' 32^{o}',        ' 52^{o}',              ' 64^{o}']
     # outSuffix =     'HPK_1E14_LYSO819_T-32C_angles'
-    modules =       ['LYSO819',    'LYSO819']
-    temperatures =  ['-32',           '-32']
-    extraName =     ['_angle52',      '_angle64']
-    extraLabel =    [' 52^{o}',       ' 64^{o}']
+    modules =       ['LYSO819',    'LYSO819',       'LYSO819']
+    temperatures =  ['-32',           '-32',           '-32']
+    extraName =     ['_angle32', '_angle52',      '_angle64']
+    extraLabel =    [' 32^{o}',        ' 52^{o}',       ' 64^{o}']
     outSuffix =     'HPK_1E14_LYSO819_T-32C_angles'
 
 

@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+3#! /usr/bin/env python
 import os
 import shutil
 import glob
@@ -14,7 +14,7 @@ import CMS_lumi, tdrstyle
 from utils import *
 from SiPM import *
 
-#set the tdr style
+
 tdrstyle.setTDRStyle()
 ROOT.gStyle.SetOptStat(0)
 ROOT.gStyle.SetOptFit(1)
@@ -142,7 +142,7 @@ elif compareNum == 4:
 # 2E14 cell sizes
 elif compareNum == 1:
     nameComparison = '2E14_cellSizes'
-    irr_label = '2 #times 10^{14} 1 MeV n_{eq}/cm^{2}'  
+    irr_label = '2 #times 10^{14} n_{eq}/cm^{2}'  
     pars = [15,20, 25, 30]
     pars_to_scale = [20, 25, 30]
     angle_true = 49
@@ -171,7 +171,7 @@ elif compareNum == 1:
 # types - irradiated 2E14
 elif compareNum == 5:
     nameComparison = '2E14_types'
-    irr_label = '2 #times 10^{14} 1 MeV n_{eq}/cm^{2}'
+    irr_label = '2 #times 10^{14} n_{eq}/cm^{2}'
     
     pars = ['T1', 'T2', 'T3']
     pars_to_scale = pars
@@ -195,7 +195,7 @@ elif compareNum == 5:
 # 2E14 rr angles
 elif compareNum == 6:
     nameComparison = '2E14_angles'
-    irr_label = '2 #times 10^{14} 1 MeV n_{eq}/cm^{2}'
+    irr_label = '2 #times 10^{14} n_{eq}/cm^{2}'
     
     pars = ['32', '52', '64']
     pars_to_scale = pars
@@ -216,14 +216,15 @@ elif compareNum == 6:
                   '52' : [21, ROOT.kBlue,     '52^{o}'],
                   '64' : [22, ROOT.kRed,      '64^{o}']}
     ymax = 120.
-    xmax = 1.6
+    xmin = 0.5
+    xmax = 1.1
 
 
 
 # TYPE 1 - irradiated 1E14 - temperatures comparison
 elif compareNum == 7:
     nameComparison  = '1E14_T1_temperatures'
-    irr_label = '1 #times 10^{14} 1 MeV n_{eq}/cm^{2}'
+    irr_label = '1 #times 10^{14} n_{eq}/cm^{2}'
 
     pars = ['-37', '-32', '-27', '-22']
     fnames = { '-37' : '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/plot_tRes_HPK_1E14_LYSO819_temperatures.root',
@@ -250,7 +251,7 @@ elif compareNum == 8:
     nameComparison = '1E13_T1_temperatures'
     pars = ['-32','-19','0','12']
 
-    irr_label = '1 #times 10^{13} 1 MeV n_{eq}/cm^{2}'
+    irr_label = '1 #times 10^{13} n_{eq}/cm^{2}'
     fnames = {
         '-32' : '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/plot_tRes_HPK_1E13_LYSO829_temperatures.root',
         '-19' : '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/plot_tRes_HPK_1E13_LYSO829_temperatures.root',
@@ -457,20 +458,24 @@ for par in pars:
     tl.SetTextFont(42)
     tl.SetTextSize(0.050)
     if compareNum == 1 or compareNum ==2:
-        tl.DrawLatex(0.20,0.86,'HPK, %s'%plotAttrs[par][2])
+        #tl.DrawLatex(0.20,0.86,'HPK, %s'%plotAttrs[par][2])
         print(plotAttrs[par][2])
     else:
-        tl.DrawLatex(0.20,0.86,'HPK, 25 #mum')
+        print()
+        #tl.DrawLatex(0.20,0.86,'HPK, 25 #mum')
 
     tl3 = ROOT.TLatex()
     tl3.SetNDC()
     tl3.SetTextFont(42)
     tl3.SetTextSize(0.050)
-    tl3.DrawLatex(0.20,0.80,'{}'.format(irr_label))
+    # removing HPK 25 um label
+    #tl3.DrawLatex(0.20,0.80,'{}'.format(irr_label))
+    tl3.DrawLatex(0.20,0.83,'{}'.format(irr_label))
 
     #cms_logo = draw_logo()
     #cms_logo.Draw()
 
+    #c.SetGridx()
     c.SaveAs(outdir+'%s.png'%c.GetName())
     c.SaveAs(outdir+'%s.pdf'%c.GetName())
 

@@ -42,6 +42,7 @@ outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/for_paper/'
 angle_offset = 3
 pars_to_scale = []
 verbose = False
+savefile=True
 # -------------
 
 stochPow = 0.73
@@ -71,7 +72,7 @@ fnames = {}
 gnames = {}
 labels = {}
 
-irr_label = '2 #times 10^{14} 1 MeV n_{eq}/cm^{2}'
+irr_label = '2 #times 10^{14} n_{eq}/cm^{2}'
 
 # cell sizes
 if compareNum == 1:
@@ -148,9 +149,9 @@ elif compareNum == 3:
 
     label_on_top = 'HPK, 25 #mum'
     plotAttrs = { 
-                  '32' : [20, ROOT.kGreen+2,  '32^{o}'],
-                  '52' : [21, ROOT.kBlue,     '52^{o}'],
-                  '64' : [22, ROOT.kRed,      '64^{o}']}
+                  '32' : [20, ROOT.kGreen+2,  '#theta = 32^{o}'],
+                  '52' : [21, ROOT.kBlue,     '#theta = 52^{o}'],
+                  '64' : [22, ROOT.kRed,      '#theta = 64^{o}']}
     ymin = 0.
     ymax = 120.
     ov_min = 0.2
@@ -191,6 +192,7 @@ elif compareNum == 4:
 elif compareNum == 5:
     nameComparison = 'HPK_1E14_T1_temperatures'
     pars = [ '-22', '-27','-32','-37']
+    angle_true = 52    # ----> May data taking
     
     irr_label = '1 #times 10^{14} 1 MeV n_{eq}/cm^{2}'
     fnames = { '-37' : '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/plot_tRes_HPK_1E14_LYSO819_temperatures.root',
@@ -220,6 +222,7 @@ elif compareNum == 5:
 elif compareNum == 6:
     nameComparison = 'HPK_1E13_T1_temperatures'
     pars = ['12', '0','-19','-32']
+    angle_true = 52
     
     irr_label = '1 #times 10^{13} 1 MeV n_{eq}/cm^{2}'
     fnames = {
@@ -249,35 +252,38 @@ elif compareNum == 6:
 
 
 
-# ------- T1 --- different fluences at the BTL equivalent temperature
-elif compareNum == 7:
-    nameComparison = 'HPK_irr_T1_temperatures_BTLeq'
-    pars = ['-35', '-32', '-19']
-    pars_to_scale = ['-35', '-32']
 
-    angle_true = 49
-    irr_label = 'BTL equivalent'
-    fnames = {
-        '-35' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_2E14_LYSO100056_temperatures.root',
-        '-32' : '/eos/home-s/spalluot/MTD/TB_CERN_Sep23/Lab5015Analysis/plots/plot_tRes_HPK_1E14_LYSO819_temperatures.root',
-        '-19' : '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/plot_tRes_HPK_1E13_LYSO829_temperatures.root',
-    }
-    labels = {
-        '-35' : 'HPK_2E14_LYSO100056_angle52_T-35C',
-        '-32' : 'HPK_1E14_LYSO819_angle52_T-32C',
-        '-19' : 'HPK_1E13_LYSO829_angle52_T-19C',
+
+
+# TYPE 1 - irradiated 1E14 - angles
+elif compareNum == 8:
+    nameComparison = 'HPK_1E14_T1_angles'
+    pars = [ '32', '52', '64']
+
+    angle_true = [32,52,64]
+    
+    irr_label = '1 #times 10^{14} 1 MeV n_{eq}/cm^{2}'
+    fnames = { '32' : '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/plot_tRes_HPK_1E14_LYSO819_angles.root',
+               '52' : '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/plot_tRes_HPK_1E14_LYSO819_angles.root',
+               '64' : '/eos/home-s/spalluot/MTD/TB_CERN_May23/Lab5015Analysis/plots/plot_tRes_HPK_1E14_LYSO819_angles.root',
+              }
+
+    labels = { '32' : 'HPK_1E14_LYSO819_angle32_T-32C',
+               '52' : 'HPK_1E14_LYSO819_angle52_T-32C',
+               '64' : 'HPK_1E14_LYSO819_angle64_T-32C',
               }
     label_on_top = 'HPK, 25 #mum'
 
-    plotAttrs = {
-        '-35' : [20, 3,     '-35^{o}C'],
-        '-32' : [21, 4,     '-32^{o}C'],
-        '-19' : [22,   2,     '-19^{o}C'],
-                 }
-    ov_min = 0.2
+    plotAttrs = { 
+                  '32' : [20, ROOT.kGreen+2,  '32^{o}'],
+                  '52' : [21, ROOT.kBlue,     '52^{o}'],
+                  '64' : [22, ROOT.kRed,      '64^{o}']}
+
     ymax = 100.
-    power_max = 60.
+    ov_min = 0.2
+    ov_max = 1.8
     
+
     
 # energy scaling for angle offset
 enScale = {}
@@ -391,6 +397,7 @@ for par in pars_to_scale:
         #g_scaled[par].SetPointError(i, 0, g[par].GetErrorY(i)/enScale[par]) # correct for angle offset                            
 
         print("ov : ", vov, "\t data scaled : ", round(s_tot,2))
+        print("error data ", round(err_s_tot,2))
         
         try:
             g_scaled_vs_power[par].SetPoint(i, g_vs_power[par].GetX()[i], s_tot)
@@ -400,7 +407,11 @@ for par in pars_to_scale:
             print("Index out of bounds")
             
             
-        
+
+# save file
+if savefile:
+    root_file = ROOT.TFile(f"../plots/graphs_irr_{nameComparison}.root", "RECREATE")
+            
 # plot
 leg = ROOT.TLegend(0.75, 0.60, 0.89, 0.89)
 leg.SetBorderSize(0)
@@ -413,6 +424,22 @@ hPad = ROOT.gPad.DrawFrame(ov_min,ymin,ov_max,ymax)
 hPad.SetTitle(";V_{OV} [V];time resolution [ps]")
 hPad.Draw()
 ROOT.gPad.SetTicks(1)
+
+# review comparative paper 
+# # Draw dashed lines at y=30 and y=60
+# line1 = ROOT.TLine(ov_min, 30, ov_max, 30) 
+# line1.SetLineStyle(2)              
+# line1.SetLineColor(ROOT.kGray + 1) 
+# line1.Draw("same")
+
+# line2 = ROOT.TLine(ov_min, 60, ov_max, 60)
+# line2.SetLineStyle(2)              
+# line2.SetLineColor(ROOT.kGray + 1) 
+# line2.Draw("same")
+
+
+
+
 for par in pars:
     if par in pars_to_scale:
         g_scaled[par].SetMarkerSize(1)
@@ -422,6 +449,8 @@ for par in pars:
         g_scaled[par].SetLineColor(plotAttrs[par][1])
         leg.AddEntry(g_scaled[par], '%s'%plotAttrs[par][2],'PL')
         g_scaled[par].Draw('plsame')
+        if savefile:
+            g_scaled[par].Write()
     else:
         g[par].SetMarkerStyle(plotAttrs[par][0])
         g[par].SetMarkerColor(plotAttrs[par][1])
@@ -430,16 +459,20 @@ for par in pars:
         g[par].SetLineWidth(1)
         leg.AddEntry(g[par], '%s'%plotAttrs[par][2],'PL')
         g[par].Draw('plsame')
+
+        if savefile:
+            g[par].Write()
+        
 leg.Draw()
 
 tl2 = ROOT.TLatex()
 tl2.SetNDC()
 tl2.SetTextFont(42)
 tl2.SetTextSize(0.045)
-if latexOnTop:
-    tl2.DrawLatex(0.20,0.86,'%s'%label_on_top)  # scritta in alto  
-else:
-    tl2.DrawLatex(0.20,0.26,'%s'%label_on_top) # scritta in basso
+# if latexOnTop:
+#     tl2.DrawLatex(0.20,0.86,'%s'%label_on_top)  # scritta in alto  
+# else:
+#     tl2.DrawLatex(0.20,0.26,'%s'%label_on_top) # scritta in basso
 
 
 tl = ROOT.TLatex()
@@ -447,23 +480,20 @@ tl.SetNDC()
 tl.SetTextFont(42)
 tl.SetTextSize(0.045)
 if latexOnTop:
-    tl.DrawLatex(0.20,0.80, irr_label) # scritta in alto  
+    tl.DrawLatex(0.20,0.83, irr_label) # scritta in alto  
 else:
     tl.DrawLatex(0.20,0.20, irr_label) # scritta in basso
-
-#cms_logo = draw_logo()
-#cms_logo.Draw()
 
 c.SaveAs(outdir+'%s.png'%c.GetName())
 c.SaveAs(outdir+'%s.pdf'%c.GetName())
 
-
-# outfile   = ROOT.TFile.Open(outdir+'/%s.root'%c.GetName(),'recreate')
-# for par in pars:
-#     outfile.cd()
-#     g_scaled[par].Write(g_scaled[par].GetName())
+if savefile:
+    root_file.Close()
 
 
+
+
+# ------- vs power ----------------    
 if not index_out_of_bounds:
     c_ = ROOT.TCanvas('c_timeResolution_%s_vs_staticPower'%nameComparison,'c_timeResolution_%s_vs_staticPower'%nameComparison, 600, 500)
     c_.cd()

@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 from utils import *
-
+from energy_scaling import * 
 # --- EDIT ---
 outdir = '/eos/home-s/spalluot/www/MTD/MTDTB_CERN_Sep23/for_paper/energy_studies/'
 verbose = False
